@@ -1,0 +1,736 @@
+/*
+  Styles for the workshop dashboard.
+  Everything lives in this file because the Content Security Policy blocks inline styles.
+  Colors were checked for at least 4.5:1 contrast against the background they sit on.
+*/
+
+:root {
+  color-scheme: light dark;
+
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  --color-bg: light-dark(#ffffff, #0e1116);
+  --color-surface: light-dark(#f6f8fa, #151b23);
+  --color-text: light-dark(#1b1f24, #e6edf3);
+  --color-muted: light-dark(#59626e, #9aa4af);
+  --color-border: light-dark(#d1d9e0, #30363d);
+  --color-accent: light-dark(#1b5fd0, #79aeff);
+  --color-accent-contrast: light-dark(#ffffff, #0e1116);
+  --color-code-bg: light-dark(#f3f4f6, #161b22);
+  --color-success: light-dark(#1d6b35, #6fd38b);
+  --color-danger: light-dark(#b42a3c, #ff8a8a);
+  --color-warning: light-dark(#8a4600, #e3a85b);
+  --color-important: light-dark(#6a3fb5, #c9a6ff);
+
+  --hl-comment: light-dark(#5c6773, #8d98a5);
+  --hl-keyword: light-dark(#b42a3c, #ff8a80);
+  --hl-string: light-dark(#1d6b35, #8fd99b);
+  --hl-attr: light-dark(#0b4f99, #8cc4ff);
+  --hl-number: light-dark(#8a4600, #f0b072);
+  --hl-title: light-dark(#6a3fb5, #c9a6ff);
+  --hl-builtin: light-dark(#0b5d6b, #6ad1d9);
+
+  --radius: 6px;
+  --page-width: 72rem;
+  --content-width: 46rem;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+a {
+  color: var(--color-accent);
+  text-underline-offset: 0.15em;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* The skip link moves focus to <main>. An outline around the whole page doesn't help anyone. */
+main:focus {
+  outline: none;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.25;
+  margin: 1.75em 0 0.5em;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-top: 0;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.2rem;
+}
+
+h4 {
+  font-size: 1rem;
+}
+
+p,
+ul,
+ol,
+dl,
+table,
+pre,
+blockquote {
+  margin: 0 0 1rem;
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--font-mono);
+}
+
+:not(pre) > code {
+  font-size: 0.875em;
+  background: var(--color-code-bg);
+  border-radius: 4px;
+  padding: 0.15em 0.35em;
+  overflow-wrap: anywhere;
+}
+
+select {
+  font: inherit;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 0.2rem 0.5rem;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -10rem;
+  z-index: 10;
+  padding: 0.5rem 1rem;
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+  border-radius: var(--radius);
+  font-weight: 600;
+}
+
+.skip-link:focus {
+  top: 0.5rem;
+}
+
+/* Page frame */
+
+.site-header {
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.site-header-inner,
+.site-main,
+.site-footer-inner {
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.site-header-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  min-height: 3.5rem;
+}
+
+.site-name {
+  color: var(--color-text);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.site-name:hover {
+  text-decoration: underline;
+}
+
+.theme-picker {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.site-main {
+  padding-top: 2rem;
+  padding-bottom: 3rem;
+}
+
+.site-footer {
+  border-top: 1px solid var(--color-border);
+  color: var(--color-muted);
+  font-size: 0.85rem;
+}
+
+.site-footer-inner {
+  padding-top: 1rem;
+  padding-bottom: 1.5rem;
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+.build-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+  margin: 0 0 0.5rem;
+}
+
+.build-info div {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.build-info dt {
+  font-weight: 600;
+}
+
+.build-info dt::after {
+  content: ":";
+}
+
+.build-info dd {
+  margin: 0;
+}
+
+.page-lesson,
+.page-message {
+  max-width: var(--content-width);
+  margin: 0 auto;
+}
+
+/* Home page */
+
+.intro {
+  max-width: var(--content-width);
+  margin-bottom: 2.5rem;
+}
+
+.lead {
+  font-size: 1.2rem;
+}
+
+.button {
+  display: inline-block;
+  padding: 0.6rem 1.1rem;
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+  border-radius: var(--radius);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.button:hover {
+  text-decoration: underline;
+}
+
+.notice {
+  border: 1px solid var(--color-danger);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  padding: 1rem;
+  margin: 0 0 2rem;
+}
+
+.notice h2 {
+  color: var(--color-danger);
+  font-size: 1.2rem;
+  margin: 0 0 0.5rem;
+}
+
+.notice p:last-child {
+  margin-bottom: 0;
+}
+
+.track {
+  margin-top: 2.5rem;
+}
+
+.track-header h2 {
+  margin: 0 0 0.25rem;
+}
+
+.track-header p {
+  margin-bottom: 0.5rem;
+}
+
+.track-meta,
+.lesson-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  row-gap: 0.25rem;
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+.track-meta > span + span::before,
+.lesson-meta > span + span::before {
+  content: "\00B7";
+  margin: 0 0.5rem;
+  color: var(--color-muted);
+}
+
+.badge {
+  display: inline-block;
+  padding: 0 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-text);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.badge-required {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.track-progress,
+.lesson-completed {
+  color: var(--color-success);
+  font-weight: 600;
+}
+
+.lesson-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+}
+
+.lesson-card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1rem;
+}
+
+.lesson-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.05rem;
+}
+
+.lesson-card p {
+  margin: 0 0 0.5rem;
+}
+
+.lesson-card p:last-child {
+  margin-bottom: 0;
+}
+
+.lesson-requires {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+/* Lesson page */
+
+.breadcrumb ol {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0 0 1rem;
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+.breadcrumb li + li::before {
+  content: "/";
+  margin: 0 0.5rem;
+}
+
+.lesson-header {
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.lesson-header h1 {
+  margin-bottom: 0.5rem;
+}
+
+.lesson-header p {
+  margin-bottom: 0.25rem;
+}
+
+.markdown-body > :first-child {
+  margin-top: 0;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  padding-left: 1.5rem;
+}
+
+.markdown-body li + li {
+  margin-top: 0.25rem;
+}
+
+.markdown-body li > p {
+  margin: 0.25rem 0;
+}
+
+.markdown-body li > .code-block {
+  margin-top: 0.5rem;
+}
+
+.markdown-body hr {
+  border: 0;
+  border-top: 1px solid var(--color-border);
+  margin: 2rem 0;
+}
+
+.markdown-body blockquote {
+  margin: 0 0 1rem 1.5rem;
+  padding: 0;
+  color: var(--color-muted);
+}
+
+.markdown-body table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+
+.markdown-body th,
+.markdown-body td {
+  border: 1px solid var(--color-border);
+  padding: 0.4rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.markdown-body th {
+  background: var(--color-surface);
+}
+
+.markdown-body details {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  padding: 0.5rem 0.75rem;
+  margin: 0 0 1rem;
+}
+
+.markdown-body summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.markdown-body details[open] > summary {
+  margin-bottom: 0.5rem;
+}
+
+.markdown-body details > :last-child {
+  margin-bottom: 0;
+}
+
+.markdown-alert {
+  border: 1px solid color-mix(in srgb, var(--alert-color, var(--color-accent)) 50%, var(--color-border));
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  padding: 0.5rem 1rem;
+  margin: 0 0 1rem;
+}
+
+.markdown-alert > :last-child {
+  margin-bottom: 0;
+}
+
+.markdown-alert-title {
+  color: var(--alert-color, var(--color-accent));
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.markdown-alert-note {
+  --alert-color: var(--color-accent);
+}
+
+.markdown-alert-tip {
+  --alert-color: var(--color-success);
+}
+
+.markdown-alert-important {
+  --alert-color: var(--color-important);
+}
+
+.markdown-alert-warning {
+  --alert-color: var(--color-warning);
+}
+
+.markdown-alert-caution {
+  --alert-color: var(--color-danger);
+}
+
+/* Code blocks */
+
+.code-block {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-code-bg);
+  margin: 0 0 1rem;
+}
+
+.code-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 2.25rem;
+  padding: 0.25rem 0.5rem 0.25rem 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-muted);
+  font-size: 0.8rem;
+}
+
+.code-block pre {
+  margin: 0;
+  padding: 0.75rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.code-block pre:focus-visible {
+  outline-offset: -2px;
+}
+
+.copy-button {
+  font: inherit;
+  padding: 0.1rem 0.6rem;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.copy-button:hover {
+  border-color: var(--color-accent);
+}
+
+.hljs-comment,
+.hljs-quote,
+.hljs-meta {
+  color: var(--hl-comment);
+}
+
+.hljs-comment {
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-doctag,
+.hljs-section,
+.hljs-deletion {
+  color: var(--hl-keyword);
+}
+
+.hljs-string,
+.hljs-regexp,
+.hljs-addition {
+  color: var(--hl-string);
+}
+
+.hljs-attr,
+.hljs-attribute,
+.hljs-name,
+.hljs-selector-attr,
+.hljs-selector-class,
+.hljs-selector-id,
+.hljs-template-variable,
+.hljs-variable {
+  color: var(--hl-attr);
+}
+
+.hljs-number,
+.hljs-literal,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-link {
+  color: var(--hl-number);
+}
+
+.hljs-title {
+  color: var(--hl-title);
+}
+
+.hljs-built_in,
+.hljs-type {
+  color: var(--hl-builtin);
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: 600;
+}
+
+/* Progress and navigation */
+
+.lesson-progress {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  padding: 1rem;
+  margin-top: 2.5rem;
+}
+
+.lesson-progress h2 {
+  font-size: 1rem;
+  margin: 0 0 0.5rem;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.checkbox input {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0;
+  accent-color: var(--color-accent);
+}
+
+.hint {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  margin: 0.5rem 0 0;
+}
+
+.pager {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.pager-link {
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 calc(50% - 0.5rem);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+}
+
+.pager-link:hover {
+  border-color: var(--color-accent);
+}
+
+.pager-link:hover .pager-title {
+  text-decoration: underline;
+}
+
+.pager-next {
+  margin-left: auto;
+  text-align: right;
+}
+
+.pager-label {
+  color: var(--color-muted);
+  font-size: 0.85rem;
+}
+
+.pager-title {
+  font-weight: 600;
+}
+
+@media (max-width: 40rem) {
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  .site-main {
+    padding-top: 1.25rem;
+  }
+
+  .pager-link {
+    flex-basis: 100%;
+  }
+
+  .pager-next {
+    text-align: left;
+  }
+}

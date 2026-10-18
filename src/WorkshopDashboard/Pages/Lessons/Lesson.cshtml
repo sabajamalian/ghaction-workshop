@@ -1,0 +1,64 @@
+@page "/lessons/{slug}"
+@model WorkshopDashboard.Pages.Lessons.LessonModel
+@{
+    ViewData["Title"] = Model.Lesson.Title;
+}
+
+<div class="page page-lesson">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+        <ol>
+            <li><a href="/">All lessons</a></li>
+            <li>@Model.Lesson.Track.Title</li>
+        </ol>
+    </nav>
+
+    <article class="lesson" data-lesson="@Model.Lesson.Slug">
+        <header class="lesson-header">
+            <h1>@Model.Lesson.Title</h1>
+            <p class="lesson-meta">
+                <span>@Model.Lesson.Track.Label</span>
+                <span>@DisplayFormat.Duration(Model.Lesson.DurationMinutes)</span>
+                <span>@Model.Lesson.Difficulty</span>
+            </p>
+            @if (Model.Lesson.Requires is not null)
+            {
+                <p class="lesson-requires">Requires: @Model.Lesson.Requires</p>
+            }
+        </header>
+
+        <div class="markdown-body">
+            @Html.Raw(Model.Lesson.Html)
+        </div>
+    </article>
+
+    <section class="lesson-progress" aria-labelledby="progress-title" data-progress hidden>
+        <h2 id="progress-title">Track your progress</h2>
+        <label class="checkbox">
+            <input type="checkbox" data-progress-checkbox>
+            Mark this lesson as complete
+        </label>
+        <p class="hint">This only saves a note in this browser. It doesn't check whether your workflow passed.</p>
+    </section>
+
+    <nav class="pager" aria-label="Previous and next lessons">
+        @if (Model.Previous is not null)
+        {
+            <a class="pager-link pager-previous" href="/lessons/@Model.Previous.Slug" rel="prev">
+                <span class="pager-label">Previous</span>
+                <span class="pager-title">@Model.Previous.Title</span>
+            </a>
+        }
+        @if (Model.Next is not null)
+        {
+            <a class="pager-link pager-next" href="/lessons/@Model.Next.Slug" rel="next">
+                <span class="pager-label">Next</span>
+                <span class="pager-title">@Model.Next.Title</span>
+            </a>
+        }
+    </nav>
+</div>
+
+@section Scripts {
+    <script src="~/lib/highlight/highlight.min.js" asp-append-version="true" defer></script>
+    <script src="~/lib/highlight/languages/powershell.min.js" asp-append-version="true" defer></script>
+}

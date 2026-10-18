@@ -1,0 +1,14 @@
+@page
+@model ErrorModel
+@{
+    ViewData["Title"] = "The page couldn't be loaded";
+}
+
+<div class="page page-message">
+    <h1>The page couldn't be loaded</h1>
+    <p>The server ran into an error while loading this page. Refresh the page. If the problem continues, go back to the <a href="/">lesson list</a>.</p>
+    @if (Model.RequestId is not null)
+    {
+        <p class="hint">If you report this problem, include this request ID: <code>@Model.RequestId</code></p>
+    }
+</div>

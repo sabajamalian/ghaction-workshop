@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <RootNamespace>WorkshopDashboard</RootNamespace>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <UseAppHost>false</UseAppHost>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Markdig" Version="1.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WorkshopCore\WorkshopCore.csproj" />
+  </ItemGroup>
+
+  <!-- Lessons live at the repository root so GitHub renders them too. -->
+  <ItemGroup>
+    <None Include="..\..\lessons\**\*.md"
+          Link="lessons\%(RecursiveDir)%(Filename)%(Extension)"
+          CopyToOutputDirectory="PreserveNewest"
+          CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <!-- GitHub Actions sets these environment variables on every run. Local builds use fallbacks. -->
+  <ItemGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <AssemblyMetadata Include="BuildTimestamp" Value="$([System.DateTime]::UtcNow.ToString('o'))" />
+    <AssemblyMetadata Include="CommitSha" Value="$(GITHUB_SHA)" />
+    <AssemblyMetadata Include="RepositoryUrl" Value="$(GITHUB_SERVER_URL)/$(GITHUB_REPOSITORY)" />
+  </ItemGroup>
+
+</Project>

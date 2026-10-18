@@ -1,0 +1,22 @@
+# Build output
+bin/
+obj/
+publish/
+artifacts/
+
+# Test results and coverage reports
+TestResults/
+coverage/
+coverage-report/
+*.trx
+
+# GitHub Actions Importer output (Lab 12)
+tmp/
+
+# Editors and operating systems
+.vs/
+.vscode/
+.idea/
+*.user
+*.swp
+.DS_Store

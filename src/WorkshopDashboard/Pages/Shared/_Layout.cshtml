@@ -1,0 +1,80 @@
+@inject SiteInfo Site
+@{
+    const string SiteName = "GitHub Actions Workshop";
+    string pageTitle = ViewData["Title"] is string title && title.Length > 0 ? $"{title} | {SiteName}" : SiteName;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <meta name="description" content="A self-paced workshop where you learn GitHub Actions by building, testing, and deploying this website.">
+    <title>@pageTitle</title>
+    <link rel="icon" href="~/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true">
+    <script src="~/js/theme-init.js" asp-append-version="true"></script>
+</head>
+<body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a class="site-name" href="/">@SiteName</a>
+            <div class="theme-picker" data-theme-picker hidden>
+                <label for="theme-select">Theme</label>
+                <select id="theme-select">
+                    <option value="system">System</option>
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <main id="main" class="site-main" tabindex="-1">
+        @RenderBody()
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <dl class="build-info">
+                <div>
+                    <dt>Version</dt>
+                    <dd>@Site.Version</dd>
+                </div>
+                <div>
+                    <dt>Commit</dt>
+                    <dd>
+                        @if (Site.CommitUrl is not null)
+                        {
+                            <a href="@Site.CommitUrl"><code>@Site.ShortCommit</code></a>
+                        }
+                        else if (Site.HasCommitSha)
+                        {
+                            <code>@Site.ShortCommit</code>
+                        }
+                        else
+                        {
+                            @Site.Commit
+                        }
+                    </dd>
+                </div>
+                <div>
+                    <dt>Built</dt>
+                    <dd>@Site.BuildTimestampDisplay</dd>
+                </div>
+                <div>
+                    <dt>Environment</dt>
+                    <dd>@Site.EnvironmentName</dd>
+                </div>
+            </dl>
+            <p><a href="@Site.RepositoryUrl">View the source on GitHub</a></p>
+        </div>
+    </footer>
+
+    <div class="visually-hidden" role="status" aria-live="polite" data-announcer></div>
+
+    @await RenderSectionAsync("Scripts", required: false)
+    <script src="~/js/site.js" asp-append-version="true" defer></script>
+</body>
+</html>

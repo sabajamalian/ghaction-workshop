@@ -1,0 +1,35 @@
+name: Build application
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build and publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Restore dependencies
+        run: dotnet restore src/WorkshopDashboard/WorkshopDashboard.csproj
+
+      - name: Publish the dashboard
+        run: dotnet publish src/WorkshopDashboard/WorkshopDashboard.csproj --configuration Release --no-restore --output publish
+
+      - name: Upload the published app
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: workshop-dashboard
+          path: publish
+          if-no-files-found: error
+          retention-days: 7

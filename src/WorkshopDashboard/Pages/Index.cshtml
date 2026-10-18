@@ -1,0 +1,56 @@
+@page
+@model IndexModel
+
+<div class="page page-home">
+    <section class="intro" aria-labelledby="page-title">
+        <h1 id="page-title">Learn GitHub Actions by using GitHub Actions</h1>
+        <p class="lead">You'll build this website, run tests on pull requests, and see how GitHub handles automation.</p>
+        <p>Everything in the required labs happens in your browser. You don't need to install anything.</p>
+        @if (Model.FirstLesson is not null)
+        {
+            <p><a class="button" href="/lessons/@Model.FirstLesson.Slug">Start workshop</a></p>
+        }
+    </section>
+
+    @if (Model.Lessons.Lessons.Count == 0)
+    {
+        <section class="notice notice-error" aria-labelledby="no-lessons-title">
+            <h2 id="no-lessons-title">The lessons couldn't be loaded</h2>
+            <p>The app didn't find any lesson files, so there's nothing to show yet. Refresh the page. If you're running the app yourself and the problem continues, check the application log for the folder it tried to read.</p>
+        </section>
+    }
+
+    @foreach (TrackGroup group in Model.Lessons.Tracks)
+    {
+        <section class="track" aria-labelledby="track-@group.Track.Id" data-track>
+            <header class="track-header">
+                <h2 id="track-@group.Track.Id">@group.Track.Title</h2>
+                <p class="track-meta">
+                    <span class="badge @(group.Track.IsRequired ? "badge-required" : "badge-optional")">@group.Track.Label</span>
+                    <span>@DisplayFormat.LabCount(group.Lessons.Count)</span>
+                    <span>About @DisplayFormat.Duration(group.TotalMinutes)</span>
+                    <span class="track-progress" data-track-progress hidden></span>
+                </p>
+                <p>@group.Track.Description</p>
+            </header>
+            <ol class="lesson-list">
+                @foreach (Lesson lesson in group.Lessons)
+                {
+                    <li class="lesson-card" data-lesson-card="@lesson.Slug">
+                        <h3><a href="/lessons/@lesson.Slug">@lesson.Title</a></h3>
+                        <p>@lesson.Summary</p>
+                        <p class="lesson-meta">
+                            <span>@DisplayFormat.Duration(lesson.DurationMinutes)</span>
+                            <span>@lesson.Difficulty</span>
+                            <span class="lesson-completed" data-completed-label hidden>Completed</span>
+                        </p>
+                        @if (lesson.Requires is not null)
+                        {
+                            <p class="lesson-requires">Requires: @lesson.Requires</p>
+                        }
+                    </li>
+                }
+            </ol>
+        </section>
+    }
+</div>
