@@ -362,4 +362,38 @@ public class MarkdownRendererTests
         Assert.Contains("<td>Passed</td>", html);
         Assert.DoesNotContain("style=", html);
     }
+
+    [Fact]
+    public void The_result_section_is_set_apart()
+    {
+        string html = Render("## Steps\n\nDo this.\n\n## Check your result\n\nThe run passed.\n\n### In the log\n\n- Build passed.\n\n## Next step\n\nGo on.");
+
+        Assert.Contains(
+            "<p>Do this.</p>\n<section class=\"lesson-check\">\n<h2 id=\"check-your-result\">Check your result</h2>\n<p>The run passed.</p>\n"
+            + "<h3 id=\"in-the-log\">In the log</h3>\n<ul>\n<li>Build passed.</li>\n</ul>\n</section>\n<h2 id=\"next-step\">Next step</h2>",
+            html);
+        SafeHtml.AssertSafe(html);
+    }
+
+    [Fact]
+    public void A_result_section_at_the_end_is_closed()
+    {
+        string html = Render("## Check your result\n\nThe run passed.");
+
+        Assert.StartsWith("<section class=\"lesson-check\">\n", html);
+        Assert.EndsWith("<p>The run passed.</p>\n</section>\n", html);
+    }
+
+    [Theory]
+    [InlineData("## Check the result")]
+    [InlineData("## Check *your* result")]
+    [InlineData("### Check your result")]
+    [InlineData("> ## Check your result")]
+    [InlineData("- ## Check your result")]
+    public void Other_headings_are_not_set_apart(string heading)
+    {
+        string html = Render($"{heading}\n\nThe run passed.");
+
+        Assert.DoesNotContain("<section", html);
+    }
 }

@@ -17,6 +17,9 @@ namespace WorkshopDashboard.Services;
 // Raw HTML is never passed through, except the <details> and <summary> lines that lessons use for hints.
 public sealed class MarkdownRenderer
 {
+    // The section that tells learners how to confirm they finished the lesson. The lesson page sets it apart.
+    public const string ResultHeading = "Check your result";
+
     private readonly MarkdownPipeline _pipeline = CreatePipeline();
 
     public static MarkdownPipeline CreatePipeline()
@@ -45,7 +48,15 @@ public sealed class MarkdownRenderer
 
         RewriteLinks(document, sourcePath, links);
         RemoveColumnAlignment(document);
+        WrapResultSections(document);
         return Render(document);
+    }
+
+    // True for a top-level ## heading whose whole text is the given plain text, such as "## Check your result".
+    public static bool IsSectionHeading(Block block, string text)
+    {
+        return block is HeadingBlock { Level: 2, Parent: MarkdownDocument, Inline.FirstChild: LiteralInline { NextSibling: null } literal }
+            && literal.Content.ToString() == text;
     }
 
     public string Render(MarkdownDocument document)
@@ -57,6 +68,7 @@ public sealed class MarkdownRenderer
         renderer.ObjectRenderers.ReplaceOrAdd<HtmlBlockRenderer>(new AllowlistHtmlBlockRenderer());
         renderer.ObjectRenderers.ReplaceOrAdd<HtmlInlineRenderer>(new EscapedHtmlInlineRenderer());
         renderer.ObjectRenderers.ReplaceOrAdd<CodeBlockRenderer>(new LabeledCodeBlockRenderer());
+        renderer.ObjectRenderers.Insert(0, new ResultSectionRenderer());
 
         renderer.Render(document);
         writer.Flush();
@@ -77,6 +89,29 @@ public sealed class MarkdownRenderer
             {
                 autolink.ReplaceBy(new LiteralInline(autolink.Url));
             }
+        }
+    }
+
+    // Moves each "Check your result" heading, and everything up to the next ## heading, into one block.
+    private static void WrapResultSections(MarkdownDocument document)
+    {
+        for (int i = 0; i < document.Count; i++)
+        {
+            if (!IsSectionHeading(document[i], ResultHeading))
+            {
+                continue;
+            }
+
+            var section = new ResultSectionBlock();
+            do
+            {
+                Block block = document[i];
+                document.RemoveAt(i);
+                section.Add(block);
+            }
+            while (i < document.Count && document[i] is not HeadingBlock { Level: <= 2 });
+
+            document.Insert(i, section);
         }
     }
 
@@ -175,6 +210,26 @@ internal sealed class EscapedHtmlInlineRenderer : HtmlObjectRenderer<HtmlInline>
     protected override void Write(HtmlRenderer renderer, HtmlInline obj)
     {
         renderer.WriteEscape(obj.Tag);
+    }
+}
+
+internal sealed class ResultSectionBlock : ContainerBlock
+{
+    public ResultSectionBlock()
+        : base(null)
+    {
+    }
+}
+
+internal sealed class ResultSectionRenderer : HtmlObjectRenderer<ResultSectionBlock>
+{
+    protected override void Write(HtmlRenderer renderer, ResultSectionBlock obj)
+    {
+        renderer.EnsureLine();
+        renderer.WriteLine("<section class=\"lesson-check\">");
+        renderer.WriteChildren(obj);
+        renderer.EnsureLine();
+        renderer.WriteLine("</section>");
     }
 }
 

@@ -10,7 +10,7 @@ internal static partial class SafeHtml
     private static readonly HashSet<string> AllowedElements = new(StringComparer.Ordinal)
     {
         "a", "blockquote", "br", "code", "del", "details", "div", "em", "h2", "h3", "h4", "h5", "h6", "hr",
-        "img", "li", "ol", "p", "pre", "span", "strong", "summary", "table", "tbody", "td", "th", "thead", "tr", "ul",
+        "img", "li", "ol", "p", "pre", "section", "span", "strong", "summary", "table", "tbody", "td", "th", "thead", "tr", "ul",
     };
 
     private static readonly HashSet<string> AllowedAttributes = new(StringComparer.Ordinal)

@@ -273,7 +273,7 @@ A natural technical voice comes from clarity, experience, judgment, and specific
 
 ## Writing a lesson
 
-A lesson has to give learners enough to finish it without an instructor. Use the parts below as a model, not a rigid template, and leave out a part that a lesson doesn't need.
+A lesson has to give learners enough to finish it without an instructor. Use the parts below as a model, not a rigid template. Leave out a part that a lesson doesn't need, except "Check your result" and "Next step", which every lesson has.
 
 ### Title
 
@@ -303,12 +303,14 @@ When a concept deserves it, add a short section that explains why the workflow b
 
 ### Check your result
 
-Describe something the learner can see, such as:
+Near the end of the lesson, add a section with the heading `## Check your result` that describes something the learner can see, such as:
 
 - The workflow run shows a green check mark.
 - The `test` job fails after you change the calculator method.
 - The run summary has an artifact you can download.
 - The Azure website shows the new commit SHA.
+
+Use that exact heading, once. The dashboard shows this section in a box, so learners can find it when they want to confirm they're done.
 
 ### If something fails
 
@@ -322,7 +324,7 @@ If the run stays queued for several minutes, check [GitHub Status](https://www.g
 
 ### Next step
 
-Link to the next required lesson or back to the lesson list. Don't add a motivational paragraph.
+End the lesson with a `## Next step` section that links to the next required lesson or back to the lesson list. Don't add a motivational paragraph.
 
 ## Lesson files
 
@@ -427,6 +429,7 @@ The content tests in `tests/WorkshopDashboard.Tests` catch mechanical problems i
 - Alert types GitHub doesn't support, text on the same line as the alert type, and alerts inside a list or another quote, where GitHub shows them as plain quotes.
 - Bold text that ends with a period, question mark, exclamation mark, or colon, which means a whole sentence or a run-in heading is in bold. An ellipsis is fine, because some UI labels end with one.
 - Lesson front matter the dashboard would reject, two lessons with the same `order`, titles that don't start with "Lab N: " for their `order`, a body that doesn't start with an H1 matching the title, a second H1, and lesson files outside `lessons/foundation` and `lessons/explore`.
+- Lessons without exactly one `## Check your result` section and one `## Next step` section. The heading has to match exactly, so `## Check the result` or `### Check your result` doesn't count.
 - Actions and reusable workflows that aren't pinned to a full commit SHA with the release in a comment, such as `# v7.0.1`, and Docker images without a digest. This covers every YAML file, and the YAML blocks and front matter in Markdown files.
 - An action pinned to different commits or release comments in different places. Actions from one repository, such as `github/codeql-action/init` and `github/codeql-action/analyze`, count as one action.
 

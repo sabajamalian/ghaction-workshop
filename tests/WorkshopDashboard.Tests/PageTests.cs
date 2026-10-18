@@ -15,7 +15,12 @@ public sealed class PageTests : IDisposable
     private void WriteSampleLessons()
     {
         _lessons.WriteLesson("foundation", "00-welcome.md", "Lab 0: Welcome", 0);
-        _lessons.WriteLesson("foundation", "01-first-workflow.md", "Lab 1: First workflow", 1, "## Run it\n\nSelect **Run workflow**.");
+        _lessons.WriteLesson(
+            "foundation",
+            "01-first-workflow.md",
+            "Lab 1: First workflow",
+            1,
+            "## Run it\n\nSelect **Run workflow**.\n\n## Check your result\n\nThe run has a green check mark.");
         _lessons.Write(
             "explore",
             "03-triggers.md",
@@ -63,6 +68,7 @@ public sealed class PageTests : IDisposable
         Assert.Single(body.Split("<h1").Skip(1));
         Assert.Contains("<h2 id=\"run-it\">Run it</h2>", body);
         Assert.Contains("<strong>Run workflow</strong>", body);
+        Assert.Contains("<section class=\"lesson-check\">\n<h2 id=\"check-your-result\">Check your result</h2>\n<p>The run has a green check mark.</p>\n</section>", body);
         Assert.Contains("href=\"/lessons/welcome\" rel=\"prev\"", body);
         Assert.Contains("href=\"/lessons/triggers\" rel=\"next\"", body);
     }

@@ -24,6 +24,13 @@ internal static partial class ContentRules
 
     private static readonly HashSet<string> AlertKinds = new(StringComparer.Ordinal) { "NOTE", "TIP", "IMPORTANT", "WARNING", "CAUTION" };
 
+    // Every lesson has these sections. The lesson page sets "Check your result" apart as the lesson's success criteria.
+    private static readonly (string Heading, string Purpose)[] RequiredLessonSections =
+    [
+        (MarkdownRenderer.ResultHeading, "that describes what the learner can see when they've finished"),
+        ("Next step", "that links to the next lesson or back to the lesson list"),
+    ];
+
     private static readonly HashSet<string> VagueLinkText = new(StringComparer.Ordinal)
     {
         "click", "click here", "go", "go here", "here", "learn more", "link", "more", "page", "read more", "see here",
@@ -362,6 +369,20 @@ internal static partial class ContentRules
             if (other.Level == 1 && other != first)
             {
                 yield return new Finding(file.Path, other.Line + 1, "Use ## or ### here. The dashboard shows the title as the page's only H1.");
+            }
+        }
+
+        foreach ((string section, string purpose) in RequiredLessonSections)
+        {
+            List<Block> found = file.Document.Where(block => MarkdownRenderer.IsSectionHeading(block, section)).ToList();
+            if (found.Count == 0)
+            {
+                yield return new Finding(file.Path, 0, $"Add a \"## {section}\" section {purpose}. Use that exact heading.");
+            }
+
+            foreach (Block extra in found.Skip(1))
+            {
+                yield return new Finding(file.Path, extra.Line + 1, $"A lesson has only one \"## {section}\" section. Merge this one into the first.");
             }
         }
     }

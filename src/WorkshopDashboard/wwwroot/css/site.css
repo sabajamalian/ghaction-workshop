@@ -18,6 +18,8 @@
   --color-accent: light-dark(#1b5fd0, #79aeff);
   --color-accent-contrast: light-dark(#ffffff, #0e1116);
   --color-code-bg: light-dark(#f3f4f6, #161b22);
+  /* Translucent, so inline code stays visible on hints, alerts, and the result box. */
+  --color-code-inline-bg: light-dark(rgb(129 139 152 / 0.15), rgb(101 108 118 / 0.25));
   --color-success: light-dark(#1d6b35, #6fd38b);
   --color-danger: light-dark(#b42a3c, #ff8a8a);
   --color-warning: light-dark(#8a4600, #e3a85b);
@@ -131,7 +133,7 @@ pre {
 
 :not(pre) > code {
   font-size: 0.875em;
-  background: var(--color-code-bg);
+  background: var(--color-code-inline-bg);
   border-radius: 4px;
   padding: 0.15em 0.35em;
   overflow-wrap: anywhere;
@@ -197,6 +199,8 @@ select {
   justify-content: space-between;
   gap: 0.5rem 1rem;
   min-height: 3.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 .site-name {
@@ -423,6 +427,10 @@ select {
   margin-bottom: 0.25rem;
 }
 
+.markdown-body {
+  overflow-wrap: break-word;
+}
+
 .markdown-body > :first-child {
   margin-top: 0;
 }
@@ -534,6 +542,23 @@ select {
   --alert-color: var(--color-danger);
 }
 
+/* A lesson's "Check your result" section, which MarkdownRenderer wraps in a <section>. */
+.lesson-check {
+  border: 1px solid color-mix(in srgb, var(--color-success) 50%, var(--color-border));
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--color-success) 6%, var(--color-bg));
+  padding: 0 1rem 0.75rem;
+  margin: 2rem 0 1.5rem;
+}
+
+.lesson-check > h2 {
+  margin-top: 0.75rem;
+}
+
+.lesson-check > :last-child {
+  margin-bottom: 0;
+}
+
 /* Code blocks */
 
 .code-block {
@@ -569,6 +594,7 @@ select {
 
 .copy-button {
   font: inherit;
+  min-height: 1.75rem;
   padding: 0.1rem 0.6rem;
   color: var(--color-text);
   background: var(--color-bg);

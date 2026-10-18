@@ -36,19 +36,13 @@ After a few seconds, a new run appears at the top of the list. If it doesn't, re
 
    Each step either runs a command or uses an action. An action is a published piece of code that a step can run. For example, **Check out the repository** uses the `actions/checkout` action to copy your repository's files onto the runner.
 
-The run usually takes less than a minute. It can wait in a queue for a few seconds before a runner picks it up.
-
-## Check the result
-
-When the run finishes, **Build and publish** and each of its steps have a green check mark, and the run's **Summary** shows the status **Success**.
+The run usually takes less than a minute. It can wait in a queue for a few seconds before a runner picks it up. When it finishes, **Build and publish** and each of its steps have a green check mark.
 
 The log also has steps that aren't in the workflow file:
 
 - **Set up job** is where GitHub prepares the runner. Expand it to see which runner image the job used, and under **GITHUB_TOKEN Permissions**, what the run was allowed to do in your repository.
 - **Post Set up .NET** and **Post Check out the repository** are cleanup steps that those two actions run after the other steps.
 - **Complete job** is where GitHub cleans up after the job.
-
-The **Summary** can also show annotations. A notice, such as one about an upcoming change to a runner image, is information only. It doesn't mean the run failed.
 
 ## Download the artifact
 
@@ -111,6 +105,12 @@ jobs:
 - `run` runs a shell command on the runner. `dotnet restore` downloads the NuGet packages the app depends on, and `dotnet publish` compiles the app and copies everything it needs into the `publish` folder.
 
 This workflow doesn't run the unit tests. You'll add a workflow for that in the next lab.
+
+## Check your result
+
+Select the **Actions** tab, then **Build application** in the left sidebar. Your run is at the top of the list with a green check mark. Its **Summary** shows the status **Success** and lists `workshop-dashboard` under **Artifacts**, and your browser has downloaded `workshop-dashboard.zip`.
+
+The **Summary** can also show annotations. A notice, such as one about an upcoming change to a runner image, is information only. It doesn't mean the run failed.
 
 ## If something fails
 

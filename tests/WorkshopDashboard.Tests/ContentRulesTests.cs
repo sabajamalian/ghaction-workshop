@@ -18,6 +18,7 @@ public class ContentRulesTests
     private const string EmDashEntity = "\u0026mdash;";
 
     private const string Steps = "jobs:\n  build:\n    steps:\n      - run: dotnet build\n      - run: dotnet test\n";
+    private const string LessonSections = "\n\n## Check your result\n\nThe run has a green check mark.\n\n## Next step\n\nGo back to the lesson list.";
 
     [Fact]
     public void Findings_read_as_path_line_and_message()
@@ -551,8 +552,8 @@ public class ContentRulesTests
     {
         using var repository = new TempRepository()
             .Write("lessons/README.md", "# Lessons\n")
-            .Write(Lesson, TempLessons.LessonText("Lab 1: First", 1))
-            .Write("lessons/explore/03-more.md", TempLessons.LessonText("Lab 3: More", 3));
+            .Write(Lesson, CompleteLesson("Lab 1: First", 1))
+            .Write("lessons/explore/03-more.md", CompleteLesson("Lab 3: More", 3));
 
         Assert.Empty(ContentRules.CheckLessons(repository.Load()));
     }
@@ -568,7 +569,7 @@ public class ContentRulesTests
     [Fact]
     public void Titles_start_with_the_lab_number()
     {
-        Finding finding = Assert.Single(LessonFindings(TempLessons.LessonText("First workflow", 1)));
+        Finding finding = Assert.Single(LessonFindings(CompleteLesson("First workflow", 1)));
 
         Assert.Equal(2, finding.Line);
         Assert.Contains("must start with \"Lab 1: \"", finding.Message);
@@ -581,7 +582,7 @@ public class ContentRulesTests
     [InlineData("Some intro.", "Start the lesson with an H1")]
     public void Lessons_start_with_their_title(string firstLine, string expected)
     {
-        string lesson = TempLessons.LessonText("Lab 1: First", 1).Replace("# Lab 1: First", firstLine, StringComparison.Ordinal);
+        string lesson = CompleteLesson("Lab 1: First", 1).Replace("# Lab 1: First", firstLine, StringComparison.Ordinal);
 
         Finding finding = Assert.Single(LessonFindings(lesson));
         Assert.Equal(9, finding.Line);
@@ -591,19 +592,56 @@ public class ContentRulesTests
     [Fact]
     public void Lessons_have_one_h1()
     {
-        Finding finding = Assert.Single(LessonFindings(TempLessons.LessonText("Lab 1: First", 1, body: "Intro.\n\n# Steps")));
+        Finding finding = Assert.Single(LessonFindings(CompleteLesson("Lab 1: First", 1, body: "Intro.\n\n# Steps")));
 
         Assert.Equal(13, finding.Line);
         Assert.Contains("Use ## or ### here", finding.Message);
     }
 
     [Fact]
+    public void Lessons_have_a_result_section_and_a_next_step()
+    {
+        List<Finding> findings = LessonFindings(TempLessons.LessonText("Lab 1: First", 1));
+
+        Assert.Equal(2, findings.Count);
+        Assert.All(findings, finding => Assert.Equal(0, finding.Line));
+        Assert.Contains("Add a \"## Check your result\" section", findings[0].Message);
+        Assert.Contains("Add a \"## Next step\" section", findings[1].Message);
+    }
+
+    [Theory]
+    [InlineData("## Check the result")]
+    [InlineData("## Check your result.")]
+    [InlineData("## Check *your* result")]
+    [InlineData("### Check your result")]
+    [InlineData("> ## Check your result")]
+    public void The_result_section_uses_the_exact_heading(string heading)
+    {
+        string lesson = TempLessons.LessonText("Lab 1: First", 1, body: $"{heading}\n\nIt worked.\n\n## Next step\n\nGo back.");
+
+        Finding finding = Assert.Single(LessonFindings(lesson));
+        Assert.Contains("Add a \"## Check your result\" section", finding.Message);
+    }
+
+    [Fact]
+    public void Lessons_have_one_of_each_section()
+    {
+        string lesson = CompleteLesson("Lab 1: First", 1, body: "## Next step\n\nOne.\n\n## Check your result\n\nTwo.");
+
+        List<Finding> findings = LessonFindings(lesson);
+
+        Assert.Equal([19, 23], findings.Select(finding => finding.Line));
+        Assert.Contains("only one \"## Check your result\"", findings[0].Message);
+        Assert.Contains("only one \"## Next step\"", findings[1].Message);
+    }
+
+    [Fact]
     public void Lessons_the_dashboard_can_not_load_are_reported()
     {
         using var repository = new TempRepository()
-            .Write(Lesson, TempLessons.LessonText("Lab 1: First", 1))
-            .Write("lessons/foundation/02-second.md", TempLessons.LessonText("Lab 1: Second", 1))
-            .Write("lessons/foundation/03-third.md", TempLessons.LessonText("Lab 3: Third", 3, difficulty: "Easy"));
+            .Write(Lesson, CompleteLesson("Lab 1: First", 1))
+            .Write("lessons/foundation/02-second.md", CompleteLesson("Lab 1: Second", 1))
+            .Write("lessons/foundation/03-third.md", CompleteLesson("Lab 3: Third", 3, difficulty: "Easy"));
 
         List<Finding> findings = ContentRules.CheckLessons(repository.Load());
 
@@ -650,5 +688,11 @@ public class ContentRulesTests
     {
         using var repository = new TempRepository().Write(Lesson, lesson);
         return ContentRules.CheckLessons(repository.Load());
+    }
+
+    // A lesson with the sections every lesson needs, so a test only sees the finding it's about.
+    private static string CompleteLesson(string title, int order, string body = "Some lesson text.", string difficulty = "Beginner")
+    {
+        return TempLessons.LessonText(title, order, body + LessonSections, difficulty: difficulty);
     }
 }
