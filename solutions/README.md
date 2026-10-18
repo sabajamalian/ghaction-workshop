@@ -10,10 +10,12 @@ Use a solution to check your work, or to catch up if a lab asks for a workflow y
 | `runners` | [Lab 3: Compare runners](../lessons/explore/runners.md) |
 | `triggers` | [Lab 4: Trigger workflows and pass inputs](../lessons/explore/triggers-and-inputs.md) |
 | `jobs-and-artifacts` | [Lab 5: Pass files between jobs](../lessons/explore/jobs-and-artifacts.md) |
+| `copilot-cli` | [Lab 6: Generate a report with Copilot CLI](../lessons/explore/copilot-cli.md) |
 | `azure-deployment` | [Lab 7: Deploy to Azure with OIDC](../lessons/explore/azure-oidc.md) |
 | `environments` | [Lab 8: Add a staging environment](../lessons/explore/environments.md) |
 | `self-hosted-runners` | [Lab 9: Run jobs on a self-hosted runner](../lessons/explore/self-hosted-runners.md) |
 | `reusable-workflows` | [Lab 10: Reuse workflows and steps](../lessons/explore/reusable-workflows.md) |
+| `agentic-workflows` | [Lab 11: Review CI failures with an agentic workflow](../lessons/explore/agentic-workflows.md) |
 
 ## Copy a solution into your repository
 
@@ -27,3 +29,5 @@ A workflow starts running on its triggers as soon as it's in `.github/workflows`
 6. Select **Commit changes**, then select **Commit changes** in the dialog.
 
 Lab 9's solution goes in the separate practice repository that the lab creates, not in your copy. Open it in your copy, then follow the steps above in the practice repository.
+
+Lab 11's solution has two files: `ci-review.md`, which you add during the lab, and the compiled `ci-review.lock.yml`, which is almost 2,000 lines long. To copy the lock file, follow [Use the compiled solution instead](../lessons/explore/agentic-workflows.md#use-the-compiled-solution-instead) in Lab 11.

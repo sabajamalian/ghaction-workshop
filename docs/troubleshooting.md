@@ -28,10 +28,12 @@ If a run fails because an action isn't allowed, your copy belongs to an organiza
 | [Lab 3: Compare runners](../lessons/explore/runners.md) | [If something fails](../lessons/explore/runners.md#if-something-fails) |
 | [Lab 4: Trigger workflows and pass inputs](../lessons/explore/triggers-and-inputs.md) | [If something fails](../lessons/explore/triggers-and-inputs.md#if-something-fails) |
 | [Lab 5: Pass files between jobs](../lessons/explore/jobs-and-artifacts.md) | [If something fails](../lessons/explore/jobs-and-artifacts.md#if-something-fails) |
+| [Lab 6: Generate a report with Copilot CLI](../lessons/explore/copilot-cli.md) | [If something fails](../lessons/explore/copilot-cli.md#if-something-fails) |
 | [Lab 7: Deploy to Azure with OIDC](../lessons/explore/azure-oidc.md) | [If something fails](../lessons/explore/azure-oidc.md#if-something-fails) |
 | [Lab 8: Add a staging environment](../lessons/explore/environments.md) | [If something fails](../lessons/explore/environments.md#if-something-fails) |
 | [Lab 9: Run jobs on a self-hosted runner](../lessons/explore/self-hosted-runners.md) | [If something fails](../lessons/explore/self-hosted-runners.md#if-something-fails) |
 | [Lab 10: Reuse workflows and steps](../lessons/explore/reusable-workflows.md) | [If something fails](../lessons/explore/reusable-workflows.md#if-something-fails) |
+| [Lab 11: Review CI failures with an agentic workflow](../lessons/explore/agentic-workflows.md) | [If something fails](../lessons/explore/agentic-workflows.md#if-something-fails) |
 
 ## Problems running the site on your computer
 

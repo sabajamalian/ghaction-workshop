@@ -61,13 +61,14 @@ internal static partial class ContentRules
         return CheckPunctuation(file.Path, file.Text, file.IsCode);
     }
 
-    // Vendored libraries and license texts are copied as they are.
+    // Vendored libraries, license texts, and the .lock.yml workflows that gh aw compile generates are copied as they are.
     public static bool IsCheckedTextFile(string path)
     {
         string name = path[(path.LastIndexOf('/') + 1)..];
         return CheckedTextExtensions.Contains(Path.GetExtension(name))
             && !path.Contains("/wwwroot/lib/", StringComparison.Ordinal)
-            && !name.StartsWith("LICENSE", StringComparison.Ordinal);
+            && !name.StartsWith("LICENSE", StringComparison.Ordinal)
+            && !name.EndsWith(".lock.yml", StringComparison.Ordinal);
     }
 
     public static string? DescribeDash(int codePoint)

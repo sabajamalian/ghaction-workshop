@@ -28,13 +28,24 @@ The optional labs use more, and [Prerequisites](prerequisites.md#what-each-lab-n
 
 ### Actions the labs use
 
-The required labs use only actions created by GitHub: `actions/checkout`, `actions/setup-dotnet`, and `actions/upload-artifact`. If your organization allows only select actions, select **Allow actions created by GitHub**. The optional labs use more actions from GitHub's `actions` organization, such as `actions/cache` in Lab 5, and that setting allows them too.
+The required labs use only actions created by GitHub: `actions/checkout`, `actions/setup-dotnet`, and `actions/upload-artifact`. If your organization allows only select actions, select **Allow actions created by GitHub**. The optional labs use more actions from GitHub's `actions` and `github` organizations, such as `actions/cache` in Lab 5 and `github/gh-aw-actions/setup` in Lab 11, and that setting allows them too.
 
 Labs 7 and 8 also use `azure/login` and `azure/webapps-deploy`. To allow them, add this to **Allow or block specified actions and reusable workflows**:
 
 ```text
 azure/login@*, azure/webapps-deploy@*
 ```
+
+### Check Copilot access for Labs 6 and 11
+
+Labs 6 and 11 run GitHub Copilot CLI in a workflow. What they need depends on who owns the learner's copy:
+
+- In a learner's personal account, the learner needs a Copilot plan, and the runs use that plan's AI credits.
+- In your organization, Copilot CLI has to be turned on, along with the **Allow use of Copilot CLI billed to the organization** policy, which is on by default. The organization pays for the runs.
+
+One test run of Lab 6 used about 4 AI credits, or about $0.04. A run of Lab 11 used about 30, or about $0.30. [Using Copilot CLI in GitHub Actions with GITHUB_TOKEN](https://docs.github.com/en/copilot/how-tos/copilot-cli/use-copilot-cli-in-actions) explains the policy.
+
+Lab 11 uses GitHub Agentic Workflows, which is in public preview and releases a new version every week or two. Learners compile the workflow in a terminal with Git and GitHub CLI, or use the compiled solution, which stops working if the gh-aw version that compiled it is blocked or falls below the minimum supported version. Try Lab 11 yourself shortly before the session.
 
 ### Set up Azure for Labs 7 and 8
 

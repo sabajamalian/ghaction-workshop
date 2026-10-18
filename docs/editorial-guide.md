@@ -419,7 +419,7 @@ Don't add images or screenshots. GitHub's interface changes often, and a screens
 
 The content tests in `tests/WorkshopDashboard.Tests` catch mechanical problems in the lessons, documentation, and workflows. They read the files Git would commit, so they skip anything `.gitignore` excludes and every dot folder except `.github`. Each problem is reported as `path:line: message`, and the message says how to fix it. The tests look for:
 
-- Em dashes, en dashes, other long dashes, and emojis, including dashes written as HTML entities. Markdown files are checked outside code. Source, workflow, and configuration files are checked everywhere, except the vendored files in `wwwroot/lib` and the license.
+- Em dashes, en dashes, other long dashes, and emojis, including dashes written as HTML entities. Markdown files are checked outside code. Source, workflow, and configuration files are checked everywhere, except the vendored files in `wwwroot/lib`, the license, and the `.lock.yml` workflows that `gh aw compile` generates.
 - Indented code blocks, fences that aren't closed, and fences without a language. In lessons, the language has to be one the dashboard recognizes.
 - Anything after the language other than `source=` or `excerpt=`, and `source=` or `excerpt=` blocks that no longer match their files.
 - Images, and link text that doesn't say where the link goes, such as "click here" or "read more."

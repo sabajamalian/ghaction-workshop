@@ -53,7 +53,16 @@ To move an action to a new release, resolve the release tag to its commit SHA, t
 gh api repos/actions/checkout/commits/v7.0.1 --jq .sha
 ```
 
-Update every file that uses the action. If a lesson shows that workflow, the content tests fail until the lesson's snippet matches the file again.
+Update every file that uses the action, except Lab 11's lock file, which gh-aw generates. If a lesson shows that workflow, the content tests fail until the lesson's snippet matches the file again.
+
+Lab 6 installs a fixed release of Copilot CLI, set by `COPILOT_VERSION` in `solutions/copilot-cli/copilot-report.yml`. `npm view @github/copilot version` shows the latest release. To move to it, change the version in the workflow and in the lesson's copy of the workflow, run the workflow in a copy of the template, and update the version in the lesson's log excerpts. The content tests don't check the excerpts.
+
+Lab 11's lock file, `solutions/agentic-workflows/ci-review.lock.yml`, was compiled with gh-aw v0.92.0, which also chose the actions it pins. Never edit it by hand. To compile it with a newer release:
+
+1. Run `gh extension upgrade gh-aw`, then `gh aw version` to see the new version.
+2. In a copy of the template, add `solutions/agentic-workflows/ci-review.md` as `.github/workflows/ci-review.md`, run `gh aw compile ci-review`, and push. Run the workflow once to check it. Don't compile in this repository: every `gh aw compile`, even with `--no-emit`, also writes `.gitattributes` and `.github/aw/actions-lock.json`, and Lab 11 has learners create and commit those files themselves.
+3. Copy the new `.github/workflows/ci-review.lock.yml` over the solution's lock file.
+4. Update the gh-aw version in the lesson. The lesson also shows two excerpts of the lock file, and the content tests fail until they match the new file.
 
 ## highlight.js
 
