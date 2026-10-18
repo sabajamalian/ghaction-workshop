@@ -13,6 +13,9 @@ coverage-report/
 # GitHub Actions Importer output (Lab 12)
 tmp/
 
+# Learner values from scripts/azure/instructor-setup.sh
+*-azure-values.csv
+
 # Editors and operating systems
 .vs/
 .vscode/

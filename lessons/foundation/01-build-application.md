@@ -21,6 +21,8 @@ You need the repository you created in [Lab 0](00-create-repository.md). Everyth
 
    **Build application** is a workflow: an automated process that GitHub runs from a YAML file in the `.github/workflows` folder. This one is defined in `.github/workflows/build.yml`.
 
+   The sidebar also lists **Deploy workshop site**, which publishes this workshop's own website. Its job runs only in `sabajamalian/ghaction-workshop` and is skipped in your copy, so you can ignore it.
+
 3. Select **Run workflow**. In the menu that opens, leave the branch set to `main`, then select the green **Run workflow** button.
 
 After a few seconds, a new run appears at the top of the list. If it doesn't, refresh the page. A run is one execution of a workflow, so you get a new run each time you start it.

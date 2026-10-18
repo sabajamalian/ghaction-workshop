@@ -7,6 +7,13 @@ Use a solution to check your work, or to catch up if a lab asks for a workflow y
 | Folder | Lab |
 | --- | --- |
 | `tests` | [Lab 2: Run tests on pull requests](../lessons/foundation/02-test-pull-request.md) |
+| `runners` | [Lab 3: Compare runners](../lessons/explore/runners.md) |
+| `triggers` | [Lab 4: Trigger workflows and pass inputs](../lessons/explore/triggers-and-inputs.md) |
+| `jobs-and-artifacts` | [Lab 5: Pass files between jobs](../lessons/explore/jobs-and-artifacts.md) |
+| `azure-deployment` | [Lab 7: Deploy to Azure with OIDC](../lessons/explore/azure-oidc.md) |
+| `environments` | [Lab 8: Add a staging environment](../lessons/explore/environments.md) |
+| `self-hosted-runners` | [Lab 9: Run jobs on a self-hosted runner](../lessons/explore/self-hosted-runners.md) |
+| `reusable-workflows` | [Lab 10: Reuse workflows and steps](../lessons/explore/reusable-workflows.md) |
 
 ## Copy a solution into your repository
 
@@ -18,3 +25,5 @@ A workflow starts running on its triggers as soon as it's in `.github/workflows`
 4. In the file name box, type the path the lab gives, such as `.github/workflows/tests.yml`.
 5. Paste the contents into the editor. Keep the indentation exactly as it is.
 6. Select **Commit changes**, then select **Commit changes** in the dialog.
+
+Lab 9's solution goes in the separate practice repository that the lab creates, not in your copy. Open it in your copy, then follow the steps above in the practice repository.

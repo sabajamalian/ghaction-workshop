@@ -79,6 +79,7 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Check out the repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -100,7 +101,7 @@ jobs:
 - `on: pull_request` is the trigger. GitHub runs the workflow when a pull request is opened or reopened, and each time someone pushes a commit to the pull request's branch.
 - `permissions` sets what the run's `GITHUB_TOKEN` can do. The job only reads the code, so it gets `contents: read` and nothing else.
 - `jobs` lists the workflow's jobs. There's one, with the ID `test`. It has no `name`, so the check on the pull request is called `test` too.
-- `runs-on: ubuntu-latest` runs the job on a GitHub-hosted Ubuntu runner, like the build in Lab 1.
+- `runs-on: ubuntu-latest` runs the job on a GitHub-hosted Ubuntu runner, and `timeout-minutes: 10` cancels the job if it's still running after 10 minutes, like the build in Lab 1.
 - `steps` lists what the job does, in order, on that runner.
 - `uses` runs an action, pinned to a commit. `actions/checkout` copies the code onto the runner, and `actions/setup-dotnet` installs the .NET SDK.
 - `with` passes inputs to the action in the same step. `global-json-file: global.json` tells `setup-dotnet` which SDK version the repository needs.
@@ -194,4 +195,4 @@ If the check didn't run again after your commit, the commit probably went to ano
 
 ## Next step
 
-That's the last required lab. The optional labs cover runners, triggers, deployments, and more, and each one lists what you need before you start.
+That's the last required lab. The optional labs cover runners, triggers, deployments, and more. You can do them in any order, and each one lists what you need before you start. Pick one from [the lesson list](../../README.md).

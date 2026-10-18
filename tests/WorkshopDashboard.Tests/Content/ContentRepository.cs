@@ -121,13 +121,14 @@ internal sealed class ContentRepository
     }
 }
 
-// Reads the kinds of pattern this repository's .gitignore uses: folder names ("bin/"), file names, and extensions ("*.trx").
-// Any other pattern stops the tests with an error, so a new pattern can't be misread without anyone noticing.
+// Reads the kinds of pattern this repository's .gitignore uses: folder names ("bin/"), file names, and file name
+// endings ("*.trx", "*-azure-values.csv"). Any other pattern stops the tests with an error, so a new pattern can't be
+// misread without anyone noticing.
 internal sealed class GitIgnore
 {
     private readonly HashSet<string> _folders = new(StringComparer.Ordinal);
     private readonly HashSet<string> _names = new(StringComparer.Ordinal);
-    private readonly List<string> _extensions = [];
+    private readonly List<string> _endings = [];
 
     public static GitIgnore Read(string root)
     {
@@ -149,9 +150,9 @@ internal sealed class GitIgnore
             bool folderOnly = line.EndsWith('/');
             string name = folderOnly ? line[..^1] : line;
 
-            if (!folderOnly && name.StartsWith("*.", StringComparison.Ordinal) && IsPlainName(name[2..]))
+            if (!folderOnly && name.StartsWith('*') && IsPlainName(name[1..]))
             {
-                ignore._extensions.Add(name[1..]);
+                ignore._endings.Add(name[1..]);
             }
             else if (IsPlainName(name))
             {
@@ -169,12 +170,17 @@ internal sealed class GitIgnore
 
     public bool IgnoresFolder(string name)
     {
-        return _folders.Contains(name) || _names.Contains(name);
+        return _folders.Contains(name) || _names.Contains(name) || EndsWithIgnoredEnding(name);
     }
 
     public bool IgnoresFile(string name)
     {
-        return _names.Contains(name) || _extensions.Exists(extension => name.EndsWith(extension, StringComparison.Ordinal));
+        return _names.Contains(name) || EndsWithIgnoredEnding(name);
+    }
+
+    private bool EndsWithIgnoredEnding(string name)
+    {
+        return _endings.Exists(ending => name.EndsWith(ending, StringComparison.Ordinal));
     }
 
     private static bool IsPlainName(string name)

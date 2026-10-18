@@ -1,0 +1,44 @@
+name: Practice deployment
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Show the settings this job can read
+        env:
+          LOG_LEVEL: ${{ vars.LOG_LEVEL || 'not set' }}
+          HAS_DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN != '' }}
+        run: |
+          echo "LOG_LEVEL is $LOG_LEVEL"
+          echo "DEPLOY_TOKEN is available: $HAS_DEPLOY_TOKEN"
+
+  deploy:
+    name: Deploy to staging
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment:
+      name: staging
+      url: ${{ steps.deploy.outputs.url }}
+    steps:
+      - name: Show the settings this job can read
+        env:
+          LOG_LEVEL: ${{ vars.LOG_LEVEL || 'not set' }}
+          HAS_DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN != '' }}
+        run: |
+          echo "LOG_LEVEL is $LOG_LEVEL"
+          echo "DEPLOY_TOKEN is available: $HAS_DEPLOY_TOKEN"
+
+      - name: Pretend to deploy
+        id: deploy
+        run: |
+          echo "Deploying commit $GITHUB_SHA to staging. Nothing leaves GitHub."
+          echo "url=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/tree/$GITHUB_SHA" >> "$GITHUB_OUTPUT"

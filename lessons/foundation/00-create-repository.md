@@ -38,7 +38,7 @@ Both work for the required labs. They differ in who can see your work and in wha
 | --- | --- | --- |
 | Who can see the code and the workflow runs | Anyone | You, and anyone you give access |
 | Cost of runs on standard GitHub-hosted runners | Free | Counts against your plan's included minutes, 2,000 a month on GitHub Free |
-| Environments, used in optional Lab 8, on GitHub Free | Available | Not available |
+| Configuring environments, used in optional Lab 8, on GitHub Free | Available | Not available |
 
 The required labs use a few minutes in total. If you choose **Public**, don't commit passwords, tokens, or other secrets to the repository. The optional labs that need a secret show you how to store it as an encrypted repository secret instead. You can change the visibility later in the repository's **Settings**.
 

@@ -32,7 +32,8 @@ public class LinkResolverTests
     [Theory]
     [InlineData("../../src/WorkshopCore/Calculator.cs", Repo + "/blob/main/src/WorkshopCore/Calculator.cs")]
     [InlineData("/docs/troubleshooting.md#runner-errors", Repo + "/blob/main/docs/troubleshooting.md#runner-errors")]
-    [InlineData("../../README.md?plain=1", Repo + "/blob/main/README.md")]
+    [InlineData("../../CONTRIBUTING.md?plain=1", Repo + "/blob/main/CONTRIBUTING.md")]
+    [InlineData("../../docs/README.md", Repo + "/blob/main/docs/README.md")]
     [InlineData("../../docs/My%20Notes.md", Repo + "/blob/main/docs/My%20Notes.md")]
     [InlineData("../../.github/workflows/", Repo + "/tree/main/.github/workflows")]
     [InlineData("../../", Repo + "/tree/main/")]
@@ -41,6 +42,16 @@ public class LinkResolverTests
     public void Other_repository_links_open_github(string url, string expected)
     {
         Assert.Equal(expected, Links.Resolve(url, SourcePath));
+    }
+
+    [Theory]
+    [InlineData("../../README.md")]
+    [InlineData("/README.md")]
+    [InlineData("../../README.md#optional-labs")]
+    [InlineData("../../README.md?plain=1")]
+    public void Links_to_the_readme_open_the_lesson_list(string url)
+    {
+        Assert.Equal("/", Links.Resolve(url, SourcePath));
     }
 
     [Theory]

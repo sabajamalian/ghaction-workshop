@@ -45,7 +45,7 @@ dotnet test --collect "XPlat Code Coverage"
 
 ## Workflows
 
-Every workflow in `.github/workflows/` runs in every copy of the template, so those workflows use only `workflow_dispatch`. The rules for pinning actions, permissions, and untrusted input are in [the Workflows section of AGENTS.md](AGENTS.md#workflows). Run `actionlint` on every workflow you change.
+Every workflow in `.github/workflows/` ends up in every copy of the template, so those workflows use only `workflow_dispatch`. The rules for pinning actions, permissions, and untrusted input are in [the Workflows section of AGENTS.md](AGENTS.md#workflows). Run `actionlint` on every workflow you change.
 
 To move an action to a new release, resolve the release tag to its commit SHA, then update the SHA and the version comment together:
 

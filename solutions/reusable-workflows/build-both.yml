@@ -1,0 +1,43 @@
+name: Build Release and Debug
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    name: Release build
+    uses: ./.github/workflows/reusable-build.yml
+    with:
+      configuration: Release
+      artifact-name: dashboard-release
+    secrets:
+      practice-secret: ${{ secrets.PRACTICE_SECRET }}
+
+  debug:
+    name: Debug build
+    uses: ./.github/workflows/reusable-build.yml
+    with:
+      configuration: Debug
+      run-tests: false
+      artifact-name: dashboard-debug
+
+  summary:
+    name: Summarize the builds
+    needs: [release, debug]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Write the artifact links to the summary
+        env:
+          RELEASE_URL: ${{ needs.release.outputs.artifact-url }}
+          DEBUG_URL: ${{ needs.debug.outputs.artifact-url }}
+        run: |
+          {
+            echo "## Published builds"
+            echo ""
+            echo "- Release: [dashboard-release]($RELEASE_URL)"
+            echo "- Debug: [dashboard-debug]($DEBUG_URL)"
+          } >> "$GITHUB_STEP_SUMMARY"

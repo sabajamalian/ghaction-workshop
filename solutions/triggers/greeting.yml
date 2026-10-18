@@ -1,0 +1,71 @@
+name: Greeting
+
+on:
+  workflow_dispatch:
+    inputs:
+      greeting:
+        description: Greeting to print
+        type: string
+        required: true
+        default: Hello
+      environment:
+        description: Environment this run is for
+        type: choice
+        options:
+          - development
+          - staging
+          - production
+        default: development
+      shout:
+        description: Shout the greeting in capital letters
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      # Inputs are empty when another event, such as push, starts the run.
+      GREETING: ${{ inputs.greeting || format('Hello from a {0} event', github.event_name) }}
+      AUDIENCE: ${{ vars.GREETING_AUDIENCE || 'world' }}
+      TARGET_ENVIRONMENT: ${{ inputs.environment || 'none' }}
+    steps:
+      - name: Print the greeting
+        run: echo "$GREETING, $AUDIENCE"
+
+      - name: Shout the greeting
+        if: inputs.shout
+        run: echo "$GREETING, $AUDIENCE" | tr '[:lower:]' '[:upper:]'
+
+      - name: Print where the run came from
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BRANCH_NAME: ${{ github.ref_name }}
+          OPERATING_SYSTEM: ${{ runner.os }}
+        run: |
+          echo "Event: $EVENT_NAME"
+          echo "Branch: $BRANCH_NAME"
+          echo "Runner: $OPERATING_SYSTEM"
+          echo "Environment: $TARGET_ENVIRONMENT"
+
+      - name: Write the job summary
+        run: |
+          {
+            echo "### $GREETING, $AUDIENCE"
+            echo ""
+            echo "- Environment: $TARGET_ENVIRONMENT"
+            echo "- Event: $GITHUB_EVENT_NAME"
+            echo "- Started by: $GITHUB_ACTOR"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  production-check:
+    if: inputs.environment == 'production'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Warn about production
+        run: echo "::warning::This run is for production."

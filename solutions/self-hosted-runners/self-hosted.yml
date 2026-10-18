@@ -1,0 +1,82 @@
+name: Self-hosted runner
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  inspect:
+    name: Inspect the runner
+    # If you gave your runner a different custom label, use it here and in the second job.
+    runs-on: [self-hosted, workshop-lab9]
+    timeout-minutes: 10
+    steps:
+      - name: Show the runner details
+        run: |
+          echo "Runner name:        $RUNNER_NAME"
+          echo "Runner environment: $RUNNER_ENVIRONMENT"
+          echo "Operating system:   $RUNNER_OS $RUNNER_ARCH ($(uname -sm))"
+          echo "User:               $(whoami)"
+          echo "Home folder:        $HOME"
+          echo "Workspace:          $GITHUB_WORKSPACE"
+          echo "Temporary folder:   $RUNNER_TEMP"
+
+      - name: List the installed tools
+        run: |
+          for tool in git curl docker dotnet node python3 gh; do
+            if command -v "$tool" > /dev/null; then
+              echo "$tool: $(command -v "$tool")"
+            else
+              echo "$tool: not installed"
+            fi
+          done
+
+      - name: Check for admin rights
+        run: |
+          if sudo -n true 2> /dev/null; then
+            echo "This job can run any command as root with sudo, without a password."
+          else
+            echo "This job can't use sudo without a password."
+          fi
+
+      - name: Check the environment for a token
+        run: |
+          if [ -n "${GITHUB_TOKEN:-}" ]; then
+            echo "GITHUB_TOKEN is set. It came from the environment the runner started in, and every job on this runner can read it."
+          else
+            echo "GITHUB_TOKEN isn't set."
+          fi
+
+      - name: Leave files on the runner
+        run: |
+          echo "Run $GITHUB_RUN_NUMBER, attempt $GITHUB_RUN_ATTEMPT, at $(date -u '+%Y-%m-%d %H:%M:%S') UTC" >> "$GITHUB_WORKSPACE/runs.txt"
+          echo "Written by run $GITHUB_RUN_NUMBER" > "$RUNNER_TEMP/scratch.txt"
+          ls -l "$GITHUB_WORKSPACE/runs.txt" "$RUNNER_TEMP/scratch.txt"
+
+  leftovers:
+    name: Look for files from earlier jobs
+    needs: inspect
+    runs-on: [self-hosted, workshop-lab9]
+    timeout-minutes: 10
+    steps:
+      - name: Read the run history
+        run: |
+          if [ -f "$GITHUB_WORKSPACE/runs.txt" ]; then
+            cat "$GITHUB_WORKSPACE/runs.txt"
+          else
+            echo "There's no runs.txt in $GITHUB_WORKSPACE."
+          fi
+
+      - name: Look for the temporary file
+        run: |
+          if [ -f "$RUNNER_TEMP/scratch.txt" ]; then
+            echo "scratch.txt is still in $RUNNER_TEMP."
+          else
+            echo "scratch.txt is gone. The runner empties $RUNNER_TEMP at the start and end of every job."
+          fi

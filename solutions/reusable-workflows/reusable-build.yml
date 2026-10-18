@@ -1,0 +1,73 @@
+name: Reusable build
+
+on:
+  workflow_call:
+    inputs:
+      configuration:
+        description: "The build configuration: Release or Debug."
+        type: string
+        default: Release
+      run-tests:
+        description: "Whether to run the unit tests before publishing."
+        type: boolean
+        default: true
+      artifact-name:
+        description: "The name of the artifact to upload."
+        type: string
+        required: true
+    secrets:
+      practice-secret:
+        description: "A practice secret. The job only checks whether it has a value."
+        required: false
+    outputs:
+      artifact-url:
+        description: "The download URL of the uploaded artifact."
+        value: ${{ jobs.build.outputs.artifact-url }}
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      artifact-url: ${{ steps.upload.outputs.artifact-url }}
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # A local action is read from the checked-out files, so this step has to come after the checkout.
+      - name: Set up .NET and restore
+        uses: ./.github/actions/setup-build
+
+      - name: Check for the practice secret
+        env:
+          PRACTICE_SECRET: ${{ secrets.practice-secret }}
+        run: |
+          if [ -n "$PRACTICE_SECRET" ]; then
+            echo "practice-secret has a value."
+          else
+            echo "practice-secret is empty or wasn't passed."
+          fi
+
+      - name: Run the tests
+        if: ${{ inputs.run-tests }}
+        env:
+          CONFIGURATION: ${{ inputs.configuration }}
+        run: dotnet test tests/WorkshopCore.Tests --configuration "$CONFIGURATION"
+
+      - name: Publish the dashboard
+        env:
+          CONFIGURATION: ${{ inputs.configuration }}
+        run: dotnet publish src/WorkshopDashboard/WorkshopDashboard.csproj --configuration "$CONFIGURATION" --no-restore --output publish
+
+      - name: Upload the published app
+        id: upload
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: publish
+          if-no-files-found: error
+          retention-days: 1

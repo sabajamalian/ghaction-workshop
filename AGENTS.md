@@ -113,8 +113,10 @@ The tests in `tests/WorkshopDashboard.Tests` check mechanical rules such as dash
 - `tests/WorkshopCore.Tests`: the tests learners run. `tests/WorkshopDashboard.Tests`: renderer security, page, and content tests.
 - `lessons/foundation`: the required labs. `lessons/explore`: the optional labs.
 - `.github/workflows/build.yml`: the Lab 1 workflow.
+- `.github/workflows/deploy-site.yml`: deploys the workshop's own website to Azure App Service. Its job runs only in `sabajamalian/ghaction-workshop`. Setup is in `docs/deployment.md`.
 - `solutions/`: the finished workflows for the labs. They're outside `.github/workflows` so they don't run in learners' copies until someone copies one there. Lessons show them in `source=` blocks, so the content tests fail when a solution and its lesson drift apart.
-- `docs/`: the editorial guide and checklist.
+- `scripts/azure`: the Azure CLI scripts that create the web app and the managed identity for Labs 7 and 8 and for the workshop site. Their README says who runs which one.
+- `docs/`: the editorial guide and checklist, plus how the site works (`architecture.md`), deploying the site (`deployment.md`), what each lab needs (`prerequisites.md`), `troubleshooting.md`, and `instructor-guide.md`.
 
 ### Build and test
 
@@ -130,23 +132,25 @@ The site runs at `http://localhost:5080`. In the Development environment, lesson
 
 ### Workflows
 
-- Every workflow in `.github/workflows/` shows up in every learner's copy. Use only `workflow_dispatch` there, so nothing runs until a learner starts it. A maintainer-only workflow must also check `github.repository` before it does anything.
+- Every workflow in `.github/workflows/` shows up in every learner's copy. Use only `workflow_dispatch` there, so nothing runs until a learner starts it. A maintainer-only workflow must also check `github.repository` before it does anything. This rule covers the template's own workflows. In a learner's copy, the workflows that the labs add, such as `tests.yml` with its `pull_request` trigger, are supposed to be there.
 - Keep lab reference workflows outside `.github/workflows/`, so they don't run in learners' copies. Lessons tell learners when to copy one in.
 - Pin every action to a full 40-character commit SHA, with the version in a comment: `uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1`. Resolve the SHA from the action's release tag yourself, and use the same SHA everywhere the action appears, including lessons. The tests fail when two files pin an action differently.
 - Set `permissions` explicitly, and grant only what each job needs.
+- Set `timeout-minutes` on every job you write, so a stuck job can't use up minutes. `build.yml` uses 10. A job that calls a reusable workflow can't take `timeout-minutes`, so set it on the jobs in the reusable workflow instead.
 - Never put a `${{ }}` expression with a value someone else controls (inputs, issue or pull request titles, branch names) directly in a `run` script. Pass it through `env` and quote the shell variable.
-- Run `actionlint` on every workflow file you change.
+- Run `actionlint` on every workflow file you change. For `solutions/self-hosted-runners/self-hosted.yml`, add `-ignore 'label "workshop-lab9" is unknown'`, because actionlint only knows the custom labels listed in an `actionlint.yaml`, and this repository doesn't have one.
 
 ### Lessons
 
 - Each lesson is one Markdown file in `lessons/foundation` (required) or `lessons/explore` (optional). The file name sets the address: `01-build-application.md` becomes `/lessons/build-application`. A numeric prefix only sorts the files.
-- The front matter has `title`, `summary`, `duration` (minutes), `difficulty` (`Beginner`, `Intermediate`, or `Advanced`), `order`, and an optional `requires`. Titles start with the lab number, as in `"Lab 3: Choose a runner"`, and `order` is that number. Wrap `title`, `summary`, and `requires` in double quotes. The [editorial guide](docs/editorial-guide.md#lesson-files) shows the format. The site skips a lesson whose front matter is invalid and logs why.
+- The front matter has `title`, `summary`, `duration` (minutes), `difficulty` (`Beginner`, `Intermediate`, or `Advanced`), `order`, and an optional `requires`. Titles start with the lab number, as in `"Lab 3: Compare runners"`, and `order` is that number. Wrap `title`, `summary`, and `requires` in double quotes. The [editorial guide](docs/editorial-guide.md#lesson-files) shows the format. The site skips a lesson whose front matter is invalid and logs why.
 - Start the body with an H1 that matches `title`, so the file reads well on GitHub. The dashboard shows the title from the front matter and drops that H1.
 - Hints go in a `<details>` block. Put `<details>`, a one-line `<summary>Plain text</summary>`, and `</details>` on lines of their own, with a blank line after the summary and before `</details>`. Those are the only HTML tags the site renders. It shows any other HTML as plain text.
 - Use GitHub alerts such as `> [!NOTE]` and `> [!WARNING]` only for information that changes what the learner does.
 - Give every fenced code block a language. When a block shows a whole file from this repository, add its path after the language, like `yaml source=.github/workflows/build.yml`. For part of a file, use `excerpt=` instead. The tests fail when a snippet no longer matches its file.
-- Link to other lessons and repository files with relative paths, so the links work on GitHub and in the dashboard. Link text must say where the link goes. Never use "click here" or "this link."
+- Link to other lessons and repository files with relative paths, so the links work on GitHub and in the dashboard. A link to the root `README.md` opens the lesson list on the dashboard. Link text must say where the link goes. Never use "click here" or "this link."
 - Don't add images or screenshots. GitHub's interface changes often, so screenshots go out of date, and the site's Content Security Policy (`img-src 'self'`) blocks images from other sites, including files linked on GitHub.
+- When you add a lab, or change its time or what it needs, update its row in each list of labs: `README.md`, `docs/prerequisites.md`, `solutions/README.md`, and `docs/troubleshooting.md`. Keep them consistent with the lesson's front matter and its "Before you start" section.
 
 ### Dashboard
 

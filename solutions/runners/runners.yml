@@ -1,0 +1,83 @@
+name: Inspect runners
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    name: Inspect ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - ubuntu-24.04-arm
+          - windows-latest
+          - windows-11-arm
+          # In a private repository, a macOS minute costs about as much as ten Linux minutes.
+          - macos-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: List the runner variables
+        run: env | grep -E '^(RUNNER_|ImageOS|ImageVersion)' | sort
+
+      - name: Collect details on Linux
+        if: runner.os == 'Linux'
+        run: |
+          . /etc/os-release
+          {
+            echo "OS_NAME=$PRETTY_NAME"
+            echo "MACHINE=$(uname -m)"
+            echo "CPU_COUNT=$(nproc)"
+            echo "MEMORY_GB=$(awk '/^MemTotal:/ { printf "%.1f", $2 / 1048576 }' /proc/meminfo)"
+            echo "DISK_FREE_GB=$(df -Pk "$RUNNER_TEMP" | awk 'NR == 2 { printf "%.0f", $4 / 1048576 }')"
+          } | tee -a "$GITHUB_ENV"
+
+      - name: Collect details on macOS
+        if: runner.os == 'macOS'
+        run: |
+          {
+            echo "OS_NAME=$(sw_vers -productName) $(sw_vers -productVersion)"
+            echo "MACHINE=$(uname -m)"
+            echo "CPU_COUNT=$(sysctl -n hw.ncpu)"
+            echo "MEMORY_GB=$(sysctl -n hw.memsize | awk '{ printf "%.1f", $1 / 1073741824 }')"
+            echo "DISK_FREE_GB=$(df -Pk "$RUNNER_TEMP" | awk 'NR == 2 { printf "%.0f", $4 / 1048576 }')"
+          } | tee -a "$GITHUB_ENV"
+
+      - name: Collect details on Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $os = Get-CimInstance -ClassName Win32_OperatingSystem
+          @(
+            "OS_NAME=$($os.Caption) $($os.Version)"
+            "MACHINE=$env:PROCESSOR_ARCHITECTURE"
+            "CPU_COUNT=$([Environment]::ProcessorCount)"
+            "MEMORY_GB=$([math]::Round($os.TotalVisibleMemorySize / 1MB, 1))"
+            "DISK_FREE_GB=$([math]::Round((Get-Item $env:RUNNER_TEMP).PSDrive.Free / 1GB))"
+          ) | Tee-Object -FilePath $env:GITHUB_ENV -Append
+
+      - name: Write the job summary
+        env:
+          LABEL: ${{ matrix.os }}
+        run: |
+          {
+            echo "| Detail | Value |"
+            echo "| --- | --- |"
+            echo "| Label | \`$LABEL\` |"
+            echo "| Operating system | $OS_NAME |"
+            echo "| Runner image | $ImageOS $ImageVersion |"
+            echo "| Architecture | $RUNNER_ARCH ($MACHINE) |"
+            echo "| CPUs | $CPU_COUNT |"
+            echo "| Memory | $MEMORY_GB GB |"
+            echo "| Free disk space | $DISK_FREE_GB GB |"
+            echo "| Runner name | $RUNNER_NAME |"
+            echo "| Runner environment | $RUNNER_ENVIRONMENT |"
+          } >> "$GITHUB_STEP_SUMMARY"

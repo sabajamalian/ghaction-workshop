@@ -1,0 +1,119 @@
+name: Deploy to Azure
+
+# Lab 7: tests and publishes the dashboard, signs in to Azure with OpenID Connect,
+# and deploys to your App Service web app. The vars.AZURE_* values are repository
+# variables. See lessons/explore/azure-oidc.md.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Run the tests
+        run: dotnet test tests/WorkshopCore.Tests
+
+      - name: Restore dependencies
+        run: dotnet restore src/WorkshopDashboard/WorkshopDashboard.csproj
+
+      - name: Publish the dashboard
+        run: dotnet publish src/WorkshopDashboard/WorkshopDashboard.csproj --configuration Release --no-restore --output publish
+
+      - name: Upload the published app
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: workshop-dashboard
+          path: publish
+          if-no-files-found: error
+          retention-days: 7
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      # Lets the job ask GitHub for an OIDC token, which azure/login trades for an Azure token.
+      id-token: write
+    steps:
+      - name: Check the Azure variables
+        env:
+          AZURE_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
+          AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          AZURE_WEBAPP_NAME: ${{ vars.AZURE_WEBAPP_NAME }}
+        run: |
+          missing=""
+          [ -n "$AZURE_CLIENT_ID" ] || missing="$missing AZURE_CLIENT_ID"
+          [ -n "$AZURE_TENANT_ID" ] || missing="$missing AZURE_TENANT_ID"
+          [ -n "$AZURE_SUBSCRIPTION_ID" ] || missing="$missing AZURE_SUBSCRIPTION_ID"
+          [ -n "$AZURE_WEBAPP_NAME" ] || missing="$missing AZURE_WEBAPP_NAME"
+          if [ -n "$missing" ]; then
+            echo "::error::Missing repository variables:$missing. Add them as Lab 7 describes, then run the workflow again."
+            exit 1
+          fi
+          echo "All four Azure variables are set."
+
+      - name: Download the published app
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: workshop-dashboard
+          path: publish
+
+      - name: Sign in to Azure
+        uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy to App Service
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@02a81bead70021f5284939794bcec79c271ab383 # v3.0.8
+        with:
+          app-name: ${{ vars.AZURE_WEBAPP_NAME }}
+          package: publish
+
+      - name: Check the deployed site
+        env:
+          WEBAPP_URL: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+          EXPECTED_COMMIT: ${{ github.sha }}
+        run: |
+          # The action reports the address from the app's publishing profile, which can start with http://.
+          site_url="${WEBAPP_URL%/}"
+          site_url="https://${site_url#*://}"
+          echo "### Deploy to Azure" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Site: $site_url" >> "$GITHUB_STEP_SUMMARY"
+
+          # The app restarts after a deployment, and a Free (F1) app can take a minute or two to start.
+          for attempt in 1 2 3 4 5 6 7 8 9 10 11 12; do
+            rm -f health.json
+            code=$(curl --silent --location --max-time 30 --output health.json --write-out '%{http_code}' "$site_url/health" || true)
+            commit=$(jq -r '.commit // empty' health.json 2>/dev/null || true)
+            if [ "$code" = "200" ] && [ "$commit" = "$EXPECTED_COMMIT" ]; then
+              echo "$site_url is running commit $commit."
+              echo "- The site is running commit \`$commit\`." >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            echo "Attempt $attempt of 12: /health returned HTTP $code and commit '${commit:-none}'."
+            if [ "$attempt" -lt 12 ]; then
+              sleep 15
+            fi
+          done
+
+          echo "::error::$site_url/health didn't report commit $EXPECTED_COMMIT after 12 attempts."
+          echo "- The site didn't report commit \`$EXPECTED_COMMIT\` in time." >> "$GITHUB_STEP_SUMMARY"
+          exit 1

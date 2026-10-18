@@ -51,6 +51,13 @@ public sealed partial class LinkResolver
             return "/lessons/" + slug + target.Fragment;
         }
 
+        // On GitHub the README is the workshop's front page and lists every lab, so on the dashboard
+        // it opens the lesson list. The README's headings don't exist there, so the fragment is dropped.
+        if (target.Path == "README.md")
+        {
+            return "/";
+        }
+
         string view = target.IsDirectory ? "tree" : "blob";
         string path = string.Join('/', target.Path.Split('/', StringSplitOptions.RemoveEmptyEntries).Select(Uri.EscapeDataString));
         return $"{_repositoryUrl}/{view}/main/{path}{target.Fragment}";
