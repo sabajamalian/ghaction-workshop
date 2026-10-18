@@ -1,0 +1,85 @@
+# Continuous integration for the workshop app, written for Azure Pipelines.
+# Lab 12 converts this pipeline to a GitHub Actions workflow. Nothing in this
+# repository runs it, and the lab doesn't need an Azure DevOps organization.
+
+trigger:
+  branches:
+    include:
+      - main
+
+# Pull request validation depends on where the code is hosted:
+# - GitHub repository: this pr trigger runs the pipeline for pull requests into main.
+# - Azure Repos Git: YAML pr triggers aren't supported. Open the branch policies for
+#   main and configure the Build validation policy instead.
+pr:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  buildConfiguration: Release
+
+steps:
+  - task: UseDotNet@2
+    displayName: Install the .NET SDK from global.json
+    inputs:
+      packageType: sdk
+      useGlobalJson: true
+
+  - task: DotNetCoreCLI@2
+    displayName: Restore dependencies
+    inputs:
+      command: restore
+      projects: '**/*.csproj'
+
+  - task: DotNetCoreCLI@2
+    displayName: Build
+    inputs:
+      command: build
+      projects: '**/*.csproj'
+      arguments: --configuration $(buildConfiguration) --no-restore
+
+  # publishTestResults defaults to true. It's off here because the next two tasks
+  # publish the test results and the Coverlet coverage report.
+  - task: DotNetCoreCLI@2
+    displayName: Run the tests with Coverlet
+    inputs:
+      command: test
+      projects: tests/WorkshopCore.Tests/WorkshopCore.Tests.csproj
+      arguments: --configuration $(buildConfiguration) --no-build --logger trx --results-directory $(Agent.TempDirectory)/TestResults --collect "XPlat Code Coverage"
+      publishTestResults: false
+
+  - task: PublishTestResults@2
+    displayName: Publish the test results
+    condition: succeededOrFailed()
+    inputs:
+      testResultsFormat: VSTest
+      testResultsFiles: '**/*.trx'
+      searchFolder: $(Agent.TempDirectory)/TestResults
+      failTaskOnMissingResultsFile: true
+
+  - task: PublishCodeCoverageResults@2
+    displayName: Publish the coverage report
+    condition: succeededOrFailed()
+    inputs:
+      summaryFileLocation: $(Agent.TempDirectory)/TestResults/**/coverage.cobertura.xml
+      failIfCoverageEmpty: true
+
+  - task: DotNetCoreCLI@2
+    displayName: Publish the app
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: src/WorkshopDashboard/WorkshopDashboard.csproj
+      arguments: --configuration $(buildConfiguration) --no-build --output $(Build.ArtifactStagingDirectory)/app
+      zipAfterPublish: false
+      modifyOutputPath: false
+
+  - task: PublishPipelineArtifact@1
+    displayName: Upload the app as a pipeline artifact
+    inputs:
+      targetPath: $(Build.ArtifactStagingDirectory)/app
+      artifact: workshop-dashboard

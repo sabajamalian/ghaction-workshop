@@ -37,6 +37,12 @@ internal static partial class ContentRules
         "this", "this article", "this document", "this link", "this page",
     };
 
+    // Files that have to stay exact copies of another file, and the file each one copies.
+    public static readonly (string Copy, string Original)[] ExactCopies =
+    [
+        ("solutions/migration/migrated-ci.yml", "migration/azure-devops/expected-workflow.yml"),
+    ];
+
     // Em dashes, en dashes, and emojis, outside code. Applies to Markdown and to the text files people read in the repository.
     public static List<Finding> CheckPunctuation(ContentRepository repository)
     {
@@ -386,6 +392,52 @@ internal static partial class ContentRules
                 yield return new Finding(file.Path, extra.Line + 1, $"A lesson has only one \"## {section}\" section. Merge this one into the first.");
             }
         }
+    }
+
+    // Copies that still match their originals exactly. CRLF line endings and a byte order mark don't count, because Git
+    // and editors on Windows can add them.
+    public static List<Finding> CheckCopies(ContentRepository repository)
+    {
+        return CheckCopies(repository, ExactCopies);
+    }
+
+    public static List<Finding> CheckCopies(ContentRepository repository, IEnumerable<(string Copy, string Original)> copies)
+    {
+        var findings = new List<Finding>();
+        foreach ((string copy, string original) in copies)
+        {
+            if (!repository.Files.Contains(copy) || !repository.Files.Contains(original))
+            {
+                findings.Add(new Finding(copy, 0, $"This file has to be an exact copy of {original}, but one of them is missing. Restore it, or remove the pair from {nameof(ExactCopies)} in ContentRules.cs."));
+                continue;
+            }
+
+            string copyText = repository.ReadText(copy);
+            string originalText = repository.ReadText(original);
+            if (copyText == originalText)
+            {
+                continue;
+            }
+
+            string[] copyLines = SplitLines(copyText);
+            string[] originalLines = SplitLines(originalText);
+            int shared = Math.Min(copyLines.Length, originalLines.Length);
+            int index = Enumerable.Range(0, shared).FirstOrDefault(i => copyLines[i] != originalLines[i], shared);
+            string problem = index < shared
+                ? $"This line doesn't match line {index + 1} of {original}."
+                : copyLines.Length != originalLines.Length
+                    ? $"This file has {CountLines(copyLines.Length)}, but {original} has {CountLines(originalLines.Length)}."
+                    : $"Only one of this file and {original} ends with a line break.";
+            findings.Add(new Finding(copy, Math.Min(index + 1, copyLines.Length), $"{problem} Keep this file an exact copy: edit {original}, then copy it over this file."));
+        }
+
+        return findings;
+    }
+
+    // The lines an editor shows: a line break at the end of the file doesn't start another line.
+    private static string[] SplitLines(string text)
+    {
+        return (text.EndsWith('\n') ? text[..^1] : text).Split('\n');
     }
 
     private static IEnumerable<Finding> CheckPunctuation(string path, string text, Func<int, bool>? isCode)

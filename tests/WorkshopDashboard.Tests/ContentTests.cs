@@ -52,6 +52,12 @@ public class ContentTests
     }
 
     [Fact]
+    public void Copies_match_their_originals()
+    {
+        AssertNoFindings(ContentRules.CheckCopies(Repository.Value));
+    }
+
+    [Fact]
     public void Actions_are_pinned_to_a_full_commit_sha()
     {
         AssertNoFindings(ActionPins.CheckPins(Repository.Value));

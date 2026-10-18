@@ -53,7 +53,7 @@ The settings live in the `Workshop` section of `appsettings.json`. To set one wi
 
 - `WorkshopCore.Tests` tests the `Calculator` class.
 - `WorkshopDashboard.Tests` tests front matter parsing, lesson loading, link rewriting, rendering and HTML safety, build information, and the pages themselves through `WebApplicationFactory`, including status codes and security headers.
-- `ContentTests` runs the rules in `tests/WorkshopDashboard.Tests/Content` against the repository: punctuation and emojis, code block languages and the `source=` and `excerpt=` blocks that must match their files, links, HTML, alerts, bold text, lesson front matter and titles, and pinned actions. The [editorial guide](editorial-guide.md#what-the-tests-check) lists every check.
+- `ContentTests` runs the rules in `tests/WorkshopDashboard.Tests/Content` against the repository: punctuation and emojis, code block languages and the `source=` and `excerpt=` blocks that must match their files, links, HTML, alerts, bold text, lesson front matter and titles, pinned actions, and files that have to stay exact copies of another file. The [editorial guide](editorial-guide.md#what-the-tests-check) lists every check.
 
 To run only the content checks:
 

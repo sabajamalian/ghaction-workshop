@@ -654,6 +654,29 @@ public class ContentRulesTests
     }
 
     [Fact]
+    public void Copies_that_differ_from_their_original_are_reported_at_the_first_different_line()
+    {
+        using var repository = new TempRepository()
+            .Write("original.yml", "name: CI\non: push\njobs: {}\n")
+            .Write("same.yml", "name: CI\r\non: push\r\njobs: {}\r\n")
+            .Write("changed.yml", "name: CI\non: pull_request\njobs: {}\n")
+            .Write("longer.yml", "name: CI\non: push\njobs: {}\n\n")
+            .Write("unterminated.yml", "name: CI\non: push\njobs: {}");
+
+        List<Finding> findings = ContentRules.CheckCopies(
+            repository.Load(),
+            [
+                ("same.yml", "original.yml"), ("changed.yml", "original.yml"), ("longer.yml", "original.yml"),
+                ("unterminated.yml", "original.yml"), ("missing.yml", "original.yml"),
+            ]);
+
+        Assert.Equal(["changed.yml:2", "longer.yml:4", "unterminated.yml:3", "missing.yml:0"], findings.Select(finding => $"{finding.Path}:{finding.Line}"));
+        Assert.Contains("line 2 of original.yml", findings[0].Message, StringComparison.Ordinal);
+        Assert.Contains("This file has 4 lines, but original.yml has 3 lines.", findings[1].Message, StringComparison.Ordinal);
+        Assert.Contains("ends with a line break", findings[2].Message, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void Lesson_files_outside_the_track_folders_are_reported()
     {
         using var repository = new TempRepository()

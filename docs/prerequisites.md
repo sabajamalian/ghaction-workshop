@@ -18,6 +18,7 @@ Every lab except Lab 9 runs in the copy of the repository you create in [Lab 0](
 | [Lab 9: Run jobs on a self-hosted runner](../lessons/explore/self-hosted-runners.md) | A new private repository, separate from your copy. A codespace or a Linux virtual machine you can delete afterward, and a terminal on it. | None, because the jobs run on your machine |
 | [Lab 10: Reuse workflows and steps](../lessons/explore/reusable-workflows.md) | Nothing extra | About 3 per run |
 | [Lab 11: Review CI failures with an agentic workflow](../lessons/explore/agentic-workflows.md) | A GitHub Copilot plan. If an organization owns your copy, its **Allow use of Copilot CLI billed to the organization** policy instead. To compile the workflow, a terminal with Git and GitHub CLI 2.0.0 or later, on Linux, macOS, or Windows with WSL. Without one, you can use the compiled solution. | About 5 per run |
+| [Lab 12: Migrate an Azure DevOps pipeline](../lessons/explore/azure-devops-migration.md) | Nothing extra for Parts A, B, and D. For the optional Part C, a terminal with Docker and GitHub CLI, on Linux, macOS, or Windows with WSL, or a codespace. You don't need an Azure DevOps organization or token. | About 3 in total |
 
 ## Public or private copy
 
@@ -32,3 +33,5 @@ Labs 6 and 11 use Copilot, which measures its work in AI credits worth $0.01 eac
 Labs 7 and 8 use Azure. Lab 7's setup uses App Service's Free (F1) tier, and managed identities cost nothing, so the Azure side is free. If your instructor set up Azure for your class, they pay for it.
 
 Lab 9 runs its jobs on a machine you provide. A codespace uses your free monthly Codespaces quota: an hour on a 2-core codespace uses 2 of the 120 compute hours GitHub Free includes, or 2 of the 180 on GitHub Pro. A codespace also uses storage quota for as long as it exists, even while it's stopped. A cloud virtual machine is billed until you delete it. See [GitHub Codespaces billing](https://docs.github.com/en/billing/concepts/product-billing/github-codespaces).
+
+Lab 12's optional Part C runs Docker, either in a codespace, which uses the same quota as Lab 9, or on your own computer. Docker Desktop is free for personal use, education, non-commercial open source projects, and businesses with fewer than 250 employees and less than $10 million in annual revenue. Larger organizations need a paid subscription. See [the Docker Desktop license agreement](https://docs.docker.com/subscription-billing/desktop-license/).

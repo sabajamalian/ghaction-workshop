@@ -432,5 +432,6 @@ The content tests in `tests/WorkshopDashboard.Tests` catch mechanical problems i
 - Lessons without exactly one `## Check your result` section and one `## Next step` section. The heading has to match exactly, so `## Check the result` or `### Check your result` doesn't count.
 - Actions and reusable workflows that aren't pinned to a full commit SHA with the release in a comment, such as `# v7.0.1`, and Docker images without a digest. This covers every YAML file, and the YAML blocks and front matter in Markdown files.
 - An action pinned to different commits or release comments in different places. Actions from one repository, such as `github/codeql-action/init` and `github/codeql-action/analyze`, count as one action.
+- Copies that no longer match the file they copy. The list is `ExactCopies` in `tests/WorkshopDashboard.Tests/Content/ContentRules.cs`. For example, `solutions/migration/migrated-ci.yml` has to stay an exact copy of `migration/azure-devops/expected-workflow.yml`.
 
 They don't check whether the writing is good, and they deliberately don't reject words from the list above, because some of those words are the right technical term. A spell checker or an AI-detection tool doesn't prove quality either. Read the actual prose, and use [the editorial checklist](editorial-checklist.md) before you finish.

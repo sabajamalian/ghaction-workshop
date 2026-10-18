@@ -34,6 +34,7 @@ If a run fails because an action isn't allowed, your copy belongs to an organiza
 | [Lab 9: Run jobs on a self-hosted runner](../lessons/explore/self-hosted-runners.md) | [If something fails](../lessons/explore/self-hosted-runners.md#if-something-fails) |
 | [Lab 10: Reuse workflows and steps](../lessons/explore/reusable-workflows.md) | [If something fails](../lessons/explore/reusable-workflows.md#if-something-fails) |
 | [Lab 11: Review CI failures with an agentic workflow](../lessons/explore/agentic-workflows.md) | [If something fails](../lessons/explore/agentic-workflows.md#if-something-fails) |
+| [Lab 12: Migrate an Azure DevOps pipeline](../lessons/explore/azure-devops-migration.md) | [If something fails](../lessons/explore/azure-devops-migration.md#if-something-fails) |
 
 ## Problems running the site on your computer
 

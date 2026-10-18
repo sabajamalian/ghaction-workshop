@@ -70,6 +70,14 @@ Personal accounts are the simplest place for the practice repositories, and that
 
 Tell learners not to use their everyday computer or a work laptop for this lab. Every job the runner picks up can run any command as the runner's user.
 
+### Prepare for Lab 12
+
+Lab 12 migrates an Azure Pipelines file that's in the repository, so neither you nor the learners need an Azure DevOps organization. Parts A, B, and D happen in the browser.
+
+The optional Part C runs GitHub Actions Importer, which needs a terminal with Docker and GitHub CLI. It downloads a container image that takes about 630 MB of disk space, so on a slow or shared network, ask learners to install it before the session, as [Install the importer](../lessons/explore/azure-devops-migration.md#install-the-importer) describes. Learners without Docker can use a codespace created from their copy, which counts against the Codespaces quota in the same way as in Lab 9. On learners' own computers, Docker Desktop is free for businesses with fewer than 250 employees and less than $10 million in annual revenue. Larger organizations need a paid subscription.
+
+The importer asks for an Azure DevOps organization, a project, and two tokens even when it reads a file. The lab gives placeholder values for all four, so tell learners not to enter real tokens.
+
 ### Try the required labs yourself
 
 Create a fresh copy and work through Labs 0 to 2 the way a learner would. It takes about 35 minutes, and it shows you the pages learners will see, including the test failure that Lab 2 causes on purpose.

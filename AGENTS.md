@@ -116,6 +116,7 @@ The tests in `tests/WorkshopDashboard.Tests` check mechanical rules such as dash
 - `.github/workflows/deploy-site.yml`: deploys the workshop's own website to Azure App Service. Its job runs only in `sabajamalian/ghaction-workshop`. Setup is in `docs/deployment.md`.
 - `solutions/`: the finished workflows for the labs. They're outside `.github/workflows` so they don't run in learners' copies until someone copies one there. Lessons show them in `source=` blocks, so the content tests fail when a solution and its lesson drift apart.
 - `scripts/azure`: the Azure CLI scripts that create the web app and the managed identity for Labs 7 and 8 and for the workshop site. Their README says who runs which one.
+- `migration/azure-devops`: the Azure Pipelines file that Lab 12 migrates, and the workflows learners copy from it. Nothing in it runs. `solutions/migration/migrated-ci.yml` has to stay an exact copy of `expected-workflow.yml`, and the content tests check that.
 - `docs/`: the editorial guide and checklist, plus how the site works (`architecture.md`), deploying the site (`deployment.md`), what each lab needs (`prerequisites.md`), `troubleshooting.md`, and `instructor-guide.md`.
 
 ### Build and test

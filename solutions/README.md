@@ -16,6 +16,7 @@ Use a solution to check your work, or to catch up if a lab asks for a workflow y
 | `self-hosted-runners` | [Lab 9: Run jobs on a self-hosted runner](../lessons/explore/self-hosted-runners.md) |
 | `reusable-workflows` | [Lab 10: Reuse workflows and steps](../lessons/explore/reusable-workflows.md) |
 | `agentic-workflows` | [Lab 11: Review CI failures with an agentic workflow](../lessons/explore/agentic-workflows.md) |
+| `migration` | [Lab 12: Migrate an Azure DevOps pipeline](../lessons/explore/azure-devops-migration.md) |
 
 ## Copy a solution into your repository
 
@@ -31,3 +32,5 @@ A workflow starts running on its triggers as soon as it's in `.github/workflows`
 Lab 9's solution goes in the separate practice repository that the lab creates, not in your copy. Open it in your copy, then follow the steps above in the practice repository.
 
 Lab 11's solution has two files: `ci-review.md`, which you add during the lab, and the compiled `ci-review.lock.yml`, which is almost 2,000 lines long. To copy the lock file, follow [Use the compiled solution instead](../lessons/explore/agentic-workflows.md#use-the-compiled-solution-instead) in Lab 11.
+
+Lab 12 has a solution for each way of converting the pipeline, and both go in `.github/workflows/migrated-ci.yml`. `migrated-ci.yml` is the repaired workflow from Part B. `imported-ci.yml` is GitHub Actions Importer's output after the repairs in Part C, with two comment lines at the top that your file won't have.
