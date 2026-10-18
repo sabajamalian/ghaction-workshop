@@ -314,6 +314,12 @@ Describe something the learner can see, such as:
 
 Cover realistic problems, and say which error or symptom each suggestion addresses. Avoid generic advice like "check your configuration."
 
+Write each problem as its own paragraph that starts with the symptom, then gives the fix. Keep the symptom in plain text, not bold:
+
+```markdown excerpt=lessons/foundation/01-build-application.md
+If the run stays queued for several minutes, check [GitHub Status](https://www.githubstatus.com) for an incident affecting GitHub Actions.
+```
+
 ### Next step
 
 Link to the next required lesson or back to the lesson list. Don't add a motivational paragraph.
@@ -330,7 +336,7 @@ Use lowercase letters, numbers, and hyphens. The file name sets the lesson's add
 
 Every lesson starts with a front matter block. The top of a lesson looks like this:
 
-```markdown
+```markdown excerpt=lessons/foundation/02-test-pull-request.md
 ---
 title: "Lab 2: Run tests on pull requests"
 summary: "Add a workflow that runs the unit tests whenever someone opens or updates a pull request."
@@ -419,6 +425,7 @@ The content tests in `tests/WorkshopDashboard.Tests` catch mechanical problems i
 - Links the dashboard blocks, such as `javascript:` links and links that start with `//`.
 - HTML other than comments and hints, and hints that don't close in the same list item or quote where they open.
 - Alert types GitHub doesn't support, text on the same line as the alert type, and alerts inside a list or another quote, where GitHub shows them as plain quotes.
+- Bold text that ends with a period, question mark, exclamation mark, or colon, which means a whole sentence or a run-in heading is in bold. An ellipsis is fine, because some UI labels end with one.
 - Lesson front matter the dashboard would reject, two lessons with the same `order`, titles that don't start with "Lab N: " for their `order`, a body that doesn't start with an H1 matching the title, a second H1, and lesson files outside `lessons/foundation` and `lessons/explore`.
 - Actions and reusable workflows that aren't pinned to a full commit SHA with the release in a comment, such as `# v7.0.1`, and Docker images without a digest. This covers every YAML file, and the YAML blocks and front matter in Markdown files.
 - An action pinned to different commits or release comments in different places. Actions from one repository, such as `github/codeql-action/init` and `github/codeql-action/analyze`, count as one action.

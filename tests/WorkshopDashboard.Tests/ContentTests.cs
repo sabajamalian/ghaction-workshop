@@ -40,6 +40,12 @@ public class ContentTests
     }
 
     [Fact]
+    public void Bold_text_is_not_a_whole_sentence()
+    {
+        AssertNoFindings(ContentRules.CheckBold(Repository.Value));
+    }
+
+    [Fact]
     public void Lessons_load_and_their_titles_match()
     {
         AssertNoFindings(ContentRules.CheckLessons(Repository.Value));

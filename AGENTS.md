@@ -113,6 +113,7 @@ The tests in `tests/WorkshopDashboard.Tests` check mechanical rules such as dash
 - `tests/WorkshopCore.Tests`: the tests learners run. `tests/WorkshopDashboard.Tests`: renderer security, page, and content tests.
 - `lessons/foundation`: the required labs. `lessons/explore`: the optional labs.
 - `.github/workflows/build.yml`: the Lab 1 workflow.
+- `solutions/`: the finished workflows for the labs. They're outside `.github/workflows` so they don't run in learners' copies until someone copies one there. Lessons show them in `source=` blocks, so the content tests fail when a solution and its lesson drift apart.
 - `docs/`: the editorial guide and checklist.
 
 ### Build and test

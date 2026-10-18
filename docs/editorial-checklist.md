@@ -22,7 +22,7 @@ Review in a separate pass after the content is written. Read each page as a deve
 - [ ] Sentence openings vary, with no run of "This allows you to..." or "This ensures that..." sentences.
 - [ ] Rhetorical questions and transitions are there because they help, not as filler.
 - [ ] Obvious actions aren't explained, and there are no disclaimers that don't change what the learner does.
-- [ ] Lists, tables, bold text, and alerts are used only where they help.
+- [ ] Lists, tables, bold text, and alerts are used only where they help, and no whole sentence is in bold.
 - [ ] Nothing claims a first-person experience that didn't happen.
 
 ## Rhythm
@@ -39,7 +39,7 @@ Review in a separate pass after the content is written. Read each page as a deve
 - [ ] Technical claims were checked against the implementation or the official GitHub and Microsoft documentation.
 - [ ] Prerequisites appear near the top of the lesson and in its `requires` field.
 - [ ] "Check your result" describes something the learner can see.
-- [ ] Each troubleshooting item names the error or symptom it addresses and is based on real behavior.
+- [ ] Each troubleshooting item starts with the error or symptom it addresses, in plain text, and is based on real behavior.
 - [ ] Anything that couldn't be tested is named in the pull request description, with the reason, rather than presented as working.
 
 ## Dashboard text

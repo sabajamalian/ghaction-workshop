@@ -275,6 +275,30 @@ internal static partial class ContentRules
         }
     }
 
+    // Bold marks UI labels and important instructions. Bold text that ends in punctuation is a sentence or a run-in heading.
+    public static List<Finding> CheckBold(ContentRepository repository)
+    {
+        return repository.MarkdownFiles.SelectMany(CheckBold).ToList();
+    }
+
+    public static IEnumerable<Finding> CheckBold(MarkdownFile file)
+    {
+        foreach (EmphasisInline emphasis in file.Document.Descendants<EmphasisInline>())
+        {
+            if (emphasis.DelimiterCount != 2)
+            {
+                continue;
+            }
+
+            // Some UI labels end with an ellipsis, such as "Find or create a branch...".
+            string text = MarkdownFile.PlainText(emphasis).TrimEnd();
+            if (text.Length > 0 && ".?!:".Contains(text[^1]) && !text.EndsWith("...", StringComparison.Ordinal))
+            {
+                yield return new Finding(file.Path, file.LineAt(emphasis.Span.Start), "Don't bold a whole sentence or a run-in heading. Keep bold for UI labels and important instructions, and put punctuation after the closing **.");
+            }
+        }
+    }
+
     // Lessons the dashboard can load, with titles and headings that follow the guide.
     public static List<Finding> CheckLessons(ContentRepository repository)
     {

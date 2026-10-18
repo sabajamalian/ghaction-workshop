@@ -525,6 +525,27 @@ public class ContentRulesTests
         Assert.Contains("only work at the top level", finding.Message);
     }
 
+    [Theory]
+    [InlineData("**There's no Run workflow button.** Check the name.\n", 1)]
+    [InlineData("Intro.\n\n- **Why it ran again:** a new commit.\n", 3)]
+    [InlineData("Intro.\n\n__Is it done?__\n", 3)]
+    [InlineData("Select **Commit changes.**\n", 1)]
+    public void Bold_sentences_and_run_in_headings_are_reported(string markdown, int line)
+    {
+        Finding finding = Assert.Single(ContentRules.CheckBold(MarkdownFile.Parse(Page, markdown)));
+
+        Assert.Equal(line, finding.Line);
+        Assert.Contains("Don't bold a whole sentence", finding.Message);
+    }
+
+    [Fact]
+    public void Bold_ui_labels_are_allowed()
+    {
+        const string markdown = "Select **Commit changes**.\n\nIn the **Find or create a branch...** box, type `add-tests`.\n\n*Optional.* Code such as `**Done.**` isn't bold.\n";
+
+        Assert.Empty(ContentRules.CheckBold(MarkdownFile.Parse(Page, markdown)));
+    }
+
     [Fact]
     public void Lessons_that_follow_the_guide_pass()
     {
