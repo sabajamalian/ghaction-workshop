@@ -4,7 +4,7 @@ using Markdig.Extensions.AutoIdentifiers;
 using Markdig.Renderers.Html;
 using Markdig.Syntax;
 using Markdig.Syntax.Inlines;
-using WorkshopDashboard.Models;
+using WorkshopDashboard.Services;
 
 namespace WorkshopDashboard.Tests.Content;
 
@@ -76,7 +76,7 @@ internal sealed class MarkdownFile
         string[] parts = path.Split('/');
         return parts.Length == 3
             && parts[0] == "lessons"
-            && LessonTrack.FromFolder(parts[1]) is not null
+            && LessonLoader.Folders.Contains(parts[1])
             && ContentRepository.IsMarkdown(parts[2]);
     }
 

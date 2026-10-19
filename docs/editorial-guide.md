@@ -295,7 +295,7 @@ Use numbered steps, and have each one tell the learner exactly what to do. Inclu
 
 Give complete examples that learners can copy, with a language on every code block so it's highlighted. Avoid unexplained placeholders: when a value needs replacing, make that obvious and say what to replace it with.
 
-Explain what the important lines do, especially in the required labs. Once learners have seen basic YAML syntax, don't explain it again.
+Explain what the important lines do, especially in Labs 0 to 2. Once learners have seen basic YAML syntax, don't explain it again.
 
 ### What happened
 
@@ -324,11 +324,11 @@ If the run stays queued for several minutes, check [GitHub Status](https://www.g
 
 ### Next step
 
-End the lesson with a `## Next step` section that links to the next required lesson or back to the lesson list. To link the lesson list, link the root `README.md`, such as `[the lesson list](../../README.md)` from an optional lab: GitHub opens the README, which lists every lab, and the dashboard opens its own lesson list. Don't add a motivational paragraph.
+End the lesson with a `## Next step` section that links to the next lesson, for Labs 0 and 1, or back to the lesson list. To link the lesson list, link the root `README.md`, such as `[the lesson list](../../README.md)` from a lab in `lessons/explore`: GitHub opens the README, which lists every lab, and the dashboard opens its own lesson list. Don't add a motivational paragraph.
 
 ## Lesson files
 
-The dashboard reads lessons from `lessons/foundation` (the required labs) and `lessons/explore` (the optional labs). People also read the same files on GitHub, so write them to work in both places.
+The dashboard reads lessons from `lessons/foundation` (Labs 0 to 2) and `lessons/explore` (the rest), and shows them in one list sorted by `order`. Don't call a lab required or optional. People also read the same files on GitHub, so write them to work in both places.
 
 ### File names
 
@@ -405,7 +405,7 @@ The dashboard supports the same five types as GitHub: `NOTE`, `TIP`, `IMPORTANT`
 
 ### Links
 
-Link to other lessons and repository files with relative paths, such as `[Lab 1](01-build-application.md)` from another required lab. Those links work on GitHub. The dashboard turns a link to a lesson into a link to its lesson page, a link to the root `README.md` into a link to the lesson list, and a link to any other file into a link to that file on GitHub.
+Link to other lessons and repository files with relative paths, such as `[Lab 1](01-build-application.md)` from another lab in `lessons/foundation`. Those links work on GitHub. The dashboard turns a link to a lesson into a link to its lesson page, a link to the root `README.md` into a link to the lesson list, and a link to any other file into a link to that file on GitHub.
 
 Link text has to say where the link goes. Write `see [the workflow syntax reference](URL)`, not `[click here](URL)`. Screen reader users often jump from link to link, and "click here" tells them nothing.
 

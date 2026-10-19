@@ -345,4 +345,4 @@ If you added the `push` trigger and haven't removed it yet, remove it as describ
 
 ## Next step
 
-The optional labs can be done in any order, so pick your next one from [the lesson list](../../README.md). [Lab 10: Reuse workflows and steps](reusable-workflows.md) passes inputs to a reusable workflow, which reads them through the same `inputs` context.
+You can do the labs after Lab 2 in any order, so pick your next one from [the lesson list](../../README.md). [Lab 10: Reuse workflows and steps](reusable-workflows.md) passes inputs to a reusable workflow, which reads them through the same `inputs` context.

@@ -8,7 +8,7 @@
     <nav class="breadcrumb" aria-label="Breadcrumb">
         <ol>
             <li><a href="/">All lessons</a></li>
-            <li>@Model.Lesson.Track.Title</li>
+            <li aria-current="page">@Model.Lesson.Title</li>
         </ol>
     </nav>
 
@@ -16,7 +16,6 @@
         <header class="lesson-header">
             <h1>@Model.Lesson.Title</h1>
             <p class="lesson-meta">
-                <span>@Model.Lesson.Track.Label</span>
                 <span>@DisplayFormat.Duration(Model.Lesson.DurationMinutes)</span>
                 <span>@Model.Lesson.Difficulty</span>
             </p>

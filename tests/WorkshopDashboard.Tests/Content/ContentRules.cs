@@ -317,7 +317,7 @@ internal static partial class ContentRules
     public static List<Finding> CheckLessons(ContentRepository repository)
     {
         var findings = new List<Finding>();
-        string folders = string.Join(" and ", LessonTrack.All.Select(track => $"lessons/{track.Id}"));
+        string folders = string.Join(" and ", LessonLoader.Folders.Select(folder => $"lessons/{folder}"));
         foreach (string path in repository.FileList)
         {
             if (path.StartsWith("lessons/", StringComparison.Ordinal)

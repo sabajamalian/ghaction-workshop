@@ -22,13 +22,13 @@ Every action in the workshop is pinned to a full commit SHA, so **Require action
 
 Runs on standard GitHub-hosted runners are free in public repositories. In private repositories, they use the included minutes of the account that owns the repository, not the learner who started the run. GitHub Free and GitHub Free for organizations include 2,000 minutes a month, and GitHub rounds each job up to a whole minute. If the account has no payment method, GitHub blocks runs in private repositories once the minutes run out, until they reset at the start of the next billing cycle.
 
-The required labs use about 4 minutes per learner in a private copy: one build in Lab 1 and three test runs in Lab 2. Each run takes under a minute.
+Labs 0 to 2 use about 4 minutes per learner in a private copy: one build in Lab 1 and three test runs in Lab 2. Each run takes under a minute.
 
-The optional labs use more, and [Prerequisites](prerequisites.md#what-each-lab-needs) lists the minutes each one uses in a private copy. Most use a few. Lab 3 uses about 16 per run, because included minutes are used up at each runner's price, and a macOS minute costs about 10 times as much as a Linux minute. So if 24 learners run Lab 3 once in private copies that your organization owns, they use about 380 of its minutes. Lab 3 tells learners how to leave the macOS job out. [Actions runner pricing](https://docs.github.com/en/billing/reference/actions-runner-pricing) lists the price of each runner.
+The other labs use more, and [Prerequisites](prerequisites.md#what-each-lab-needs) lists the minutes each one uses in a private copy. Most use a few. Lab 3 uses about 16 per run, because included minutes are used up at each runner's price, and a macOS minute costs about 10 times as much as a Linux minute. So if 24 learners run Lab 3 once in private copies that your organization owns, they use about 380 of its minutes. Lab 3 tells learners how to leave the macOS job out. [Actions runner pricing](https://docs.github.com/en/billing/reference/actions-runner-pricing) lists the price of each runner.
 
 ### Actions the labs use
 
-The required labs use only actions created by GitHub: `actions/checkout`, `actions/setup-dotnet`, and `actions/upload-artifact`. If your organization allows only select actions, select **Allow actions created by GitHub**. The optional labs use more actions from GitHub's `actions` and `github` organizations, such as `actions/cache` in Lab 5 and `github/gh-aw-actions/setup` in Lab 11, and that setting allows them too.
+Labs 0 to 2 use only actions created by GitHub: `actions/checkout`, `actions/setup-dotnet`, and `actions/upload-artifact`. If your organization allows only select actions, select **Allow actions created by GitHub**. The other labs use more actions from GitHub's `actions` and `github` organizations, such as `actions/cache` in Lab 5 and `github/gh-aw-actions/setup` in Lab 11, and that setting allows them too.
 
 Labs 7 and 8 also use `azure/login` and `azure/webapps-deploy`. To allow them, add this to **Allow or block specified actions and reusable workflows**:
 
@@ -78,14 +78,14 @@ The optional Part C runs GitHub Actions Importer, which needs a terminal with Do
 
 The importer asks for an Azure DevOps organization, a project, and two tokens even when it reads a file. The lab gives placeholder values for all four, so tell learners not to enter real tokens.
 
-### Try the required labs yourself
+### Try Labs 0 to 2 yourself
 
 Create a fresh copy and work through Labs 0 to 2 the way a learner would. It takes about 35 minutes, and it shows you the pages learners will see, including the test failure that Lab 2 causes on purpose.
 
 ## During the session
 
-Send learners to the lesson list in the [README](../README.md). Each lab says what it needs at the top, and the required labs need only a browser and a GitHub account.
+Send learners to the lesson list in the [README](../README.md). Each lab says what it needs at the top, and Labs 0 to 2 need only a browser and a GitHub account.
 
-Plan about 35 minutes for Labs 0 to 2, plus time for questions. The optional labs can be done in any order, and each one lists its time at the top.
+Plan about 35 minutes for Labs 0 to 2, plus time for questions. After Lab 2, the labs can be done in any order, and each one lists its time at the top.
 
 When someone falls behind, the [solutions](../solutions/README.md) folder has the finished workflow for each lab, with steps for copying one into a repository. For problems, start with the lab's "If something fails" section, then [troubleshooting](troubleshooting.md).

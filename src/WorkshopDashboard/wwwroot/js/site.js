@@ -186,32 +186,30 @@
   }
 
   function showHomeProgress() {
-    var tracks = document.querySelectorAll("[data-track]");
-    if (!tracks.length || !hasStorage) {
+    var list = document.querySelector("[data-lessons]");
+    if (!list || !hasStorage) {
       return;
     }
 
     var progress = readProgress();
-    Array.prototype.forEach.call(tracks, function (track) {
-      var cards = track.querySelectorAll("[data-lesson-card]");
-      var completed = 0;
+    var cards = list.querySelectorAll("[data-lesson-card]");
+    var completed = 0;
 
-      Array.prototype.forEach.call(cards, function (card) {
-        if (isComplete(progress, card.getAttribute("data-lesson-card"))) {
-          completed += 1;
-          var label = card.querySelector("[data-completed-label]");
-          if (label) {
-            label.hidden = false;
-          }
+    Array.prototype.forEach.call(cards, function (card) {
+      if (isComplete(progress, card.getAttribute("data-lesson-card"))) {
+        completed += 1;
+        var label = card.querySelector("[data-completed-label]");
+        if (label) {
+          label.hidden = false;
         }
-      });
-
-      var summary = track.querySelector("[data-track-progress]");
-      if (summary && completed > 0) {
-        summary.textContent = completed + " of " + cards.length + " completed";
-        summary.hidden = false;
       }
     });
+
+    var summary = list.querySelector("[data-lessons-progress]");
+    if (summary && completed > 0) {
+      summary.textContent = completed + " of " + cards.length + " completed";
+      summary.hidden = false;
+    }
   }
 
   setUpThemePicker();

@@ -9,7 +9,7 @@ requires: "Copilot CLI, through your Copilot plan or your organization, and a te
 
 # Lab 11: Review CI failures with an agentic workflow
 
-The workflows you wrote in the required labs are deterministic: each step runs a command you wrote, in the order you wrote it, so you know in advance what a run will do. An agentic workflow gives an AI agent a task in plain language instead, and the agent decides which tools to use and in what order, within the permissions and limits you set. In this lab, the agent reads your repository's failed workflow runs and their logs, then opens one issue that suggests what caused each failure. It can't push code, change settings, rerun workflows, merge pull requests, or deploy anything.
+The workflows you wrote in earlier labs are deterministic: each step runs a command you wrote, in the order you wrote it, so you know in advance what a run will do. An agentic workflow gives an AI agent a task in plain language instead, and the agent decides which tools to use and in what order, within the permissions and limits you set. In this lab, the agent reads your repository's failed workflow runs and their logs, then opens one issue that suggests what caused each failure. It can't push code, change settings, rerun workflows, merge pull requests, or deploy anything.
 
 GitHub Agentic Workflows, also called gh-aw, comes as an extension for GitHub CLI that adds the `gh aw` command. You write the workflow in Markdown, and `gh aw compile` turns it into a regular workflow file for GitHub Actions. [Lab 6](copilot-cli.md) runs Copilot CLI as one step in a workflow you write yourself, and you limit it with command-line options and token permissions. Here, the compiler writes the whole workflow around the agent: it runs the agent in a container behind a firewall, gives it read-only GitHub tools, and has a separate job check the agent's output before anything is written to your repository. You don't need Lab 6 for this lab.
 
@@ -462,4 +462,4 @@ If you created a personal access token, delete it too. Select your profile pictu
 
 ## Next step
 
-The optional labs can be done in any order, so pick your next one from [the lesson list](../../README.md). To run Copilot CLI as one step in a workflow you write yourself, try [Lab 6](copilot-cli.md).
+You can do the labs after Lab 2 in any order, so pick your next one from [the lesson list](../../README.md). To run Copilot CLI as one step in a workflow you write yourself, try [Lab 6](copilot-cli.md).

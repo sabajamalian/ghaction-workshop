@@ -195,4 +195,4 @@ If the check didn't run again after your commit, the commit probably went to ano
 
 ## Next step
 
-That's the last required lab. The optional labs cover runners, triggers, deployments, and more. You can do them in any order, and each one lists what you need before you start. Pick one from [the lesson list](../../README.md).
+You've finished Labs 0 to 2. The other labs cover runners, triggers, deployments, and more. You can do them in any order, and each one lists what you need before you start. Pick one from [the lesson list](../../README.md).

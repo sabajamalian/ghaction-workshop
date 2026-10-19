@@ -5,7 +5,7 @@
     <section class="intro" aria-labelledby="page-title">
         <h1 id="page-title">Learn GitHub Actions by using GitHub Actions</h1>
         <p class="lead">You'll build this website, run tests on pull requests, and see how GitHub handles automation.</p>
-        <p>Everything in the required labs happens in your browser. You don't need to install anything.</p>
+        <p>Labs 0 to 2 run entirely in your browser, so you don't need to install anything to start.</p>
         @if (Model.FirstLesson is not null)
         {
             <p><a class="button" href="/lessons/@Model.FirstLesson.Slug">Start workshop</a></p>
@@ -20,21 +20,20 @@
         </section>
     }
 
-    @foreach (TrackGroup group in Model.Lessons.Tracks)
+    @if (Model.Lessons.Lessons.Count > 0)
     {
-        <section class="track" aria-labelledby="track-@group.Track.Id" data-track>
-            <header class="track-header">
-                <h2 id="track-@group.Track.Id">@group.Track.Title</h2>
-                <p class="track-meta">
-                    <span class="badge @(group.Track.IsRequired ? "badge-required" : "badge-optional")">@group.Track.Label</span>
-                    <span>@DisplayFormat.LabCount(group.Lessons.Count)</span>
-                    <span>About @DisplayFormat.Duration(group.TotalMinutes)</span>
-                    <span class="track-progress" data-track-progress hidden></span>
+        <section class="lessons" aria-labelledby="lessons-title" data-lessons>
+            <header class="lessons-header">
+                <h2 id="lessons-title">Labs</h2>
+                <p class="lessons-meta">
+                    <span>@DisplayFormat.LabCount(Model.Lessons.Lessons.Count)</span>
+                    <span>About @DisplayFormat.Duration(Model.Lessons.TotalMinutes)</span>
+                    <span class="lessons-progress" data-lessons-progress hidden></span>
                 </p>
-                <p>@group.Track.Description</p>
+                <p>After Lab 2, do the others in any order. Each lab lists what it needs at the top.</p>
             </header>
             <ol class="lesson-list">
-                @foreach (Lesson lesson in group.Lessons)
+                @foreach (Lesson lesson in Model.Lessons.Lessons)
                 {
                     <li class="lesson-card" data-lesson-card="@lesson.Slug">
                         <h3><a href="/lessons/@lesson.Slug">@lesson.Title</a></h3>

@@ -47,7 +47,7 @@ public class LinkResolverTests
     [Theory]
     [InlineData("../../README.md")]
     [InlineData("/README.md")]
-    [InlineData("../../README.md#optional-labs")]
+    [InlineData("../../README.md#start-the-workshop")]
     [InlineData("../../README.md?plain=1")]
     public void Links_to_the_readme_open_the_lesson_list(string url)
     {

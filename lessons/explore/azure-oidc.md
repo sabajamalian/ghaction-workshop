@@ -426,4 +426,4 @@ If you used `--sku B1`, Azure bills the plan by the hour until you delete the re
 
 ## Next step
 
-The optional labs can be done in any order, so pick your next one from [the lesson list](../../README.md). [Lab 8: Add a staging environment](environments.md) continues from this one: it sends your Azure deployment through a `staging` environment that can require an approval.
+You can do the labs after Lab 2 in any order, so pick your next one from [the lesson list](../../README.md). [Lab 8: Add a staging environment](environments.md) continues from this one: it sends your Azure deployment through a `staging` environment that can require an approval.

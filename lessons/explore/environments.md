@@ -355,4 +355,4 @@ Nothing this lab adds costs money or keeps running, so cleanup is optional.
 
 ## Next step
 
-The optional labs can be done in any order, so pick your next one from [the lesson list](../../README.md). If you skipped [Lab 7](azure-oidc.md), it deploys the dashboard to Azure, and afterward you can come back to [Deploy your Azure app through staging](#deploy-your-azure-app-through-staging).
+You can do the labs after Lab 2 in any order, so pick your next one from [the lesson list](../../README.md). If you skipped [Lab 7](azure-oidc.md), it deploys the dashboard to Azure, and afterward you can come back to [Deploy your Azure app through staging](#deploy-your-azure-app-through-staging).

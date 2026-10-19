@@ -355,4 +355,4 @@ Nothing in this lab keeps running, so the three files can stay. The workflows on
 
 ## Next step
 
-The optional labs can be done in any order, so pick your next one from [the lesson list](../../README.md). If you haven't done it yet, [Lab 5: Pass files between jobs](jobs-and-artifacts.md) goes further into `needs`, job outputs, and artifacts, which the `summary` job used here.
+You can do the labs after Lab 2 in any order, so pick your next one from [the lesson list](../../README.md). If you haven't done it yet, [Lab 5: Pass files between jobs](jobs-and-artifacts.md) goes further into `needs`, job outputs, and artifacts, which the `summary` job used here.

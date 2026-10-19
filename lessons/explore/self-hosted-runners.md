@@ -559,4 +559,4 @@ Do every step, even if you stopped partway through the lab.
 
 ## Next step
 
-The optional labs can be done in any order, so pick your next one from [the lesson list](../../README.md). To compare what you saw here with GitHub's own machines, try [Lab 3: Compare runners](runners.md).
+You can do the labs after Lab 2 in any order, so pick your next one from [the lesson list](../../README.md). To compare what you saw here with GitHub's own machines, try [Lab 3: Compare runners](runners.md).

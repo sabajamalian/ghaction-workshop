@@ -12,7 +12,7 @@ Every lab runs workflows in a repository that you own. You'll create that reposi
 
 ## Before you start
 
-You need a GitHub account. If you don't have one, [create an account on GitHub](https://github.com/signup). The free plan is enough for the required labs.
+You need a GitHub account. If you don't have one, [create an account on GitHub](https://github.com/signup). The free plan is enough for Labs 0 to 2.
 
 ## Create your copy
 
@@ -32,15 +32,15 @@ GitHub creates the repository and opens it. Its main page says it was **Generate
 
 ## Public or private
 
-Both work for the required labs. They differ in who can see your work and in what the workflow runs cost:
+Both work for Labs 0 to 2. They differ in who can see your work and in what the workflow runs cost:
 
 | | Public | Private |
 | --- | --- | --- |
 | Who can see the code and the workflow runs | Anyone | You, and anyone you give access |
 | Cost of runs on standard GitHub-hosted runners | Free | Counts against your plan's included minutes, 2,000 a month on GitHub Free |
-| Configuring environments, used in optional Lab 8, on GitHub Free | Available | Not available |
+| Configuring environments, used in Lab 8, on GitHub Free | Available | Not available |
 
-The required labs use a few minutes in total. If you choose **Public**, don't commit passwords, tokens, or other secrets to the repository. The optional labs that need a secret show you how to store it as an encrypted repository secret instead. You can change the visibility later in the repository's **Settings**.
+Labs 0 to 2 use a few minutes in total. If you choose **Public**, don't commit passwords, tokens, or other secrets to the repository. Later labs that need a secret show you how to store it as an encrypted repository secret instead. You can change the visibility later in the repository's **Settings**.
 
 ## Find the Actions tab
 

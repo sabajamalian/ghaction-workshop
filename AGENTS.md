@@ -111,7 +111,7 @@ The tests in `tests/WorkshopDashboard.Tests` check mechanical rules such as dash
 - `src/WorkshopDashboard`: the Razor Pages site that renders the lessons.
 - `src/WorkshopCore`: the `Calculator` class that learners test in Lab 2. The dashboard uses it to total lesson durations.
 - `tests/WorkshopCore.Tests`: the tests learners run. `tests/WorkshopDashboard.Tests`: renderer security, page, and content tests.
-- `lessons/foundation`: the required labs. `lessons/explore`: the optional labs.
+- `lessons/foundation`: Labs 0 to 2. `lessons/explore`: Labs 3 and later. The README and the dashboard show every lab in one list, sorted by `order`.
 - `.github/workflows/build.yml`: the Lab 1 workflow.
 - `.github/workflows/deploy-site.yml`: deploys the workshop's own website to Azure App Service. Its job runs only in `sabajamalian/ghaction-workshop`. Setup is in `docs/deployment.md`.
 - `solutions/`: the finished workflows for the labs. They're outside `.github/workflows` so they don't run in learners' copies until someone copies one there. Lessons show them in `source=` blocks, so the content tests fail when a solution and its lesson drift apart.
@@ -144,7 +144,7 @@ The site runs at `http://localhost:5080`. In the Development environment, lesson
 
 ### Lessons
 
-- Each lesson is one Markdown file in `lessons/foundation` (required) or `lessons/explore` (optional). The file name sets the address: `01-build-application.md` becomes `/lessons/build-application`. A numeric prefix only sorts the files.
+- Each lesson is one Markdown file in `lessons/foundation` (Labs 0 to 2) or `lessons/explore` (the rest). Don't call a lab required or optional; the folder doesn't change how a lab is shown. The file name sets the address: `01-build-application.md` becomes `/lessons/build-application`. A numeric prefix only sorts the files.
 - The front matter has `title`, `summary`, `duration` (minutes), `difficulty` (`Beginner`, `Intermediate`, or `Advanced`), `order`, and an optional `requires`. Titles start with the lab number, as in `"Lab 3: Compare runners"`, and `order` is that number. Wrap `title`, `summary`, and `requires` in double quotes. The [editorial guide](docs/editorial-guide.md#lesson-files) shows the format. The site skips a lesson whose front matter is invalid and logs why.
 - Start the body with an H1 that matches `title`, so the file reads well on GitHub. The dashboard shows the title from the front matter and drops that H1.
 - Hints go in a `<details>` block. Put `<details>`, a one-line `<summary>Plain text</summary>`, and `</details>` on lines of their own, with a blank line after the summary and before `</details>`. Those are the only HTML tags the site renders. It shows any other HTML as plain text.

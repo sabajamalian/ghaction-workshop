@@ -9,10 +9,13 @@ public sealed record LessonLoadError(string SourcePath, string Message);
 
 public sealed record LessonLoadResult(LessonCollection Lessons, IReadOnlyList<LessonLoadError> Errors);
 
-// Reads every lesson file under lessons/<track>/ and renders it.
+// Reads every lesson file under the lesson folders and renders it as one list, sorted by order.
 // A lesson with invalid front matter is skipped and reported, so one bad file can't take the site down.
 public static partial class LessonLoader
 {
+    // Labs 0 to 2 are in foundation and the rest are in explore. The folder doesn't change how a lab is shown.
+    public static readonly IReadOnlyList<string> Folders = ["foundation", "explore"];
+
     public static readonly IReadOnlySet<string> Difficulties = new HashSet<string>(StringComparer.Ordinal)
     {
         "Beginner",
@@ -43,18 +46,18 @@ public static partial class LessonLoader
         var slugs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         var orders = new HashSet<int>();
 
-        foreach (LessonTrack track in LessonTrack.All)
+        foreach (string folder in Folders)
         {
-            string trackPath = Path.Combine(lessonsPath, track.Id);
-            if (!Directory.Exists(trackPath))
+            string folderPath = Path.Combine(lessonsPath, folder);
+            if (!Directory.Exists(folderPath))
             {
                 continue;
             }
 
-            foreach (string file in Directory.EnumerateFiles(trackPath, "*.md").Order(StringComparer.Ordinal))
+            foreach (string file in Directory.EnumerateFiles(folderPath, "*.md").Order(StringComparer.Ordinal))
             {
-                string sourcePath = $"lessons/{track.Id}/{Path.GetFileName(file)}";
-                if (!TryReadLesson(file, sourcePath, track, out Lesson? lesson, out string? body, out string? error))
+                string sourcePath = $"lessons/{folder}/{Path.GetFileName(file)}";
+                if (!TryReadLesson(file, sourcePath, out Lesson? lesson, out string? body, out string? error))
                 {
                     errors.Add(new LessonLoadError(sourcePath, error));
                     continue;
@@ -96,7 +99,6 @@ public static partial class LessonLoader
     private static bool TryReadLesson(
         string file,
         string sourcePath,
-        LessonTrack track,
         [NotNullWhen(true)] out Lesson? lesson,
         [NotNullWhen(true)] out string? body,
         [NotNullWhen(false)] out string? error)
@@ -162,7 +164,6 @@ public static partial class LessonLoader
             Difficulty = difficulty,
             Order = order,
             Requires = string.IsNullOrWhiteSpace(requires) ? null : requires.Trim(),
-            Track = track,
             SourcePath = sourcePath,
             Html = string.Empty,
         };

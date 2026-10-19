@@ -35,7 +35,7 @@ public sealed class PageTests : IDisposable
     }
 
     [Fact]
-    public async Task The_home_page_lists_the_lessons_by_track()
+    public async Task The_home_page_lists_every_lesson_in_one_list()
     {
         WriteSampleLessons();
         await using var factory = new DashboardFactory(_lessons.Root);
@@ -49,9 +49,13 @@ public sealed class PageTests : IDisposable
         Assert.Contains("<a href=\"/lessons/first-workflow\">Lab 1: First workflow</a>", body);
         Assert.Contains("<a href=\"/lessons/triggers\">Lab 3: Triggers</a>", body);
         Assert.Contains("Requires: Lab 1", body);
+        Assert.Contains("<h2 id=\"lessons-title\">Labs</h2>", body);
+        Assert.Single(body.Split("class=\"lesson-list\"").Skip(1));
         Assert.True(
-            body.IndexOf("Getting started", StringComparison.Ordinal) < body.IndexOf("Explore", StringComparison.Ordinal),
-            "The required track should come first.");
+            body.IndexOf("Lab 1: First workflow", StringComparison.Ordinal) < body.IndexOf("Lab 3: Triggers", StringComparison.Ordinal),
+            "The lessons should be sorted by order.");
+        Assert.DoesNotContain("Required", body);
+        Assert.DoesNotContain("Optional", body);
         Assert.DoesNotContain("The lessons couldn't be loaded", body);
     }
 

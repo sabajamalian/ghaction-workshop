@@ -2,9 +2,9 @@
 
 Learn GitHub Actions by building and testing the website that serves this workshop's lessons.
 
-You'll start by running an existing workflow, then create one that runs tests on pull requests. After that, you can pick optional labs on runners, deployments, Copilot CLI, and other topics.
+You'll start by running an existing workflow, then create one that runs tests on pull requests. After that, you can pick labs on runners, deployments, Copilot CLI, and other topics.
 
-The required labs run entirely in your browser on GitHub. You don't need to install anything.
+Labs 0 to 2 run entirely in your browser on GitHub. You don't need to install anything.
 
 <!-- After the first deployment of the workshop site, add a link to it here. -->
 
@@ -12,18 +12,13 @@ The required labs run entirely in your browser on GitHub. You don't need to inst
 
 Each lab is a Markdown file in the `lessons` folder, so you can read it here on GitHub. [Lab 0: Create your repository](lessons/foundation/00-create-repository.md) shows you how to create your own copy of this repository with **Use this template**. You'll run every workflow in that copy.
 
-| Lab | What you'll do | Time |
-| --- | --- | --- |
-| [Lab 0: Create your repository](lessons/foundation/00-create-repository.md) | Create your own copy of this repository from the template. | 5 minutes |
-| [Lab 1: Build the application](lessons/foundation/01-build-application.md) | Run the workflow that builds the website, and download the app it publishes. | 10 minutes |
-| [Lab 2: Run tests on pull requests](lessons/foundation/02-test-pull-request.md) | Write a workflow that runs the unit tests on every pull request, then make it fail and pass. | 20 minutes |
-
-## Optional labs
-
-After Lab 2, do any of these in any order. Each one lists anything else it needs at the top. All of them work in your copy from Lab 0, except Lab 9, which uses a separate private practice repository.
+Do Labs 0 to 2 in order. After that, do the others in any order. Each lab lists anything else it needs at the top. All of them work in your copy from Lab 0, except Lab 9, which uses a separate private practice repository.
 
 | Lab | What you'll do | Time | You need |
 | --- | --- | --- | --- |
+| [Lab 0: Create your repository](lessons/foundation/00-create-repository.md) | Create your own copy of this repository from the template. | 5 minutes | A GitHub account |
+| [Lab 1: Build the application](lessons/foundation/01-build-application.md) | Run the workflow that builds the website, and download the app it publishes. | 10 minutes | Nothing extra |
+| [Lab 2: Run tests on pull requests](lessons/foundation/02-test-pull-request.md) | Write a workflow that runs the unit tests on every pull request, then make it fail and pass. | 20 minutes | Nothing extra |
 | [Lab 3: Compare runners](lessons/explore/runners.md) | Run one job on Linux, Windows, and macOS runners at the same time, and compare the machines GitHub gives it. | 20 minutes | Nothing extra |
 | [Lab 4: Trigger workflows and pass inputs](lessons/explore/triggers-and-inputs.md) | Add a manual workflow with inputs and conditions, pass the inputs to the shell safely, and see how the `push`, `pull_request`, and `schedule` triggers start runs. | 30 minutes | Nothing extra |
 | [Lab 5: Pass files between jobs](lessons/explore/jobs-and-artifacts.md) | Split a build into parallel jobs, pass the published app to a dependent job as an artifact, and cache NuGet packages between runs. | 30 minutes | Nothing extra |
@@ -39,7 +34,7 @@ Runs in a public copy are free. In a private copy, they use your account's inclu
 
 ## Prerequisites
 
-You need a GitHub account. The free plan is enough for the required labs. Optional labs that need more, such as an Azure subscription or a Copilot plan, say so at the top. [Prerequisites](docs/prerequisites.md) lists what every lab needs, in one place.
+You need a GitHub account. The free plan is enough for Labs 0 to 2. Labs that need more, such as an Azure subscription or a Copilot plan, say so at the top. [Prerequisites](docs/prerequisites.md) lists what every lab needs, in one place.
 
 ## Run the website locally
 

@@ -14,7 +14,7 @@ public sealed class LessonLoaderTests : IDisposable
     private LessonLoadResult Load() => LessonLoader.Load(_lessons.Root, new MarkdownRenderer(), DashboardFactory.RepositoryUrl);
 
     [Fact]
-    public void Lessons_are_loaded_in_order_and_grouped_by_track()
+    public void Lessons_from_both_folders_are_loaded_into_one_ordered_list()
     {
         _lessons.WriteLesson("explore", "03-triggers.md", "Lab 3: Triggers", 3);
         _lessons.WriteLesson("foundation", "01-first-workflow.md", "Lab 1: First workflow", 1);
@@ -24,13 +24,11 @@ public sealed class LessonLoaderTests : IDisposable
 
         Assert.Empty(result.Errors);
         Assert.Equal(["welcome", "first-workflow", "triggers"], result.Lessons.Lessons.Select(lesson => lesson.Slug));
-        Assert.Equal([LessonTrack.GettingStarted, LessonTrack.Explore], result.Lessons.Tracks.Select(group => group.Track));
-        Assert.Equal(20, result.Lessons.Tracks[0].TotalMinutes);
+        Assert.Equal(30, result.Lessons.TotalMinutes);
 
         Lesson welcome = result.Lessons.Lessons[0];
         Assert.Equal("Lab 0: Welcome", welcome.Title);
         Assert.Equal("lessons/foundation/00-welcome.md", welcome.SourcePath);
-        Assert.Equal(LessonTrack.GettingStarted, welcome.Track);
         Assert.DoesNotContain("<h1", welcome.Html);
         Assert.Contains("<a href=\"/lessons/first-workflow\">Lab 1</a>", welcome.Html);
     }

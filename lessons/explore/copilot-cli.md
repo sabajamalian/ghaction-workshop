@@ -347,4 +347,4 @@ If you created a personal access token, delete it too. Select your profile pictu
 
 ## Next step
 
-The optional labs can be done in any order, so pick your next one from [the lesson list](../../README.md). To automate with Copilot, try [Lab 11](agentic-workflows.md), which uses GitHub Agentic Workflows.
+You can do the labs after Lab 2 in any order, so pick your next one from [the lesson list](../../README.md). To automate with Copilot, try [Lab 11](agentic-workflows.md), which uses GitHub Agentic Workflows.

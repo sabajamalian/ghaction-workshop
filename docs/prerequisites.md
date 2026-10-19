@@ -1,6 +1,6 @@
 # Prerequisites
 
-The required labs, 0 to 2, need a GitHub account and a web browser. GitHub Free is enough, and you don't install anything. This page lists what each optional lab needs on top of that, so you can check before you start. Each lab's **Before you start** section has the details.
+Labs 0 to 2 need a GitHub account and a web browser. GitHub Free is enough, and you don't install anything. This page lists what each of the other labs needs on top of that, so you can check before you start. Each lab's **Before you start** section has the details.
 
 ## What each lab needs
 
