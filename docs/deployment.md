@@ -6,6 +6,8 @@ You start the workflow by hand. The site doesn't change when `main` changes, so 
 
 The job runs only in `sabajamalian/ghaction-workshop`. In copies of the template it's skipped, and Lab 1 tells learners they can ignore the workflow. Learners who want to deploy their own copy follow [Lab 7](../lessons/explore/azure-oidc.md), which uses the same approach with their own app.
 
+The site runs at [ghaction-workshop.azurewebsites.net](https://ghaction-workshop.azurewebsites.net), on a B1 plan in Central US. Its resources are in the resource group `rg-github-workshop`, so `az group delete --name rg-github-workshop` deletes them.
+
 ## How the sign-in works
 
 GitHub stores no Azure secret for this workflow. Instead:
@@ -90,7 +92,7 @@ The **Test and deploy** job checks that the four variables are set, runs all the
 
 - `/health` returns JSON. `status` is `healthy`, `commit` is the full SHA of the commit you deployed, `lessons` is the number of lessons, and `environment` is `Production`.
 - The footer on every page shows the version, the short commit linked to it on GitHub, the build time, and the environment.
-- After the first successful deployment, replace the HTML comment near the top of `README.md` with a link to the site.
+- If the site's address changes, update the link near the top of `README.md`.
 
 ## Costs
 

@@ -6,7 +6,7 @@ You'll start by running an existing workflow, then create one that runs tests on
 
 Labs 0 to 2 run entirely in your browser on GitHub. You don't need to install anything.
 
-<!-- After the first deployment of the workshop site, add a link to it here. -->
+You can also read the labs on the [workshop site](https://ghaction-workshop.azurewebsites.net), which can mark the labs you've completed in your browser.
 
 ## Start the workshop
 
