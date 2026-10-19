@@ -24,7 +24,7 @@ Every lab except Lab 9 runs in the copy of the repository you create in [Lab 0](
 | [Lab 15: Secure your workflows](../lessons/explore/secure-workflows.md) | Nothing extra | About 5 in total |
 | [Lab 16: Build your own action](../lessons/explore/custom-action.md) | Nothing extra | About 3 in total |
 | [Lab 17: Run integration tests with a service container](../lessons/explore/service-containers.md) | Nothing extra | About 6 in total |
-| [Lab 18: Check coding standards with a Microsoft Foundry model](../lessons/explore/foundry-standards.md) | Nothing, because it's an instructor demo. To run it yourself, a Microsoft Foundry resource with the Microsoft decision model deployed, and an Azure subscription where you can create a managed identity and assign it a role on that resource. | About 1 per pull request |
+| [Lab 18: Check coding standards with a Microsoft Foundry model](../lessons/explore/foundry-standards.md) | Nothing, because it's an instructor demo. To run it yourself, a Microsoft Foundry resource with Microsoft-Decision-1 deployed, and an Azure subscription where you can create a managed identity and assign it a role on that resource. | About 1 per pull request |
 
 ## Public or private copy
 
@@ -38,7 +38,7 @@ Labs 6 and 11 use Copilot, which measures its work in AI credits worth $0.01 eac
 
 Labs 7 and 8 use Azure. Lab 7's setup uses App Service's Free (F1) tier, and managed identities cost nothing, so the Azure side is free. If your instructor set up Azure for your class, they pay for it.
 
-Lab 18 is an instructor demo, so it costs you nothing. If you run it yourself, Microsoft Foundry bills each model call by the tokens it sends and receives, which depends mostly on the size of the pull request's diff. The managed identity is free. See [Microsoft Foundry pricing](https://azure.microsoft.com/pricing/details/microsoft-foundry/).
+Lab 18 is an instructor demo, so it costs you nothing. If you run it yourself, Microsoft Foundry bills each call to your Microsoft-Decision-1 deployment. Each pull request update makes one call, and its input is mostly the pull request's diff. The managed identity is free. See [Microsoft Foundry pricing](https://azure.microsoft.com/pricing/details/microsoft-foundry/).
 
 Lab 9 runs its jobs on a machine you provide. A codespace uses your free monthly Codespaces quota: an hour on a 2-core codespace uses 2 of the 120 compute hours GitHub Free includes, or 2 of the 180 on GitHub Pro. A codespace also uses storage quota for as long as it exists, even while it's stopped. A cloud virtual machine is billed until you delete it. See [GitHub Codespaces billing](https://docs.github.com/en/billing/concepts/product-billing/github-codespaces).
 

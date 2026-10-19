@@ -82,17 +82,17 @@ The importer asks for an Azure DevOps organization, a project, and two tokens ev
 
 ### Prepare the Lab 18 demo
 
-Lab 18 is a demo: you run it, and learners watch. It sends a pull request's changes and a set of coding standards to the Microsoft decision model in Microsoft Foundry, and fails the check when the model finds a rule marked `block`. Learners don't need Azure or Foundry access.
+Lab 18 is a demo: you run it, and learners watch. It asks Microsoft-Decision-1 in Microsoft Foundry whether a pull request's changes break each of a set of coding standards, and fails the check when the model is at least 80% sure a rule marked `block` is broken. Learners don't need Azure or Foundry access.
 
 Set it up in a repository you'll show on screen, such as your own copy of the workshop, at least a day before the session:
 
-1. Deploy the Microsoft decision model in a Microsoft Foundry project, and note the deployment name and the resource's endpoint.
-2. Create the `id-standards` identity, its federated credential for `pull_request`, and its role assignment, as [Create an identity for the check](../lessons/explore/foundry-standards.md#create-an-identity-for-the-check) in Lab 18 describes. Role assignments can take a few minutes to apply.
+1. Deploy Microsoft-Decision-1 to a Microsoft Foundry resource, and note the deployment name and the resource's endpoint.
+2. Create the `id-standards` identity, its federated credential for `pull_request`, and its **Cognitive Services User** role assignment, as [Create an identity for the check](../lessons/explore/foundry-standards.md#create-an-identity-for-the-check) in Lab 18 describes. Role assignments can take a few minutes to apply.
 3. Add the repository variables from [Add the repository variables](../lessons/explore/foundry-standards.md#add-the-repository-variables).
 4. Add `.github/workflows/coding-standards-check.yml` to `main`.
 5. Run the demo once, from a branch you then delete. The first run shows whether sign-in and the model call work, and it gives you a finished run to fall back on if the network fails during the session.
 
-Each run is one model call, billed by Microsoft Foundry for the tokens it sends and receives. For the sample pull request, that's a few thousand tokens. The check skips pull requests from forks, because they can't get an OIDC token from your repository.
+Each run is one call to the decision API, with one question for each rule, billed by Microsoft Foundry. The input is mostly the diff, and the job summary shows how many input tokens the call used. The check skips pull requests from forks, because they can't get an OIDC token from your repository.
 
 ### Try Labs 0 to 2 yourself
 

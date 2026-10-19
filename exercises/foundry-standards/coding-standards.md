@@ -1,6 +1,8 @@
 # Coding standards
 
-These are the rules the coding standards check in Lab 18 asks the model to apply to every pull request that changes C# code. Each rule has an ID, so the check can report which one a change breaks, and a decision for when it's broken: `block` fails the check, and `warn` adds a warning but lets it pass.
+These are the rules the coding standards check in Lab 18 applies to every pull request that changes C# code. The check turns each rule into a question for Microsoft-Decision-1: does the pull request pass, or does it break the rule? Each rule has an ID, so the check can report which one a change breaks, and a decision for when it's broken: `block` fails the check, and `warn` adds a warning but lets it pass.
+
+The check reads this file, so keep the format: each rule is a `## ID: Title` heading, the rule's text, and a last line that starts with `Decision when broken:` and names `block` or `warn`.
 
 ## CS1: The library doesn't write to the console
 
