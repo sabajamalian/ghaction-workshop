@@ -2,11 +2,11 @@
 
 Learn GitHub Actions by building and testing the website that serves this workshop's lessons.
 
+Read the labs on the workshop site at [https://ghaction-workshop.azurewebsites.net](https://ghaction-workshop.azurewebsites.net). It shows the same labs as the `lessons` folder, and it can mark the labs you've completed in your browser.
+
 You'll start by running an existing workflow, then create one that runs tests on pull requests. After that, you can pick labs on runners, deployments, Copilot CLI, and other topics.
 
 Labs 0 to 2 run entirely in your browser on GitHub. You don't need to install anything.
-
-You can also read the labs on the [workshop site](https://ghaction-workshop.azurewebsites.net), which can mark the labs you've completed in your browser.
 
 ## Start the workshop
 
