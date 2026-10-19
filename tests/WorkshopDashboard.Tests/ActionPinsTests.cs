@@ -15,6 +15,7 @@ public class ActionPinsTests
     [InlineData($"uses: actions/checkout@{Sha} # v7")]
     [InlineData($"  - uses: \"actions/checkout@{Sha}\" # v7.0")]
     [InlineData("      - uses: ./.github/actions/setup")]
+    [InlineData("      - uses: $/.github/actions/setup")]
     [InlineData("      - uses: docker://alpine@sha256:4bcff63911fcb4448bd4fdacec207030997caf25e9bea4045fa6c8c44de311d1")]
     public void Pinned_and_local_actions_pass(string line)
     {

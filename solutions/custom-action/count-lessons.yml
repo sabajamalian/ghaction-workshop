@@ -1,0 +1,29 @@
+name: Count lessons
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  count:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Count the lessons
+        id: lessons
+        uses: $/.github/actions/count-lessons
+        with:
+          folder: lessons
+
+      - name: Use the outputs
+        env:
+          COUNT: ${{ steps.lessons.outputs.count }}
+          MINUTES: ${{ steps.lessons.outputs.minutes }}
+        run: echo "The workshop has $COUNT lessons, about $MINUTES minutes of work."

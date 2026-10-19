@@ -4,7 +4,7 @@ Learn GitHub Actions by building and testing the website that serves this worksh
 
 Read the labs on the workshop site at [https://ghaction-workshop.azurewebsites.net](https://ghaction-workshop.azurewebsites.net). It shows the same labs as the `lessons` folder, and it can mark the labs you've completed in your browser.
 
-You'll start by running an existing workflow, then create one that runs tests on pull requests. After that, you can pick labs on runners, deployments, Copilot CLI, and other topics.
+You'll start by running an existing workflow, then create one that runs tests on pull requests. After that, you can pick labs on runners, deployments, debugging, security, custom actions, Copilot CLI, and other topics.
 
 Labs 0 to 2 run entirely in your browser on GitHub. You don't need to install anything.
 
@@ -12,13 +12,24 @@ Labs 0 to 2 run entirely in your browser on GitHub. You don't need to install an
 
 Each lab is a Markdown file in the `lessons` folder, so you can read it here on GitHub. [Lab 0: Create your repository](lessons/foundation/00-create-repository.md) shows you how to create your own copy of this repository with **Use this template**. You'll run every workflow in that copy.
 
-Do Labs 0 to 2 in order. After that, do the others in any order. Each lab lists anything else it needs at the top. All of them work in your copy from Lab 0, except Lab 9, which uses a separate private practice repository.
+Do the foundation labs first, then pick explore labs in any order. Each lab lists anything else it needs at the top. All of them work in your copy from Lab 0, except Lab 9, which uses a separate private practice repository.
+
+## Foundation labs (required)
+
+Labs 0 to 2 are required before any other lab, and you do them in order. They create your repository and teach the workflow basics every other lab builds on.
 
 | Lab | What you'll do | Time | You need |
 | --- | --- | --- | --- |
 | [Lab 0: Create your repository](lessons/foundation/00-create-repository.md) | Create your own copy of this repository from the template. | 5 minutes | A GitHub account |
 | [Lab 1: Build the application](lessons/foundation/01-build-application.md) | Run the workflow that builds the website, and download the app it publishes. | 10 minutes | Nothing extra |
 | [Lab 2: Run tests on pull requests](lessons/foundation/02-test-pull-request.md) | Write a workflow that runs the unit tests on every pull request, then make it fail and pass. | 20 minutes | Nothing extra |
+
+## Explore labs
+
+After the foundation labs, do any of these, in any order. Lab 18 is a demo your instructor runs.
+
+| Lab | What you'll do | Time | You need |
+| --- | --- | --- | --- |
 | [Lab 3: Compare runners](lessons/explore/runners.md) | Run one job on Linux, Windows, and macOS runners at the same time, and compare the machines GitHub gives it. | 20 minutes | Nothing extra |
 | [Lab 4: Trigger workflows and pass inputs](lessons/explore/triggers-and-inputs.md) | Add a manual workflow with inputs and conditions, pass the inputs to the shell safely, and see how the `push`, `pull_request`, and `schedule` triggers start runs. | 30 minutes | Nothing extra |
 | [Lab 5: Pass files between jobs](lessons/explore/jobs-and-artifacts.md) | Split a build into parallel jobs, pass the published app to a dependent job as an artifact, and cache NuGet packages between runs. | 30 minutes | Nothing extra |
@@ -29,8 +40,14 @@ Do Labs 0 to 2 in order. After that, do the others in any order. Each lab lists 
 | [Lab 10: Reuse workflows and steps](lessons/explore/reusable-workflows.md) | Turn the build job into a reusable workflow, call it twice with different inputs, and move its setup steps into a composite action. | 35 minutes | Nothing extra |
 | [Lab 11: Review CI failures with an agentic workflow](lessons/explore/agentic-workflows.md) | Compile an agentic workflow that reads your repository's failed runs and opens an issue that suggests what caused them. | 45 minutes | Copilot CLI, through your Copilot plan or your organization, and a terminal with Git and GitHub CLI for compiling |
 | [Lab 12: Migrate an Azure DevOps pipeline](lessons/explore/azure-devops-migration.md) | Convert an Azure Pipelines CI pipeline to a GitHub Actions workflow, repair what the conversion missed, and compare where each platform shows test results and coverage. | 75 minutes | A terminal with Docker and GitHub CLI for the optional Part C |
+| [Lab 13: Debug a broken workflow](lessons/explore/debug-workflows.md) | Fix a workflow with five planted problems, using error annotations, step logs, debug logging, and actionlint. | 40 minutes | Nothing extra |
+| [Lab 14: Automate issues and pull requests](lessons/explore/automate-issues-prs.md) | Label pull requests by the files they change, welcome new issues, and answer a slash command in a comment, using the workflow's own token. | 35 minutes | Nothing extra |
+| [Lab 15: Secure your workflows](lessons/explore/secure-workflows.md) | Limit the workflow token, audit your workflows with zizmor, keep pinned actions current with Dependabot, and learn the patterns that let attackers into a workflow. | 40 minutes | Nothing extra |
+| [Lab 16: Build your own action](lessons/explore/custom-action.md) | Write a JavaScript action with inputs and outputs, call it from a workflow, release it with a version tag, and compare it with composite and Docker actions. | 40 minutes | Nothing extra |
+| [Lab 17: Run integration tests with a service container](lessons/explore/service-containers.md) | Start a PostgreSQL database next to a job with a service container, wait for it to be healthy, and run integration tests against it. | 30 minutes | Nothing extra |
+| [Lab 18: Check coding standards with a Microsoft Foundry model](lessons/explore/foundry-standards.md) | Watch a demo of a pull request check that sends the changes and the team's coding standards to the Microsoft decision model in Microsoft Foundry, and turns its decisions into annotations and a pass or fail. | 25 minutes | Nothing, because it's an instructor demo. To run it yourself, a Microsoft Foundry resource with the model deployed, and an Azure subscription where you can assign roles |
 
-Runs in a public copy are free. In a private copy, they use your account's included Actions minutes. Most labs use a few, Lab 3 uses about 16 per run, because macOS minutes cost more, and Lab 9 uses none, because its jobs run on your own machine. Labs 6 and 11 also use AI credits from your Copilot plan, as [Prerequisites](docs/prerequisites.md#costs-outside-github-actions) describes.
+Runs in a public copy are free. In a private copy, they use your account's included Actions minutes. Most labs use a few, Lab 3 uses about 16 per run, because macOS minutes cost more, Lab 13 uses about 25, because it runs Windows jobs, and Lab 9 uses none, because its jobs run on your own machine. Labs 6 and 11 also use AI credits from your Copilot plan, and Lab 18 uses Microsoft Foundry tokens if you run it yourself, as [Prerequisites](docs/prerequisites.md#costs-outside-github-actions) describes.
 
 ## Prerequisites
 

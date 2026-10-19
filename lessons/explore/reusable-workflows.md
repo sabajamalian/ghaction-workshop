@@ -12,7 +12,9 @@ order: 10
 
 ## Before you start
 
-You need the repository you created in [Lab 0](../foundation/00-create-repository.md). The reusable workflow builds the same app as [Lab 1](../foundation/01-build-application.md) and runs the same tests as [Lab 2](../foundation/02-test-pull-request.md). Everything happens in your browser.
+Finish the foundation labs, [Lab 0](../foundation/00-create-repository.md) to [Lab 2](../foundation/02-test-pull-request.md), first. They cover the workflow basics this lab builds on.
+
+This lab works in the repository you created in Lab 0. The reusable workflow builds the same app as [Lab 1](../foundation/01-build-application.md) and runs the same tests as [Lab 2](../foundation/02-test-pull-request.md). Everything happens in your browser.
 
 If your repository is public, the runs are free. If it's private, they use your account's included Actions minutes, and GitHub rounds each job up to a whole minute. A run of this lab's workflow has three short jobs, so it counts as about 3 of the 2,000 minutes a month that GitHub Free includes. See [Actions runner pricing](https://docs.github.com/en/billing/reference/actions-runner-pricing).
 

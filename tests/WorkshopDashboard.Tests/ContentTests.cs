@@ -4,7 +4,7 @@ using Xunit;
 namespace WorkshopDashboard.Tests;
 
 // Runs the editorial rules over every file a contributor would commit.
-// A failure lists each problem as path:line: message. See "What the tests check" in docs/editorial-guide.md.
+// A failure lists each problem as path:line: message. See "What the tests check" in maintainers/editorial-guide.md.
 public class ContentTests
 {
     private static readonly Lazy<ContentRepository> Repository = new(() => ContentRepository.Load(ContentRepository.FindRoot()));
@@ -74,8 +74,8 @@ public class ContentTests
     {
         ContentRepository repository = Repository.Value;
 
-        Assert.Contains("AGENTS.md", repository.Files);
-        Assert.Contains("docs/editorial-guide.md", repository.Files);
+        Assert.Contains("maintainers/AGENTS.md", repository.Files);
+        Assert.Contains("maintainers/editorial-guide.md", repository.Files);
         Assert.Contains(".github/workflows/build.yml", repository.Files);
         Assert.DoesNotContain(repository.FileList, path => path.Contains("/bin/", StringComparison.Ordinal) || path.Contains("/obj/", StringComparison.Ordinal));
         Assert.DoesNotContain(repository.FileList, path => path.StartsWith(".git/", StringComparison.Ordinal));

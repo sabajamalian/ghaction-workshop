@@ -44,7 +44,7 @@ Labs 0 to 2 use a few minutes in total. If you choose **Public**, don't commit p
 
 ## Find the Actions tab
 
-Under your repository's name, select the **Actions** tab. The left sidebar lists the repository's workflows, including **Build application**, which you'll run in the next lab.
+Under your repository's name, select the **Actions** tab. The left sidebar lists the repository's workflows. For now that's only **Build application**, which you'll run in the next lab.
 
 Nothing has run yet. The workflows in this template only run when someone starts them.
 

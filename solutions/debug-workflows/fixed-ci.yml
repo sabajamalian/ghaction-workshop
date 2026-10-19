@@ -1,0 +1,65 @@
+name: Broken CI
+
+on:
+  push:
+    branches: [debug-practice]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Show the tools
+        run: |
+          echo "::group::.NET SDKs"
+          dotnet --list-sdks
+          echo "::endgroup::"
+
+      - name: Run the tests
+        run: dotnet test tests/WorkshopCore.Tests
+
+      - name: List the test output
+        shell: bash
+        run: ls -la tests/WorkshopCore.Tests/bin/Debug/net10.0
+
+  report:
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      statuses: write
+    steps:
+      - name: Shorten the commit SHA
+        id: short-sha
+        run: echo "sha=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+
+      - name: Post a commit status
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHORT_SHA: ${{ steps.short-sha.outputs.sha }}
+        run: |
+          if [ -z "$SHORT_SHA" ]; then
+            echo "::error::SHORT_SHA is empty, so there's nothing to report."
+            exit 1
+          fi
+          gh api "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA" \
+            -f state=success \
+            -f context=debug-practice \
+            -f description="Tests passed on Linux and Windows for $SHORT_SHA"

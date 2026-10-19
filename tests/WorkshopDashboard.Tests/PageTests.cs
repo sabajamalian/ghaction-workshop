@@ -35,7 +35,7 @@ public sealed class PageTests : IDisposable
     }
 
     [Fact]
-    public async Task The_home_page_lists_every_lesson_in_one_list()
+    public async Task The_home_page_groups_foundation_labs_before_explore_labs()
     {
         WriteSampleLessons();
         await using var factory = new DashboardFactory(_lessons.Root);
@@ -50,13 +50,44 @@ public sealed class PageTests : IDisposable
         Assert.Contains("<a href=\"/lessons/triggers\">Lab 3: Triggers</a>", body);
         Assert.Contains("Requires: Lab 1", body);
         Assert.Contains("<h2 id=\"lessons-title\">Labs</h2>", body);
-        Assert.Single(body.Split("class=\"lesson-list\"").Skip(1));
-        Assert.True(
-            body.IndexOf("Lab 1: First workflow", StringComparison.Ordinal) < body.IndexOf("Lab 3: Triggers", StringComparison.Ordinal),
-            "The lessons should be sorted by order.");
-        Assert.DoesNotContain("Required", body);
-        Assert.DoesNotContain("Optional", body);
+        Assert.Contains("<h3 id=\"foundation-title\">Foundation labs (required)</h3>", body);
+        Assert.Contains("<h3 id=\"explore-title\">Explore labs</h3>", body);
+        Assert.Equal(2, body.Split("class=\"lesson-list\"").Length - 1);
+
+        int foundation = body.IndexOf("foundation-title\">", StringComparison.Ordinal);
+        int explore = body.IndexOf("explore-title\">", StringComparison.Ordinal);
+        int welcome = body.IndexOf("Lab 0: Welcome", foundation, StringComparison.Ordinal);
+        int firstWorkflow = body.IndexOf("Lab 1: First workflow", foundation, StringComparison.Ordinal);
+        int triggers = body.IndexOf("Lab 3: Triggers", foundation, StringComparison.Ordinal);
+        Assert.True(foundation < welcome && welcome < firstWorkflow && firstWorkflow < explore, "The foundation labs should be listed first, in order.");
+        Assert.True(explore < triggers, "Lab 3 should be in the explore group.");
         Assert.DoesNotContain("The lessons couldn't be loaded", body);
+    }
+
+    [Fact]
+    public async Task The_home_page_hides_an_empty_group()
+    {
+        _lessons.WriteLesson("foundation", "00-welcome.md", "Lab 0: Welcome", 0);
+        await using var factory = new DashboardFactory(_lessons.Root);
+
+        (_, string body) = await GetAsync(factory.CreateClient(), "/");
+
+        Assert.Contains("Foundation labs (required)", body);
+        Assert.DoesNotContain("Explore labs", body);
+    }
+
+    [Fact]
+    public async Task Only_foundation_lesson_pages_show_the_required_label()
+    {
+        WriteSampleLessons();
+        await using var factory = new DashboardFactory(_lessons.Root);
+        HttpClient client = factory.CreateClient();
+
+        (_, string foundation) = await GetAsync(client, "/lessons/first-workflow");
+        (_, string explore) = await GetAsync(client, "/lessons/triggers");
+
+        Assert.Contains("<span class=\"lesson-foundation\">Foundation lab, required</span>", foundation);
+        Assert.DoesNotContain("Foundation lab, required", explore);
     }
 
     [Fact]

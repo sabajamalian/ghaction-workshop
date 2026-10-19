@@ -9,11 +9,15 @@ using WorkshopDashboard.Services;
 
 namespace WorkshopDashboard.Tests.Content;
 
-// The mechanical rules from docs/editorial-guide.md ("What the tests check").
+// The mechanical rules from maintainers/editorial-guide.md ("What the tests check").
 // Each rule returns findings instead of failing on the first one, so a test run lists every problem at once.
 internal static partial class ContentRules
 {
     public const string LessonsReadme = "lessons/README.md";
+
+    // Every explore lab's "Before you start" section opens with this paragraph, so learners know the foundation labs come first.
+    public const string FoundationLine =
+        "Finish the foundation labs, [Lab 0](../foundation/00-create-repository.md) to [Lab 2](../foundation/02-test-pull-request.md), first. They cover the workflow basics this lab builds on.";
 
     private static readonly HashSet<string> CheckedTextExtensions = new(StringComparer.OrdinalIgnoreCase)
     {
@@ -342,6 +346,10 @@ internal static partial class ContentRules
             if (repository.Files.Contains(lesson.SourcePath))
             {
                 findings.AddRange(CheckLessonHeadings(repository.Markdown(lesson.SourcePath), lesson.Title, lesson.Order));
+                if (!lesson.IsFoundation)
+                {
+                    findings.AddRange(CheckFoundationLine(repository.Markdown(lesson.SourcePath)));
+                }
             }
         }
 
@@ -391,6 +399,22 @@ internal static partial class ContentRules
             {
                 yield return new Finding(file.Path, extra.Line + 1, $"A lesson has only one \"## {section}\" section. Merge this one into the first.");
             }
+        }
+    }
+
+    public static IEnumerable<Finding> CheckFoundationLine(MarkdownFile file)
+    {
+        int heading = Array.FindIndex(file.Lines, line => line.TrimEnd() == "## Before you start");
+        if (heading < 0)
+        {
+            yield return new Finding(file.Path, 0, "Add a \"## Before you start\" section that opens with the foundation line.");
+            yield break;
+        }
+
+        int first = Array.FindIndex(file.Lines, heading + 1, line => line.Trim().Length > 0);
+        if (first < 0 || file.Lines[first].TrimEnd() != FoundationLine)
+        {
+            yield return new Finding(file.Path, first < 0 ? heading + 1 : first + 1, $"Start \"Before you start\" with this paragraph: {FoundationLine}");
         }
     }
 

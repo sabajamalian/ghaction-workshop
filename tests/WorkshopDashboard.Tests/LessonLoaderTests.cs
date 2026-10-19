@@ -34,6 +34,23 @@ public sealed class LessonLoaderTests : IDisposable
     }
 
     [Fact]
+    public void Foundation_labs_come_first_and_are_marked_by_folder()
+    {
+        _lessons.WriteLesson("explore", "03-triggers.md", "Lab 3: Triggers", 3);
+        _lessons.WriteLesson("foundation", "01-first-workflow.md", "Lab 1: First workflow", 1);
+        _lessons.WriteLesson("explore", "02-early.md", "Lab 2: Early", 2);
+        _lessons.WriteLesson("foundation", "05-late.md", "Lab 5: Late", 5);
+
+        LessonCollection lessons = Load().Lessons;
+
+        Assert.Equal(["first-workflow", "late", "early", "triggers"], lessons.Lessons.Select(lesson => lesson.Slug));
+        Assert.Equal(["first-workflow", "late"], lessons.Foundation.Select(lesson => lesson.Slug));
+        Assert.Equal(["early", "triggers"], lessons.Explore.Select(lesson => lesson.Slug));
+        Assert.All(lessons.Foundation, lesson => Assert.True(lesson.IsFoundation));
+        Assert.All(lessons.Explore, lesson => Assert.False(lesson.IsFoundation));
+    }
+
+    [Fact]
     public void Previous_and_next_follow_the_lesson_order()
     {
         _lessons.WriteLesson("foundation", "00-welcome.md", "Lab 0: Welcome", 0);

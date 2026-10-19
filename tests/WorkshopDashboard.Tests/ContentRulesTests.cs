@@ -27,6 +27,18 @@ public class ContentRulesTests
         Assert.Equal("docs/page.md: Fix it.", new Finding(Page, 0, "Fix it.").ToString());
     }
 
+    [Theory]
+    [InlineData("# Lab 3\n\n## Before you start\n\nYou need a repository.\n", 5)]
+    [InlineData("# Lab 3\n\nIntro.\n", 0)]
+    public void Explore_labs_start_before_you_start_with_the_foundation_line(string text, int line)
+    {
+        Assert.Empty(ContentRules.CheckFoundationLine(MarkdownFile.Parse(Page, $"# Lab 3\n\n## Before you start\n\n{ContentRules.FoundationLine}\n\nMore.\n")));
+
+        Finding finding = Assert.Single(ContentRules.CheckFoundationLine(MarkdownFile.Parse(Page, text)));
+        Assert.Equal(line, finding.Line);
+        Assert.Contains("foundation", finding.Message);
+    }
+
     [Fact]
     public void Ignored_files_and_dot_folders_are_skipped()
     {
@@ -555,7 +567,7 @@ public class ContentRulesTests
         using var repository = new TempRepository()
             .Write("lessons/README.md", "# Lessons\n")
             .Write(Lesson, CompleteLesson("Lab 1: First", 1))
-            .Write("lessons/explore/03-more.md", CompleteLesson("Lab 3: More", 3));
+            .Write("lessons/explore/03-more.md", CompleteLesson("Lab 3: More", 3, $"## Before you start\n\n{ContentRules.FoundationLine}\n\n"));
 
         Assert.Empty(ContentRules.CheckLessons(repository.Load()));
     }

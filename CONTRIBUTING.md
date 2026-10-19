@@ -2,9 +2,17 @@
 
 This repository holds the workshop itself: the lessons, the dashboard that serves them, and the workflows that learners run. If you're working through the labs, do that in your own copy of the template, not here.
 
+The repository is a template, so everything in it ends up in every learner's copy. Files that only maintainers need are in [`maintainers/`](maintainers/README.md), where learners can ignore them and coding agents don't load them as instructions.
+
 ## Before you write anything
 
-Read [AGENTS.md](AGENTS.md) and [the editorial guide](docs/editorial-guide.md). Between them they cover the writing rules and the conventions for lessons, workflows, and the dashboard. Before you open a pull request, review your change with [the editorial checklist](docs/editorial-checklist.md).
+Read [maintainers/AGENTS.md](maintainers/AGENTS.md) and [the editorial guide](maintainers/editorial-guide.md). Between them they cover the writing rules and the conventions for lessons, workflows, and the dashboard. Before you open a pull request, review your change with [the editorial checklist](maintainers/editorial-checklist.md).
+
+Copilot CLI loads `AGENTS.md` automatically only from the repository root and the folder you start it in, so it doesn't load `maintainers/AGENTS.md` in learners' copies. To load it while you work on the workshop, start Copilot CLI from the repository root with the folder added to its instruction folders:
+
+```bash
+COPILOT_CUSTOM_INSTRUCTIONS_DIRS="$PWD/maintainers" copilot
+```
 
 ## Build and run
 
@@ -20,11 +28,12 @@ The dashboard runs at `http://localhost:5080`. In the Development environment it
 
 ## Tests
 
-`dotnet test` runs two projects:
+`dotnet test` runs three projects:
 
 | Project | What it covers |
 | --- | --- |
 | `tests/WorkshopCore.Tests` | The `Calculator` tests that learners run and break in Lab 2. |
+| `tests/WorkshopCore.IntegrationTests` | The PostgreSQL tests that Lab 17 runs against a service container. Without a `WORKSHOP_POSTGRES` connection string, they're skipped, so `dotnet test` passes on a computer with no database. |
 | `tests/WorkshopDashboard.Tests` | Markdown rendering and its security rules, the pages and response headers, and the content checks for lessons and documentation. |
 
 The content checks in `ContentTests` read every lesson, document, and workflow in the repository. When one fails, it lists each problem as `path:line: message`, and the message says how to fix it. To run only those checks while you edit:
@@ -33,11 +42,11 @@ The content checks in `ContentTests` read every lesson, document, and workflow i
 dotnet test tests/WorkshopDashboard.Tests --filter "FullyQualifiedName~ContentTests"
 ```
 
-The editorial guide lists the rules in [What the tests check](docs/editorial-guide.md#what-the-tests-check).
+The editorial guide lists the rules in [What the tests check](maintainers/editorial-guide.md#what-the-tests-check).
 
 Keep `tests/WorkshopCore.Tests` small and readable. Learners open those tests in the browser, and Lab 2 depends on a test failing when they change `Calculator`. If you change the tests or the class, check that Lab 2 still describes what happens.
 
-Both projects reference `xunit.v3.mtp-off`, which keeps them on the VSTest runner, so `dotnet test` works without extra configuration. Coverage comes from `coverlet.collector`. This command writes a Cobertura file into each test project's `TestResults` folder:
+All three projects reference `xunit.v3.mtp-off`, which keeps them on the VSTest runner, so `dotnet test` works without extra configuration. Coverage comes from `coverlet.collector`. This command writes a Cobertura file into each test project's `TestResults` folder:
 
 ```bash
 dotnet test --collect "XPlat Code Coverage"
@@ -45,7 +54,7 @@ dotnet test --collect "XPlat Code Coverage"
 
 ## Workflows
 
-Every workflow in `.github/workflows/` ends up in every copy of the template, so those workflows use only `workflow_dispatch`. The rules for pinning actions, permissions, and untrusted input are in [the Workflows section of AGENTS.md](AGENTS.md#workflows). Run `actionlint` on every workflow you change.
+Every workflow in `.github/workflows/` ends up in every copy of the template, so that folder holds only `build.yml`, which Lab 1 uses, and it runs only on `workflow_dispatch`. Don't add maintainer workflows there: the workshop site is deployed by hand, as [Deploy the workshop site](maintainers/deployment.md) describes. The rules for pinning actions, permissions, and untrusted input are in [the Workflows section of maintainers/AGENTS.md](maintainers/AGENTS.md#workflows). Run `actionlint` on every workflow you change.
 
 To move an action to a new release, resolve the release tag to its commit SHA, then update the SHA and the version comment together:
 
@@ -78,4 +87,4 @@ To update it:
 
 - Say what you changed and how you checked it.
 - If something couldn't be tested, such as a deployment that needs an Azure subscription, say what and why.
-- When the change includes text that people read, copy [the editorial checklist](docs/editorial-checklist.md) into the description and work through it.
+- When the change includes text that people read, copy [the editorial checklist](maintainers/editorial-checklist.md) into the description and work through it.

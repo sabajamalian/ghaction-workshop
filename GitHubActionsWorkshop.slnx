@@ -4,6 +4,7 @@
     <Project Path="src/WorkshopDashboard/WorkshopDashboard.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/WorkshopCore.IntegrationTests/WorkshopCore.IntegrationTests.csproj" />
     <Project Path="tests/WorkshopCore.Tests/WorkshopCore.Tests.csproj" />
     <Project Path="tests/WorkshopDashboard.Tests/WorkshopDashboard.Tests.csproj" />
   </Folder>

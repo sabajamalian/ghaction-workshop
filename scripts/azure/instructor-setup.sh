@@ -226,7 +226,7 @@ if [ "$unchecked" -gt 0 ]; then
     warn "Couldn't check whether $unchecked web app names are available, so the script continues. If creating a web app fails because the name is taken, run the script again with another --prefix."
 fi
 info "All ${#REPOS[@]} repositories and web app names are ready."
-ensure_providers
+ensure_providers Microsoft.Web Microsoft.ManagedIdentity
 
 section "Shared resources:"
 ensure_group "$RESOURCE_GROUP" "$LOCATION"

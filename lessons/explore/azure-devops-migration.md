@@ -13,7 +13,9 @@ Your repository has an Azure Pipelines file, `migration/azure-devops/azure-pipel
 
 ## Before you start
 
-You need the repository you created in [Lab 0](../foundation/00-create-repository.md). This lab uses the run, job, and step pages you saw in [Lab 1](../foundation/01-build-application.md) and the tests from [Lab 2](../foundation/02-test-pull-request.md). You don't need an Azure DevOps organization, and nothing is created in Azure DevOps.
+Finish the foundation labs, [Lab 0](../foundation/00-create-repository.md) to [Lab 2](../foundation/02-test-pull-request.md), first. They cover the workflow basics this lab builds on.
+
+This lab works in the repository you created in Lab 0. It uses the run, job, and step pages you saw in [Lab 1](../foundation/01-build-application.md) and the tests from [Lab 2](../foundation/02-test-pull-request.md). You don't need an Azure DevOps organization, and nothing is created in Azure DevOps.
 
 Parts A, B, and D happen in your browser and take about 45 minutes. Part C is optional, takes about 30 minutes more, and needs a terminal with Docker and GitHub CLI. [Get a terminal with Docker](#get-a-terminal-with-docker) explains the options.
 
@@ -111,7 +113,7 @@ steps:
       artifact: workshop-dashboard
 ```
 
-Nothing runs this file. GitHub only runs workflow files in `.github/workflows`, and Azure Pipelines only runs a pipeline that someone has created in an Azure DevOps project. [The README in that folder](../../migration/azure-devops/README.md) explains how the pipeline was checked without one.
+Nothing runs this file. GitHub only runs workflow files in `.github/workflows`, and Azure Pipelines only runs a pipeline that someone has created in an Azure DevOps project. [The README in that folder](../../migration/azure-devops/README.md) explains how to check the pipeline when you change it.
 
 ### What's in the pipeline
 

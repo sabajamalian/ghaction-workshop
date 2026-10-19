@@ -9,12 +9,15 @@ public sealed record LessonLoadError(string SourcePath, string Message);
 
 public sealed record LessonLoadResult(LessonCollection Lessons, IReadOnlyList<LessonLoadError> Errors);
 
-// Reads every lesson file under the lesson folders and renders it as one list, sorted by order.
+// Reads every lesson file under the lesson folders and renders them, foundation labs first, each group sorted by order.
 // A lesson with invalid front matter is skipped and reported, so one bad file can't take the site down.
 public static partial class LessonLoader
 {
-    // Labs 0 to 2 are in foundation and the rest are in explore. The folder doesn't change how a lab is shown.
-    public static readonly IReadOnlyList<string> Folders = ["foundation", "explore"];
+    // Labs 0 to 2 are in foundation and the rest are in explore. The site shows foundation labs as required, in order,
+    // and explore labs as any order after them.
+    public const string FoundationFolder = "foundation";
+
+    public static readonly IReadOnlyList<string> Folders = [FoundationFolder, "explore"];
 
     public static readonly IReadOnlySet<string> Difficulties = new HashSet<string>(StringComparer.Ordinal)
     {
@@ -164,6 +167,7 @@ public static partial class LessonLoader
             Difficulty = difficulty,
             Order = order,
             Requires = string.IsNullOrWhiteSpace(requires) ? null : requires.Trim(),
+            IsFoundation = sourcePath.StartsWith($"lessons/{FoundationFolder}/", StringComparison.Ordinal),
             SourcePath = sourcePath,
             Html = string.Empty,
         };

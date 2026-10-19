@@ -13,7 +13,9 @@ An environment is a named place your workflows deploy to, such as `staging` or `
 
 ## Before you start
 
-You need the repository you created in [Lab 0](../foundation/00-create-repository.md). To configure an environment, you must be the repository's owner, or have admin access if the repository belongs to an organization. You'll start runs the way you did in [Lab 1](../foundation/01-build-application.md). The last section also needs the Azure deployment from [Lab 7](azure-oidc.md).
+Finish the foundation labs, [Lab 0](../foundation/00-create-repository.md) to [Lab 2](../foundation/02-test-pull-request.md), first. They cover the workflow basics this lab builds on.
+
+This lab works in the repository you created in Lab 0. To configure an environment, you must be the repository's owner, or have admin access if the repository belongs to an organization. You'll start runs the way you did in [Lab 1](../foundation/01-build-application.md). The last section also needs the Azure deployment from [Lab 7](azure-oidc.md).
 
 What you can configure depends on your copy's visibility and your GitHub plan:
 

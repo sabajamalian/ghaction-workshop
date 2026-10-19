@@ -1,0 +1,29 @@
+name: Welcome new issues
+
+on:
+  issues:
+    types: [opened]
+
+permissions: {}
+
+jobs:
+  welcome:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      issues: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      NUMBER: ${{ github.event.issue.number }}
+      AUTHOR: ${{ github.event.issue.user.login }}
+    steps:
+      - name: Add the triage label
+        run: |
+          gh label create triage --repo "$GITHUB_REPOSITORY" \
+            --color FBCA04 --description "Needs a first look" --force
+          gh api "repos/$GITHUB_REPOSITORY/issues/$NUMBER/labels" -f "labels[]=triage"
+
+      - name: Thank the author
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/$NUMBER/comments" \
+            -f body="Thanks for opening this issue, @$AUTHOR. It has the \`triage\` label until someone takes a look."

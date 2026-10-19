@@ -13,6 +13,8 @@ In the earlier labs, every job ran on a fresh virtual machine that GitHub create
 
 ## Before you start
 
+Finish the foundation labs, [Lab 0](../foundation/00-create-repository.md) to [Lab 2](../foundation/02-test-pull-request.md), first. They cover the workflow basics this lab builds on.
+
 This lab needs more setup than the others, and part of it happens in a terminal on a Linux machine. In a codespace, that terminal opens in your browser. On a virtual machine, you use a terminal on your computer. You need:
 
 - A new private repository to practice in. Don't use your copy from [Lab 0](../foundation/00-create-repository.md): Lab 0 suggests making it public, and GitHub advises against self-hosted runners on public repositories, because anyone who can open a pull request could get their code to run on your machine. Even if your copy is private, a separate repository lets you delete everything together at the end. In this lab, "the practice repository" always means this new one.

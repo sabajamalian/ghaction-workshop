@@ -30,11 +30,13 @@ The other labs use more, and [Prerequisites](prerequisites.md#what-each-lab-need
 
 Labs 0 to 2 use only actions created by GitHub: `actions/checkout`, `actions/setup-dotnet`, and `actions/upload-artifact`. If your organization allows only select actions, select **Allow actions created by GitHub**. The other labs use more actions from GitHub's `actions` and `github` organizations, such as `actions/cache` in Lab 5 and `github/gh-aw-actions/setup` in Lab 11, and that setting allows them too.
 
-Labs 7 and 8 also use `azure/login` and `azure/webapps-deploy`. To allow them, add this to **Allow or block specified actions and reusable workflows**:
+Labs 7 and 8 also use `azure/login` and `azure/webapps-deploy`, Lab 15 uses `zizmorcore/zizmor-action`, and the Lab 18 demo uses `azure/login`. To allow them, add this to **Allow or block specified actions and reusable workflows**:
 
 ```text
-azure/login@*, azure/webapps-deploy@*
+azure/login@*, azure/webapps-deploy@*, zizmorcore/zizmor-action@*
 ```
+
+A few labs use more than actions. Lab 13 runs actionlint from its Docker Hub image with `uses: docker://rhysd/actionlint`, and Lab 17 starts a PostgreSQL container from Docker Hub as a service container, so runners need to reach Docker Hub. GitHub-hosted runners can. Lab 16 has learners write an action in their own copy and run it with `uses: $/.github/actions/count-lessons`, which GitHub Enterprise Server doesn't support.
 
 ### Check Copilot access for Labs 6 and 11
 
@@ -78,14 +80,30 @@ The optional Part C runs GitHub Actions Importer, which needs a terminal with Do
 
 The importer asks for an Azure DevOps organization, a project, and two tokens even when it reads a file. The lab gives placeholder values for all four, so tell learners not to enter real tokens.
 
+### Prepare the Lab 18 demo
+
+Lab 18 is a demo: you run it, and learners watch. It sends a pull request's changes and a set of coding standards to the Microsoft decision model in Microsoft Foundry, and fails the check when the model finds a rule marked `block`. Learners don't need Azure or Foundry access.
+
+Set it up in a repository you'll show on screen, such as your own copy of the workshop, at least a day before the session:
+
+1. Deploy the Microsoft decision model in a Microsoft Foundry project, and note the deployment name and the resource's endpoint.
+2. Create the `id-standards` identity, its federated credential for `pull_request`, and its role assignment, as [Create an identity for the check](../lessons/explore/foundry-standards.md#create-an-identity-for-the-check) in Lab 18 describes. Role assignments can take a few minutes to apply.
+3. Add the repository variables from [Add the repository variables](../lessons/explore/foundry-standards.md#add-the-repository-variables).
+4. Add `.github/workflows/coding-standards-check.yml` to `main`.
+5. Run the demo once, from a branch you then delete. The first run shows whether sign-in and the model call work, and it gives you a finished run to fall back on if the network fails during the session.
+
+Each run is one model call, billed by Microsoft Foundry for the tokens it sends and receives. For the sample pull request, that's a few thousand tokens. The check skips pull requests from forks, because they can't get an OIDC token from your repository.
+
 ### Try Labs 0 to 2 yourself
 
 Create a fresh copy and work through Labs 0 to 2 the way a learner would. It takes about 35 minutes, and it shows you the pages learners will see, including the test failure that Lab 2 causes on purpose.
 
 ## During the session
 
-Send learners to the lesson list in the [README](../README.md). Each lab says what it needs at the top, and Labs 0 to 2 need only a browser and a GitHub account.
+Send learners to the lesson list in the [README](../README.md). Labs 0 to 2 are the foundation labs: everyone does them first, in order, and they need only a browser and a GitHub account. Each of the other labs says what it needs at the top.
 
-Plan about 35 minutes for Labs 0 to 2, plus time for questions. After Lab 2, the labs can be done in any order, and each one lists its time at the top.
+Plan about 35 minutes for Labs 0 to 2, plus time for questions. Make sure everyone finishes them before moving on: every other lab works in the repository from Lab 0 and assumes the workflow basics from Labs 1 and 2. After the foundation labs, learners can do the explore labs in any order, and each one lists its time at the top.
+
+If you have time for one more lab as a group, Lab 13, which debugs a broken workflow, and Lab 15, which secures workflows, apply to any team that uses GitHub Actions. Run the Lab 18 demo after Lab 15, because it builds on its points about tokens, secrets, and pull request triggers.
 
 When someone falls behind, the [solutions](../solutions/README.md) folder has the finished workflow for each lab, with steps for copying one into a repository. For problems, start with the lab's "If something fails" section, then [troubleshooting](troubleshooting.md).

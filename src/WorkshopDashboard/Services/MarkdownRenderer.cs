@@ -264,6 +264,8 @@ public static class CodeLanguages
         ["pwsh"] = "PowerShell",
         ["csharp"] = "C#",
         ["cs"] = "C#",
+        ["javascript"] = "JavaScript",
+        ["js"] = "JavaScript",
         ["json"] = "JSON",
         ["xml"] = "XML",
         ["text"] = "Text",

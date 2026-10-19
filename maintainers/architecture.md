@@ -63,4 +63,4 @@ dotnet test tests/WorkshopDashboard.Tests --filter "FullyQualifiedName~ContentTe
 
 ## Deployment
 
-The **Deploy workshop site** workflow publishes the site to Azure App Service. [Deploy the workshop site](deployment.md) covers the setup, the permissions it needs, and the cleanup.
+You publish the site to Azure App Service by hand with `maintainers/scripts/deploy-site.sh`. [Deploy the workshop site](deployment.md) covers the setup, the permissions it needs, and the cleanup.

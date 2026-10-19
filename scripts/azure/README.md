@@ -6,9 +6,8 @@ These scripts create the Azure side of a GitHub Actions deployment that signs in
 | --- | --- | --- |
 | `learner-setup.sh` | A learner with their own Azure subscription | A web app for the learner's copy of the workshop, for [Lab 7](../../lessons/explore/azure-oidc.md), and with `--environment staging`, for [Lab 8](../../lessons/explore/environments.md) |
 | `instructor-setup.sh` | An instructor, for a class | A web app for each learner in the instructor's subscription, ready for Labs 7 and 8 |
-| `site-setup.sh` | The maintainer of this repository | The workshop site, which `.github/workflows/deploy-site.yml` deploys, as [docs/deployment.md](../../docs/deployment.md) describes |
 
-`common.sh` holds the code the three scripts share. You don't run it yourself.
+`common.sh` holds the code the two scripts share. You don't run it yourself.
 
 Every script has `--help`, which lists its options and defaults, and `--dry-run`, which shows what it would do without changing anything.
 
@@ -189,17 +188,6 @@ Send each learner their row. They add the four values as repository variables, a
 To add learners later, add their repositories to the file and run the script again with the same `--prefix`. It reuses the existing apps and fills the existing plans before it creates another one.
 
 If the learners' copies are in an organization that only allows selected actions, also allow the Azure actions, as [Actions the labs use](../../docs/instructor-guide.md#actions-the-labs-use) describes.
-
-## site-setup.sh
-
-This one is for the maintainer of `sabajamalian/ghaction-workshop`. It sets up the web app that `.github/workflows/deploy-site.yml` deploys, with a B1 plan by default. Its identity trusts only jobs that use the repository's `production` environment:
-
-```bash
-bash scripts/azure/site-setup.sh --app-name APPNAME --dry-run
-bash scripts/azure/site-setup.sh --app-name APPNAME
-```
-
-If the repository is private, sign in with `gh auth login` first, or pass `--subject-prefix`. [docs/deployment.md](../../docs/deployment.md) covers the environment, the variables, and the first deployment.
 
 ## Dry runs and running a script again
 

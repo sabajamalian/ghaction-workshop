@@ -18,10 +18,10 @@ The lesson shows `azure-pipelines.yml`, `workflow-to-repair.yml`, and `solutions
 
 If you change `azure-pipelines.yml`, or a newer importer release converts it differently, run the Part C dry run again. Update the converted workflow, the log lines, and the version numbers that the lesson shows, repair the new output into `solutions/migration/imported-ci.yml`, and check that the lesson's repair steps still turn one into the other.
 
-## How the pipeline was checked
+## How to keep the pipeline correct
 
-The pipeline hasn't run in Azure DevOps. In October 2026, it was checked three ways:
+When you change `azure-pipelines.yml`, check it three ways:
 
-- Every task name and input comes from the [Azure Pipelines task reference](https://learn.microsoft.com/azure/devops/pipelines/tasks/reference/?view=azure-pipelines), and was compared with each task's `task.json` in [microsoft/azure-pipelines-tasks](https://github.com/microsoft/azure-pipelines-tasks).
-- The file validates against `service-schema.json` from [microsoft/azure-pipelines-vscode](https://github.com/microsoft/azure-pipelines-vscode), the schema the Azure Pipelines extension for Visual Studio Code uses. That schema has no entry for `PublishCodeCoverageResults@2`, so one was added from the task's `task.json` before validating.
-- GitHub Actions Importer reads it with `--source-file-path` and produces the workflow that Part C of the lab shows.
+- Look up every task name and input in the [Azure Pipelines task reference](https://learn.microsoft.com/azure/devops/pipelines/tasks/reference/?view=azure-pipelines), and compare them with each task's `task.json` in [microsoft/azure-pipelines-tasks](https://github.com/microsoft/azure-pipelines-tasks).
+- Validate the file against `service-schema.json` from [microsoft/azure-pipelines-vscode](https://github.com/microsoft/azure-pipelines-vscode), the schema the Azure Pipelines extension for Visual Studio Code uses. That schema has no entry for `PublishCodeCoverageResults@2`, so add one from the task's `task.json` before you validate.
+- Run GitHub Actions Importer with `--source-file-path` and check that it still produces the workflow that Part C of the lab shows.

@@ -13,7 +13,9 @@ In this lab, a workflow builds the workshop website and deploys it to your own w
 
 ## Before you start
 
-You need the repository you created in [Lab 0](../foundation/00-create-repository.md). You'll add a workflow file the way you did in [Lab 2](../foundation/02-test-pull-request.md) and start it the way you did in [Lab 1](../foundation/01-build-application.md).
+Finish the foundation labs, [Lab 0](../foundation/00-create-repository.md) to [Lab 2](../foundation/02-test-pull-request.md), first. They cover the workflow basics this lab builds on.
+
+This lab works in the repository you created in Lab 0. You'll add a workflow file the way you did in [Lab 2](../foundation/02-test-pull-request.md) and start it the way you did in [Lab 1](../foundation/01-build-application.md).
 
 You also need one of these:
 
@@ -320,7 +322,7 @@ The `deploy` job has no `environment`, so when you run the workflow from `main`,
 
 ## Run the deployment
 
-1. Select the **Actions** tab, then **Deploy to Azure** in the left sidebar. **Deploy workshop site** is a different workflow, which only deploys from the original workshop repository.
+1. Select the **Actions** tab, then **Deploy to Azure** in the left sidebar.
 2. Select **Run workflow**. In the menu that opens, leave the branch set to `main`, then select the green **Run workflow** button.
 3. Select the new run. The `build` job takes under a minute, then `deploy` starts.
 4. Select `deploy`, and expand **Sign in to Azure**. Partway down, the log shows details from the token that GitHub issued:

@@ -18,6 +18,10 @@
             <p class="lesson-meta">
                 <span>@DisplayFormat.Duration(Model.Lesson.DurationMinutes)</span>
                 <span>@Model.Lesson.Difficulty</span>
+                @if (Model.Lesson.IsFoundation)
+                {
+                    <span class="lesson-foundation">Foundation lab, required</span>
+                }
             </p>
             @if (Model.Lesson.Requires is not null)
             {

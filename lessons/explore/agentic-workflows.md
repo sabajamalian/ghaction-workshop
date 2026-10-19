@@ -15,11 +15,13 @@ GitHub Agentic Workflows, also called gh-aw, comes as an extension for GitHub CL
 
 ## Before you start
 
-You need the repository you created in [Lab 0](../foundation/00-create-repository.md), with at least one failed workflow run for the agent to review. The failed `test` check from [Make a test fail](../foundation/02-test-pull-request.md#make-a-test-fail) in Lab 2 counts. If your repository has no failed runs, the agent finishes without opening an issue.
+Finish the foundation labs, [Lab 0](../foundation/00-create-repository.md) to [Lab 2](../foundation/02-test-pull-request.md), first. They cover the workflow basics this lab builds on.
+
+This lab works in the repository you created in Lab 0, which needs at least one failed workflow run for the agent to review. The failed `test` check from [Make a test fail](../foundation/02-test-pull-request.md#make-a-test-fail) in Lab 2 counts. If your repository has no failed runs, the agent finishes without opening an issue.
 
 Most of the lab happens in your browser. [Compile the workflow](#compile-the-workflow) and the optional audit in [Read the report](#read-the-report) need a terminal with Git and GitHub CLI 2.0.0 or later, on Linux, macOS, or Windows with WSL. To install the tools, see [GitHub CLI](https://cli.github.com/) and [Git downloads](https://git-scm.com/downloads). If you haven't used Git on your computer before, set your name and email as described in [First-Time Git Setup](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup). This lab was tested on macOS with GitHub CLI 2.102.0, Git 2.53.0, and gh-aw v0.92.0.
 
-A codespace may not work for these steps. GitHub's default codespace image includes Git and GitHub CLI, but GitHub CLI there signs in with the codespace's own token, which is limited to your repository and may not be allowed to install the extension or push workflow files. If either fails there, use a terminal on your computer, or [use the compiled solution instead](#use-the-compiled-solution-instead), which only needs your browser.
+For these steps, use a terminal on your computer rather than a codespace. GitHub's default codespace image includes Git and GitHub CLI, but GitHub CLI there signs in with the codespace's own token. That token is scoped to your repository, so it can be blocked from installing the extension or pushing workflow files. If you don't have a terminal on your computer, [use the compiled solution instead](#use-the-compiled-solution-instead), which only needs your browser.
 
 You also need access to Copilot CLI, which runs the agent. What that takes, and who pays for Copilot's work, depends on who owns your copy of the template:
 
@@ -319,7 +321,7 @@ Under **Jobs** in the left sidebar, select each job to read its log.
 
 In a test run, the report found the failure from [Make a test fail](../foundation/02-test-pull-request.md#make-a-test-fail) in Lab 2. It quoted the failed test, `Subtract_ReturnsTheDifference`, with `Expected: 6, Actual: 14`, and rated "`Subtract` returned the sum at that commit" as a cause with high confidence. It also noticed that the next run on the `add-tests` branch passed, so a later commit had probably fixed the problem.
 
-Treat the causes as leads to check, not as answers. The agent only knows what it read, and it can be wrong. Copilot CLI also loads the `AGENTS.md` file at the top of your repository as instructions. That file describes the repository for coding agents, and one test report quoted it. To stop Copilot CLI from loading instruction files, replace `engine: copilot` in the front matter with these lines, then compile again:
+Treat the causes as leads to check, not as answers. The agent only knows what it read, and it can be wrong. Copilot CLI also loads instruction files such as an `AGENTS.md` at the root of the repository, if there is one, and follows them. Your copy doesn't have one, but if you add one, its rules shape the report too. To stop Copilot CLI from loading instruction files, replace `engine: copilot` in the front matter with these lines, then compile again:
 
 ```yaml
 engine:

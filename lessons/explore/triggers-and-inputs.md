@@ -12,7 +12,9 @@ In Lab 1, you started a workflow with **Run workflow**, and in Lab 2, opening a 
 
 ## Before you start
 
-You need the repository you created in [Lab 0](../foundation/00-create-repository.md). You'll start runs the way you did in [Lab 1](../foundation/01-build-application.md), and the optional part edits a file the way you did in [Lab 2](../foundation/02-test-pull-request.md). Everything happens in your browser.
+Finish the foundation labs, [Lab 0](../foundation/00-create-repository.md) to [Lab 2](../foundation/02-test-pull-request.md), first. They cover the workflow basics this lab builds on.
+
+This lab works in the repository you created in Lab 0. You'll start runs the way you did in [Lab 1](../foundation/01-build-application.md), and the optional part edits a file the way you did in [Lab 2](../foundation/02-test-pull-request.md). Everything happens in your browser.
 
 The workflow only runs when you start it, unless you do the optional part, which adds a `push` trigger for a few minutes. If your repository is public, the runs are free. If it's private, they use your account's included Actions minutes, and GitHub rounds each job up to a whole minute. Four jobs run during the lab, so it uses about 4 of the 2,000 minutes a month that GitHub Free includes, or 5 with the optional part. See [GitHub Actions billing](https://docs.github.com/en/billing/concepts/product-billing/github-actions).
 

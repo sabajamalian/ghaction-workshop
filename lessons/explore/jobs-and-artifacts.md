@@ -12,7 +12,9 @@ The workflow you ran in Lab 1 does all its work in one job. Here you'll add a wo
 
 ## Before you start
 
-You need the repository you created in [Lab 0](../foundation/00-create-repository.md). This lab uses the run, job, and step pages you saw in [Lab 1](../foundation/01-build-application.md), and its optional part repeats the branch and editing steps from [Lab 2](../foundation/02-test-pull-request.md). Everything happens in your browser.
+Finish the foundation labs, [Lab 0](../foundation/00-create-repository.md) to [Lab 2](../foundation/02-test-pull-request.md), first. They cover the workflow basics this lab builds on.
+
+This lab works in the repository you created in Lab 0. It uses the run, job, and step pages you saw in [Lab 1](../foundation/01-build-application.md), and its optional part repeats the branch and editing steps from [Lab 2](../foundation/02-test-pull-request.md). Everything happens in your browser.
 
 If your repository is public, the runs are free. If it's private, they use your account's included Actions minutes, and GitHub rounds each job up to a whole minute. A run of this workflow has three short jobs, so it counts as about 3 minutes, and the whole lab uses about 8 of the 2,000 minutes a month that GitHub Free includes.
 

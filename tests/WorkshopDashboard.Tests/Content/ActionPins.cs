@@ -102,7 +102,7 @@ internal static partial class ActionPins
         foreach (ActionReference reference in references)
         {
             string target = reference.Target;
-            if (target.StartsWith("./", StringComparison.Ordinal))
+            if (IsLocal(target))
             {
                 continue;
             }
@@ -179,10 +179,14 @@ internal static partial class ActionPins
         }
     }
 
+    // ./ is relative to the checked-out workspace; $/ is GitHub's self-repository syntax for the running commit.
+    private static bool IsLocal(string target) =>
+        target.StartsWith("./", StringComparison.Ordinal) || target.StartsWith("$/", StringComparison.Ordinal);
+
     private static (string Repository, string Sha)? SplitPin(ActionReference reference)
     {
         int at = reference.Target.LastIndexOf('@');
-        if (at <= 0 || reference.Target.StartsWith("./", StringComparison.Ordinal) || reference.Target.StartsWith("docker://", StringComparison.Ordinal))
+        if (at <= 0 || IsLocal(reference.Target) || reference.Target.StartsWith("docker://", StringComparison.Ordinal))
         {
             return null;
         }

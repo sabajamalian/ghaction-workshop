@@ -1,6 +1,6 @@
 # Editorial guide
 
-This guide covers everything a person reads in this repository: lessons, the README and other documentation, text in the dashboard, and code comments that learners see. It also applies to anything Copilot or another agent adds here. [AGENTS.md](../AGENTS.md) has a condensed version of these rules, and maintainers review changes with [the editorial checklist](editorial-checklist.md).
+This guide covers everything a person reads in this repository: lessons, the README and other documentation, text in the dashboard, and code comments that learners see. It also applies to anything Copilot or another agent adds here. [AGENTS.md](AGENTS.md) has a condensed version of these rules, and maintainers review changes with [the editorial checklist](editorial-checklist.md).
 
 ## Who you're writing for
 
@@ -328,7 +328,13 @@ End the lesson with a `## Next step` section that links to the next lesson, for 
 
 ## Lesson files
 
-The dashboard reads lessons from `lessons/foundation` (Labs 0 to 2) and `lessons/explore` (the rest), and shows them in one list sorted by `order`. Don't call a lab required or optional. People also read the same files on GitHub, so write them to work in both places.
+The dashboard reads lessons from `lessons/foundation` (Labs 0 to 2) and `lessons/explore` (the rest). It shows the foundation labs first, as a required group done in order, then the explore labs, which learners do in any order. Each group is sorted by `order`. The folder decides the group, so don't call an individual lab required or optional in its text. Every explore lab's `## Before you start` section opens with the same paragraph, `FoundationLine` in `tests/WorkshopDashboard.Tests/Content/ContentRules.cs`:
+
+```markdown
+Finish the foundation labs, [Lab 0](../foundation/00-create-repository.md) to [Lab 2](../foundation/02-test-pull-request.md), first. They cover the workflow basics this lab builds on.
+```
+
+People also read the same files on GitHub, so write them to work in both places. People also read the same files on GitHub, so write them to work in both places.
 
 ### File names
 
@@ -430,6 +436,7 @@ The content tests in `tests/WorkshopDashboard.Tests` catch mechanical problems i
 - Bold text that ends with a period, question mark, exclamation mark, or colon, which means a whole sentence or a run-in heading is in bold. An ellipsis is fine, because some UI labels end with one.
 - Lesson front matter the dashboard would reject, two lessons with the same `order`, titles that don't start with "Lab N: " for their `order`, a body that doesn't start with an H1 matching the title, a second H1, and lesson files outside `lessons/foundation` and `lessons/explore`.
 - Lessons without exactly one `## Check your result` section and one `## Next step` section. The heading has to match exactly, so `## Check the result` or `### Check your result` doesn't count.
+- Explore labs whose `## Before you start` section doesn't open with the foundation paragraph.
 - Actions and reusable workflows that aren't pinned to a full commit SHA with the release in a comment, such as `# v7.0.1`, and Docker images without a digest. This covers every YAML file, and the YAML blocks and front matter in Markdown files.
 - An action pinned to different commits or release comments in different places. Actions from one repository, such as `github/codeql-action/init` and `github/codeql-action/analyze`, count as one action.
 - Copies that no longer match the file they copy. The list is `ExactCopies` in `tests/WorkshopDashboard.Tests/Content/ContentRules.cs`. For example, `solutions/migration/migrated-ci.yml` has to stay an exact copy of `migration/azure-devops/expected-workflow.yml`.

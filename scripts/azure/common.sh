@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034,SC2153
-# Settings and helpers that learner-setup.sh, instructor-setup.sh, and site-setup.sh share.
-# Those scripts source this file. It does nothing on its own.
+# Settings and helpers that learner-setup.sh and instructor-setup.sh share. The maintainer's scripts in
+# maintainers/scripts use them too. Those scripts source this file. It does nothing on its own.
 
 if [ "${BASH_SOURCE[0]}" = "$0" ]; then
-    echo "common.sh only holds shared helpers. Run learner-setup.sh, instructor-setup.sh, or site-setup.sh instead." >&2
+    echo "common.sh only holds shared helpers. Run learner-setup.sh or instructor-setup.sh instead." >&2
     exit 1
 fi
 
@@ -339,9 +339,27 @@ check_app_name() {
     esac
 }
 
+# Stops the script when a new web app can't use APP_NAME. Call it after inspect_webapp.
+require_usable_app_name() {
+    if [ "$WEBAPP_EXISTS" = true ]; then
+        return 0
+    fi
+    check_app_name "$APP_NAME"
+    if [ "$NAME_STATUS" = available ]; then
+        info "The name $APP_NAME is available."
+    elif [ "$NAME_STATUS" = unknown ]; then
+        warn "Couldn't check whether the name $APP_NAME is available, so the script continues. If creating the web app fails because the name is taken, run the script again with another --app-name."
+    elif [ -n "$NAME_GROUP" ]; then
+        die "You already have a web app named $APP_NAME, in resource group $NAME_GROUP. To set it up, run the script again with --resource-group $NAME_GROUP."
+    else
+        die "Azure says the name $APP_NAME can't be used: $NAME_REASON Web app names are unique across all of Azure, so run the script again with another --app-name."
+    fi
+}
+
+# Registers each resource provider NAMESPACE that isn't registered yet.
 ensure_providers() {
     local namespace state
-    for namespace in Microsoft.Web Microsoft.ManagedIdentity; do
+    for namespace in "$@"; do
         if ! state=$(az provider show --namespace "$namespace" --query registrationState --output tsv --only-show-errors 2>/dev/null); then
             warn "Couldn't check whether the $namespace resource provider is registered. If a command fails with MissingSubscriptionRegistration, ask a subscription owner to run az provider register --namespace $namespace"
             continue
@@ -562,7 +580,7 @@ finish() {
     fi
 }
 
-# The steps learner-setup.sh and site-setup.sh share. They set these variables first:
+# The steps learner-setup.sh runs. It sets these variables first:
 # APP_NAME, REPO, RESOURCE_GROUP, LOCATION, SKU, SKU_GIVEN, CRED_NAMES, and CRED_SUBJECTS.
 run_app_setup() {
     local identity="id-$APP_NAME" plan="plan-$APP_NAME" i
@@ -572,19 +590,8 @@ run_app_setup() {
     fi
     inspect_webapp "$RESOURCE_GROUP" "$APP_NAME"
     inspect_identity "$RESOURCE_GROUP" "$identity"
-    if [ "$WEBAPP_EXISTS" != true ]; then
-        check_app_name "$APP_NAME"
-        if [ "$NAME_STATUS" = available ]; then
-            info "The name $APP_NAME is available."
-        elif [ "$NAME_STATUS" = unknown ]; then
-            warn "Couldn't check whether the name $APP_NAME is available, so the script continues. If creating the web app fails because the name is taken, run the script again with another --app-name."
-        elif [ -n "$NAME_GROUP" ]; then
-            die "You already have a web app named $APP_NAME, in resource group $NAME_GROUP. To set it up, run the script again with --resource-group $NAME_GROUP."
-        else
-            die "Azure says the name $APP_NAME can't be used: $NAME_REASON Web app names are unique across all of Azure, so run the script again with another --app-name."
-        fi
-    fi
-    ensure_providers
+    require_usable_app_name
+    ensure_providers Microsoft.Web Microsoft.ManagedIdentity
 
     section "Resources:"
     ensure_group "$RESOURCE_GROUP" "$LOCATION"

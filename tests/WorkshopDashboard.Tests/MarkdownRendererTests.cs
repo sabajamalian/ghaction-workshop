@@ -313,6 +313,7 @@ public class MarkdownRendererTests
     [InlineData("pwsh", "PowerShell")]
     [InlineData("csharp", "C#")]
     [InlineData("console", "Output")]
+    [InlineData("js", "JavaScript")]
     [InlineData("hcl", "hcl")]
     public void Code_language_names_are_readable(string? language, string expected)
     {

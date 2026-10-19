@@ -35,13 +35,19 @@ If a run fails because an action isn't allowed, your copy belongs to an organiza
 | [Lab 10: Reuse workflows and steps](../lessons/explore/reusable-workflows.md) | [If something fails](../lessons/explore/reusable-workflows.md#if-something-fails) |
 | [Lab 11: Review CI failures with an agentic workflow](../lessons/explore/agentic-workflows.md) | [If something fails](../lessons/explore/agentic-workflows.md#if-something-fails) |
 | [Lab 12: Migrate an Azure DevOps pipeline](../lessons/explore/azure-devops-migration.md) | [If something fails](../lessons/explore/azure-devops-migration.md#if-something-fails) |
+| [Lab 13: Debug a broken workflow](../lessons/explore/debug-workflows.md) | [If something fails](../lessons/explore/debug-workflows.md#if-something-fails) |
+| [Lab 14: Automate issues and pull requests](../lessons/explore/automate-issues-prs.md) | [If something fails](../lessons/explore/automate-issues-prs.md#if-something-fails) |
+| [Lab 15: Secure your workflows](../lessons/explore/secure-workflows.md) | [If something fails](../lessons/explore/secure-workflows.md#if-something-fails) |
+| [Lab 16: Build your own action](../lessons/explore/custom-action.md) | [If something fails](../lessons/explore/custom-action.md#if-something-fails) |
+| [Lab 17: Run integration tests with a service container](../lessons/explore/service-containers.md) | [If something fails](../lessons/explore/service-containers.md#if-something-fails) |
+| [Lab 18: Check coding standards with a Microsoft Foundry model](../lessons/explore/foundry-standards.md) | [If something fails](../lessons/explore/foundry-standards.md#if-something-fails) |
 
 ## Problems running the site on your computer
 
 If `dotnet run` fails with "A compatible .NET SDK was not found", you don't have a .NET 10 SDK. The repository's `global.json` asks for SDK 10.0.100 or a later .NET 10 SDK. Install the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0), then run the command again.
 
-If the site starts but lists no lessons, the log says "No lessons were loaded from" and names the folder it read. Check the `Workshop:LessonsPath` setting, described in [How the workshop site works](architecture.md#settings). When you run the site with `dotnet run`, it reads the `lessons` folder in the repository.
+If the site starts but lists no lessons, the log says "No lessons were loaded from" and names the folder it read. Check the `Workshop:LessonsPath` setting, described in [How the workshop site works](../maintainers/architecture.md#settings). When you run the site with `dotnet run`, it reads the `lessons` folder in the repository.
 
-If a lesson is missing from the list, the log has a "Skipped lesson" warning that names the file and the problem, usually invalid front matter. The [editorial guide](editorial-guide.md#lesson-files) shows the format.
+If a lesson is missing from the list, the log has a "Skipped lesson" warning that names the file and the problem, usually invalid front matter. The [editorial guide](../maintainers/editorial-guide.md#lesson-files) shows the format.
 
 If a lesson change doesn't show up, check which environment the site runs in. `dotnet run` uses Development, which reads the lesson files again on every request, so refreshing the page is enough. Any other environment reads them once at startup, so restart the site.

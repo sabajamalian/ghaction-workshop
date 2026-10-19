@@ -13,7 +13,9 @@ GitHub Copilot CLI is Copilot in a terminal: you describe a task, and it reads f
 
 ## Before you start
 
-You need the repository you created in [Lab 0](../foundation/00-create-repository.md). You'll add a workflow file the way you did in [Lab 2](../foundation/02-test-pull-request.md) and start it the way you did in [Lab 1](../foundation/01-build-application.md). Everything happens in your browser.
+Finish the foundation labs, [Lab 0](../foundation/00-create-repository.md) to [Lab 2](../foundation/02-test-pull-request.md), first. They cover the workflow basics this lab builds on.
+
+This lab works in the repository you created in Lab 0. You'll add a workflow file the way you did in [Lab 2](../foundation/02-test-pull-request.md) and start it the way you did in [Lab 1](../foundation/01-build-application.md). Everything happens in your browser.
 
 You also need access to Copilot CLI. What that takes, and who pays for Copilot's work, depends on who owns your copy of the template:
 
@@ -235,7 +237,7 @@ The step prints nothing else, because the script saves Copilot's answer in a fil
 1. Select **Summary** in the left sidebar. Further down the page is the report, under your title.
 2. Under **Artifacts**, select `copilot-report`. Your browser downloads `copilot-report.zip`, which contains `copilot-report.md`.
 
-The title and the line under it come from the workflow, so they're the same every time. Copilot writes the rest, and it changes from run to run. It can also be wrong. In a test run, the report warned that `tests.yml` breaks a rule in `AGENTS.md` about using only `workflow_dispatch`. That rule is for the people who maintain the template, and [Lab 2](../foundation/02-test-pull-request.md) adds `tests.yml` with a `pull_request` trigger on purpose. Check what a report claims against the files before you rely on it.
+The title and the line under it come from the workflow, so they're the same every time. Copilot writes the rest, and it changes from run to run. It can also be wrong, for example by calling a workflow trigger a mistake when a lab added it on purpose. Check what a report claims against the files before you rely on it.
 
 To try the other topics, run the workflow again with `overview` or `tests`. Each run uses AI credits again.
 
@@ -262,7 +264,7 @@ The `focus` input only accepts three fixed values, but it still ends up inside a
 - `--disable-builtin-mcps` turns off the MCP (Model Context Protocol) servers that come with Copilot CLI, such as the GitHub MCP server. MCP servers give Copilot more tools, and the report doesn't need them.
 - `--max-ai-credits 50` stops the run when it reaches 50 AI credits ($0.50). The limit is soft, so Copilot finishes the response it's working on first. The lowest value allowed is 30, and the feature is in public preview. See [Setting an AI credit session limit in GitHub Copilot CLI](https://docs.github.com/en/copilot/how-tos/copilot-cli/use-copilot-cli/set-session-limit).
 
-Copilot CLI also follows instruction files it finds in the repository, such as `AGENTS.md` and `.github/copilot-instructions.md`. Your copy has an `AGENTS.md` with the template's writing and workflow rules, which is where the rule about `tests.yml` came from. To stop Copilot CLI from loading them as instructions, add `--no-custom-instructions`. Copilot can still read them with `view`, like any other file.
+Copilot CLI also follows instruction files it finds in the repository, such as an `AGENTS.md` at the root and `.github/copilot-instructions.md`. Your copy doesn't have either, but many repositories do, and anyone who can change those files can change what Copilot does. To stop Copilot CLI from loading them as instructions, add `--no-custom-instructions`. Copilot can still read them with `view`, like any other file.
 
 Keep a workflow like this one manual. GitHub warns that running Copilot CLI directly in a workflow gives it broad access to the workflow's environment, and that workflows triggered by pull requests from forks are particularly at risk. For most automation, GitHub recommends GitHub Agentic Workflows instead, which [Lab 11](agentic-workflows.md) covers. See [Copilot CLI in GitHub Actions](https://docs.github.com/en/copilot/concepts/agent-capabilities/agent-powered-workflows-and-operations/copilot-cli-in-github-actions), [Allowing and denying tool use](https://docs.github.com/en/copilot/how-tos/copilot-cli/use-copilot-cli/allowing-tools), and the [GitHub Copilot CLI command reference](https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference).
 

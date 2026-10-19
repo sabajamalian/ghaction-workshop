@@ -30,26 +30,32 @@
                     <span>About @DisplayFormat.Duration(Model.Lessons.TotalMinutes)</span>
                     <span class="lessons-progress" data-lessons-progress hidden></span>
                 </p>
-                <p>After Lab 2, do the others in any order. Each lab lists what it needs at the top.</p>
             </header>
-            <ol class="lesson-list">
-                @foreach (Lesson lesson in Model.Lessons.Lessons)
-                {
-                    <li class="lesson-card" data-lesson-card="@lesson.Slug">
-                        <h3><a href="/lessons/@lesson.Slug">@lesson.Title</a></h3>
-                        <p>@lesson.Summary</p>
-                        <p class="lesson-meta">
-                            <span>@DisplayFormat.Duration(lesson.DurationMinutes)</span>
-                            <span>@lesson.Difficulty</span>
-                            <span class="lesson-completed" data-completed-label hidden>Completed</span>
-                        </p>
-                        @if (lesson.Requires is not null)
+            @foreach (LessonGroup group in Model.Groups)
+            {
+                <section class="lesson-group" aria-labelledby="@group.Id-title">
+                    <h3 id="@group.Id-title">@group.Title</h3>
+                    <p>@group.Description</p>
+                    <ol class="lesson-list">
+                        @foreach (Lesson lesson in group.Lessons)
                         {
-                            <p class="lesson-requires">Requires: @lesson.Requires</p>
+                            <li class="lesson-card" data-lesson-card="@lesson.Slug">
+                                <h4><a href="/lessons/@lesson.Slug">@lesson.Title</a></h4>
+                                <p>@lesson.Summary</p>
+                                <p class="lesson-meta">
+                                    <span>@DisplayFormat.Duration(lesson.DurationMinutes)</span>
+                                    <span>@lesson.Difficulty</span>
+                                    <span class="lesson-completed" data-completed-label hidden>Completed</span>
+                                </p>
+                                @if (lesson.Requires is not null)
+                                {
+                                    <p class="lesson-requires">Requires: @lesson.Requires</p>
+                                }
+                            </li>
                         }
-                    </li>
-                }
-            </ol>
+                    </ol>
+                </section>
+            }
         </section>
     }
 </div>

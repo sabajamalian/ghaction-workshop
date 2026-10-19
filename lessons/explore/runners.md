@@ -12,7 +12,9 @@ Every job runs on a runner, the machine its `runs-on` key asks for. You'll run o
 
 ## Before you start
 
-You need the repository you created in [Lab 0](../foundation/00-create-repository.md). You'll start the workflow from the **Actions** tab, the way you started the build in [Lab 1](../foundation/01-build-application.md). Everything in this lab happens in your browser.
+Finish the foundation labs, [Lab 0](../foundation/00-create-repository.md) to [Lab 2](../foundation/02-test-pull-request.md), first. They cover the workflow basics this lab builds on.
+
+This lab works in the repository you created in Lab 0. You'll start the workflow from the **Actions** tab, the way you started the build in [Lab 1](../foundation/01-build-application.md). Everything in this lab happens in your browser.
 
 > [!IMPORTANT]
 > Runs in a public repository are free. In a private repository, they use your plan's included Actions minutes, and a minute on macOS counts as about 10 of them. One run of this workflow uses about 16 included minutes, 10 of them for the macOS job. GitHub Free includes 2,000 minutes a month. To leave macOS out, delete the `- macos-latest` line and the comment above it before you commit the workflow.

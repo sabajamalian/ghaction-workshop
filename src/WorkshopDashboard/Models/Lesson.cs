@@ -12,6 +12,9 @@ public sealed record Lesson
     public required int Order { get; init; }
     public string? Requires { get; init; }
 
+    // True for the labs in lessons/foundation, which every learner does first, in order.
+    public bool IsFoundation { get; init; }
+
     // Path relative to the repository root, with forward slashes. For example: lessons/foundation/00-welcome.md
     public required string SourcePath { get; init; }
 
@@ -25,7 +28,8 @@ public sealed class LessonCollection
     public LessonCollection(IEnumerable<Lesson> lessons)
     {
         Lessons = lessons
-            .OrderBy(lesson => lesson.Order)
+            .OrderByDescending(lesson => lesson.IsFoundation)
+            .ThenBy(lesson => lesson.Order)
             .ThenBy(lesson => lesson.SourcePath, StringComparer.Ordinal)
             .ToList();
 
@@ -35,12 +39,20 @@ public sealed class LessonCollection
             _indexBySlug[Lessons[i].Slug] = i;
         }
 
+        Foundation = Lessons.Where(lesson => lesson.IsFoundation).ToList();
+        Explore = Lessons.Where(lesson => !lesson.IsFoundation).ToList();
+
         TotalMinutes = Lessons.Aggregate(0, (total, lesson) => Calculator.Add(total, lesson.DurationMinutes));
     }
 
     public static LessonCollection Empty { get; } = new([]);
 
+    // Every lesson: the foundation labs first, then the explore labs, each sorted by order.
     public IReadOnlyList<Lesson> Lessons { get; }
+
+    public IReadOnlyList<Lesson> Foundation { get; }
+
+    public IReadOnlyList<Lesson> Explore { get; }
 
     public int TotalMinutes { get; }
 
